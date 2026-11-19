@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>Control the depth + set limits · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function(){try{var html=document.documentElement;var DEF={theme:'inema-dark',font:'inter',fontScale:100,lineWidth:68,leading:1.7,accent:'emerald'};function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}var p=clone(DEF);try{var raw=localStorage.getItem('inema.prefs');if(raw){var parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'){for(var k in DEF)if(parsed[k]!=null)p[k]=parsed[k];}}else{var legacy=localStorage.getItem('theme');if(legacy==='light')p.theme='claro';else if(legacy==='dark')p.theme='inema-dark';}}catch(e){p=clone(DEF);}var THEMES={'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'}};var t=THEMES[p.theme]||THEMES['inema-dark'];if(t.dark===true)html.classList.add('dark');else if(t.dark===false)html.classList.remove('dark');if(t.attr)html.setAttribute('data-theme',t.attr);else html.removeAttribute('data-theme');html.style.colorScheme=(t.cs?t.cs:(html.classList.contains('dark')?'dark':'light'));html.setAttribute('data-font',p.font||'inter');html.setAttribute('data-accent',p.accent||'emerald');var s=html.style,scale=(+p.fontScale||100);s.setProperty('--inema-font-scale',(scale/100).toString());s.setProperty('font-size',scale+'%');s.setProperty('--measure',(+p.lineWidth||68)+'ch');s.setProperty('--lh-body',(+p.leading||1.7).toString());}catch(err){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}catch(e){}}})()
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body{font-family:'Inter',sans-serif}.dark body{background-color:#111827}[id^="topico-"],[id^="modulo-"]{scroll-margin-top:5rem}.termo{border-bottom:1px dashed #60a5fa;cursor:help;font-weight:600;color:#93c5fd}html:not(.dark) .termo{color:#1d4ed8;border-color:#2563eb}.copybox pre{white-space:pre-wrap;word-break:break-word}
+    html:not(.dark) body{background-color:#f8fafc}html:not(.dark) .bg-dark-900{background-color:#fff}html:not(.dark) .bg-dark-800{background-color:#f9fafb}html:not(.dark) .bg-dark-700{background-color:#f3f4f6}html:not(.dark) .bg-dark-600{background-color:#e5e7eb}html:not(.dark) .text-neutral-100{color:#111827}html:not(.dark) .text-neutral-300{color:#4b5563}html:not(.dark) .text-neutral-400{color:#6b7280}html:not(.dark) .text-neutral-500{color:#9ca3af}html:not(.dark) .border-dark-600{border-color:#d1d5db}html:not(.dark) .border-dark-700{border-color:#e5e7eb}html:not(.dark) .text-blue-400{color:#2563eb}html:not(.dark) .bg-blue-500\/20{background-color:rgba(37,99,235,0.12)}html:not(.dark) .bg-blue-500\/10{background-color:rgba(37,99,235,0.08)}html:not(.dark) .bg-blue-900\/20{background-color:rgba(37,99,235,0.08)}html:not(.dark) .border-blue-500\/30{border-color:rgba(37,99,235,0.25)}html:not(.dark) .hover\:bg-blue-500\/30:hover{background-color:rgba(37,99,235,0.18)}html:not(.dark) .hover\:text-blue-400:hover{color:#2563eb}html:not(.dark) [class*="bg-gradient-to"]{background-image:none!important}html:not(.dark) .text-primary{color:#a16207}html:not(.dark) .bg-primary\/10{background-color:rgba(161,98,7,0.08)}html:not(.dark) .border-primary\/30{border-color:rgba(161,98,7,0.25)}html:not(.dark) .text-sky-400{color:#0369a1}html:not(.dark) .text-yellow-400{color:#a16207}html:not(.dark) .hover\:text-sky-300:hover{color:#0284c7}html:not(.dark) .text-red-400{color:#b91c1c}html:not(.dark) .bg-red-900\/20{background-color:rgba(185,28,28,0.07)}html:not(.dark) .border-red-500\/30{border-color:rgba(185,28,28,0.25)}html:not(.dark) .text-emerald-400{color:#059669}html:not(.dark) .bg-emerald-900\/20{background-color:rgba(5,150,105,0.08)}html:not(.dark) .border-emerald-500\/30{border-color:rgba(5,150,105,0.25)}html:not(.dark) .hover\:bg-emerald-500\/30:hover{background-color:rgba(5,150,105,0.18)}html:not(.dark) .hover\:text-emerald-400:hover{color:#059669}html:not(.dark) .bg-dark-900\/95{background-color:rgba(255,255,255,0.95)}
+    .dark .border-dark-600{border-color:#374151}.dark .divide-dark-600>:not([hidden])~:not([hidden]){border-color:#374151}html:not(.dark) svg[role="img"]{filter:saturate(0.82) brightness(0.96)}
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span>
+<span class="hidden sm:inline">Learning Path 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>My journey</span>
+<span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Breadcrumb" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Learning Path 2</a><span>/</span>
+<span class="text-blue-400">Module 2.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎚️ Control the depth + set limits</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Not every task deserves maximum reasoning—and no capable agent should get free rein before you say what it can touch. Two practical tips from the Fable 5 work-agent guide: calibrate analysis depth to the task’s actual complexity, and lock in a diagnostic-only mode before letting the agent take real action.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~35</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">2.1</div><div class="text-xs text-neutral-400">Prereq</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 2.2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-2" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="2-2" data-inema-track="2" id="modulo-2-2">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Not every task calls for the maximum</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. The prompt: tailored depth</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Too much initiative is a risk</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. The prompt: assess first, execute next</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Combining the two: stuck audit</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Common errors + checklist</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🪜 Not every task calls for maximum effort</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Think of it this way:</strong> <span class="termo" title="How much reasoning the agent devotes before responding or acting">depth of analysis</span> it's not a "turbo mode" you always turn on to guarantee quality. It's a control you calibrate to the task's actual complexity — using the maximum for something simple wastes time and tokens with no benefit; using the minimum for a costly decision is the other, equally common mistake.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t1-p1">The practical guide to using Fable 5 as a work agent sums this up in a four-step scale. Each step isn’t a technical setting — it’s an instruction you write in the prompt yourself, telling the agent how much it’s worth deliberating before giving you the answer.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t1-p2">The scale works best when you ask yourself before writing the prompt: "if this answer comes out wrong, what do I lose?" The more you stand to lose, the higher the level you should ask for.</p>
+<div class="rounded-xl border border-dark-600 overflow-x-auto mb-6">
+<table class="w-full text-sm">
+<thead>
+<tr class="bg-dark-800 border-b border-dark-600 text-left">
+<th class="px-4 py-3 font-semibold text-blue-400">Level</th>
+<th class="px-4 py-3 font-semibold text-blue-400">When to use</th>
+<th class="px-4 py-3 font-semibold text-blue-400">Examples from the guide</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-600">
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">Low</td>
+<td class="px-4 py-3 text-neutral-300">Mechanical task, low risk of error</td>
+<td class="px-4 py-3 text-neutral-400">Summary, caption, text adjustment, quick ideas</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">Medium</td>
+<td class="px-4 py-3 text-neutral-300">Organize or compare options</td>
+<td class="px-4 py-3 text-neutral-400">Simple planning, comparison, content review</td>
+</tr>
+<tr class="bg-blue-500/10">
+<td class="px-4 py-3 font-mono font-semibold text-blue-400">High</td>
+<td class="px-4 py-3 text-neutral-200">A decision that would be costly if it goes wrong</td>
+<td class="px-4 py-3 text-neutral-300">Strategy, architecture, auditing, product decisions, technical review</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">Maximum</td>
+<td class="px-4 py-3 text-neutral-300">Costly or irreversible error</td>
+<td class="px-4 py-3 text-neutral-400">Critical problems, migration, security, complex business issues, risk analysis</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-xs text-neutral-500 mb-6">Source: practical user guide to using Fable 5 as a work agent — prompt tested in practice, not an official Anthropic quote.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Fable 5’s 4-level analysis-depth ladder—low, medium, high, and maximum—rising in reasoning time and cost, with the maximum level highlighted as requiring the most careful use" class="w-full h-auto" role="img" viewbox="0 0 1000 360">
+<defs>
+<lineargradient id="m22lvl-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m22lvl-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m22lvl-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#60a5fa" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m22lvl-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m22lvl-grid)" height="360" width="1000" x="0" y="0"></rect>
+<path d="M40,330 L950,330" fill="none" marker-end="url(#m22lvl-ahc)" opacity="0.55" stroke="#38bdf8" stroke-dasharray="9 9" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="495" y="352">more reasoning time · more tokens →</text>
+<path d="M40,282 L280,222" fill="none" opacity="0.4" stroke="#60a5fa" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<path d="M280,222 L520,162" fill="none" opacity="0.4" stroke="#60a5fa" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<path d="M520,162 L760,104" fill="none" opacity="0.4" stroke="#60a5fa" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="40" y="230"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="130" y="264">low</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="130" y="304">summary, caption, quick text</text></g>
+<g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="280" y="170"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="370" y="204">medium</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="370" y="244">planning, comparison</text></g>
+<g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="520" y="110"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="610" y="144">high</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="610" y="184">strategy, architecture, audit</text></g>
+<g filter="url(#m22lvl-glow)"><rect fill="#0e1622" height="64" rx="12" stroke="url(#m22lvl-grad)" stroke-width="2.5" width="190" x="760" y="44"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="855" y="34">USE WITH JUDGMENT</text>
+<text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="855" y="82">maximum</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="855" y="126">migration, security, risk</text>
+</svg>
+</div>
+<p class="text-xs text-neutral-500 -mt-6 mb-6">The 4-level ladder: each step increases reasoning time (dashed cyan line)— <code>máxima</code> stands out because it’s the level you should reserve for when a mistake really costs a lot.</p>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> 4 depth levels (low→maximum) calibrated by the question “if it goes wrong, what do I lose?” — not by the habit of always asking for the maximum.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">💻 The prompt: tailor-made depth</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t2-p1">Instead of trusting the agent to guess the right level on its own, you explicitly say where to focus the heavy reasoning — and where it isn’t worthwhile. This avoids the most common symptom of leaving everything at “high all the time”: solutions that are more complicated than the task calls for.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t2-p2">The prompt below does exactly that: it separates the part that deserves depth (the strategic decision) from the part that doesn’t (the implementation itself, which should stay simple).</p>
+<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Goal:</span> <span class="text-neutral-300 text-sm">avoid overengineered solutions by asking for deep reasoning only where it really matters.</span></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt: calibrated depth</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Use análise profunda apenas na parte estratégica. Não complique a
+solução. Não crie abstrações desnecessárias. Entregue a solução mais
+simples que resolve bem o problema.
+
+&lt;isto você troca — cole junto o pedido real da tarefa&gt;</pre>
+</div>
+<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">How to check:</span> <span class="text-neutral-300 text-sm">run the same request twice — once with this instruction, once without it. The version with the instruction should be more direct, with fewer layers/abstractions you didn’t ask for, while still getting the strategic decision behind the request right.</span></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5 mb-6">
+<h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🔗</span> Cross-reference with Track 1</h3>
+<p class="text-neutral-300 text-sm">This applied calibration of depth echoes a technique officially supported by Anthropic: Fable 5 exposes five effort levels that can be configured per call (<code>low</code>/<code>medium</code>/<code>high</code>/<code>xhigh</code>/<code>max</code>) via <code>output_config.effort</code>. If you work directly with the API, Module 1.6 shows the technical equivalent of this same idea—including the official guideline for when to use each level.</p>
+<a class="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-emerald-400 hover:text-emerald-300" href="../trilha1/modulo-1-6.html">View Module 1.6 — Effort and safety routing →</a>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> say where deep reasoning is necessary—for everything else, make a simple request.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">⚠️ Too much initiative is risky</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t3-p1">A strong model isn't cautious by default — it is <em>capable</em> by default. This means that when a request is ambiguous, Fable 5 tends to fill in the gap on its own: if you asked it to “solve the problem,” it may decide for itself what counts as solving it, and take action.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t3-p2">This is great when you want it to continue until a clearly defined task is done. It's dangerous when the task is ambiguous about <em>what it can touch</em> — files, services, configuration, production data.</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Common scenario</h3>
+<p class="text-neutral-300">You ask: <em>"analyze and fix the service's performance problem"</em>. Without an explicit boundary, a capable agent may interpret "solve it" as permission to restart the production service, change configuration, or deploy—all without asking you first, because it technically did what you asked.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What to DO</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Explicitly say what it <strong>no</strong> can proceed before asking for analysis or execution.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Separate the diagnosis phase from the action phase in sensitive tasks.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Treating "fix this" as an incomplete request until you define the boundaries.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ What to AVOID</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ask “fix this” or “take care of this” without saying what is off-limits.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Assuming the agent will ask before acting—in general, it acts.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Confusing “strong model” with “cautious model”—they’re different things.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> the more capable the model, the more explicit the boundary needs to be before asking for technical analysis or execution.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🚧 The prompt: evaluate first, execute afterward</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t4-p1">The most reliable way to enforce the boundary from the previous topic is to put the agent in a <span class="termo" title="Phase in which the agent only observes and reports, without changing anything in the system">diagnostics-only mode</span> explicit: it can inspect, measure, and draw conclusions — but it can't change anything until you approve.</p>
+<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Goal:</span> <span class="text-neutral-300 text-sm">lock the agent into evaluation mode before taking any real action in the system.</span></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt: safe analysis</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Primeiro apenas avalie. Não altere arquivos, não reinicie serviços,
+não crie branch, não edite configuração e não rode comandos
+destrutivos.
+
+Entregue um diagnóstico com evidências. Depois diga exatamente quais
+mudanças recomenda e por quê.
+
+&lt;isto você troca — descreva o sistema ou problema a investigar&gt;</pre>
+</div>
+<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">How to check:</span> <span class="text-neutral-300 text-sm">check that no files were changed, no services restarted, and no destructive commands ran—and that the response ends with a diagnosis + separate recommendations, still awaiting your approval in a later round.</span></div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Flow showing the request passing through an evaluation gate: the evidence-based diagnosis path is always allowed, while direct execution on files, services, and configurations remains blocked until the user explicitly approves it" class="w-full h-auto" role="img" viewbox="0 0 1020 280">
+<defs>
+<lineargradient id="m22gate-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m22gate-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m22gate-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#60a5fa" opacity="0.1" r="1.3"></circle></pattern>
+<marker id="m22gate-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="m22gate-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="m22gate-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m22gate-grid)" height="280" width="1020" x="0" y="0"></rect>
+<rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="160" x="20" y="112"></rect>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="100" y="136">Request to the</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="100" y="154">agent</text>
+<path d="M180,140 L212,140" fill="none" marker-end="url(#m22gate-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="1.8"></path>
+<g filter="url(#m22gate-glow)" transform="rotate(45 280 140)"><rect fill="#0e1622" height="100" rx="14" stroke="url(#m22gate-grad)" stroke-width="2.5" width="100" x="230" y="90"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="280" y="136">Gate</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="280" y="151">evaluation only</text>
+<path d="M350,120 C400,120 400,55 460,55" fill="none" marker-end="url(#m22gate-ah)" opacity="0.65" stroke="#38bdf8" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="80">always allowed</text>
+<rect fill="#0e1b26" height="50" rx="12" stroke="#38bdf8" stroke-width="2" width="270" x="460" y="30"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="595" y="60">diagnosis + evidence</text>
+<path d="M350,160 C400,160 400,215 460,215" fill="none" marker-end="url(#m22gate-ahr)" opacity="0.65" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="205">blocked by default</text>
+<rect fill="#2a0f16" height="50" rx="12" stroke="#f87171" stroke-width="2" width="300" x="460" y="190"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="610" y="220">🔒 files · services · configs</text>
+<path d="M590,80 C660,80 660,150 660,188" fill="none" marker-end="url(#m22gate-ahc)" opacity="0.6" stroke="#38bdf8" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="785" y="128">explicit approval</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="610" y="260">🔓 only unlock after your approval</text>
+</svg>
+</div>
+<p class="text-xs text-neutral-500 -mt-6 mb-6">The gate separates the two paths: diagnostics (cyan) are always allowed; actual execution (red) stays locked until you explicitly approve the recommended changes.</p>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5 mb-6">
+<h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🔗</span> Cross-reference with Track 1</h3>
+<p class="text-neutral-300 text-sm">Setting limits before letting the agent act is literally the technique of <strong>boundaries (negative prompting + boundaries)</strong> which Track 1 documents with official backing from Anthropic — explicitly state what the model <em>no</em> should do, instead of relying only on the description of what it should do.</p>
+<a class="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-emerald-400 hover:text-emerald-300" href="../trilha1/modulo-1-3.html">View Module 1.3 — Negative prompting + boundaries →</a>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> "Evaluate first, execute second" turns too much initiative into useful diagnosis—with no risk of unwanted action.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🔗 Combining the two: a locked-down audit</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t5-p1">The two tips in this module don’t compete—they work together. The clearest example is a security audit: you want <strong class="text-blue-400">high depth</strong> (it's a decision that's costly if it goes wrong) <strong>e</strong> wants the agent <strong class="text-blue-400">locked in diagnostic-only mode</strong> (because now isn't the time to change anything yet).</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m22-t5-p2">In practice, this becomes a 5-step workflow you repeat for any sensitive task—not just security audits.</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Define the task and why it needs greater depth</h4>
+<p class="text-neutral-300 text-sm">Say what’s at stake — why this task deserves the “high” level and not “medium.”</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">State the boundary: diagnosis only this round</h4>
+<p class="text-neutral-300 text-sm">Explicitly list what must not be touched—files, services, configuration, destructive commands.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Run it and get the diagnosis with evidence</h4>
+<p class="text-neutral-300 text-sm">The agent investigates deeply and delivers verifiable findings, ranked by risk or impact.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Review the recommendations</h4>
+<p class="text-neutral-300 text-sm">You decide what makes sense to apply—the agent has already said exactly what and why.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">5</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Approve the changes in a separate round</h4>
+<p class="text-neutral-300 text-sm">Only now does the agent execute — and only what you approved, not what it thinks is best.</p>
+</div>
+</div>
+</div>
+<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Goal:</span> <span class="text-neutral-300 text-sm">asking for a high-depth security audit, but locked in diagnosis-only mode—the combined example from both tips.</span></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt: locked audit</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Perform a complete security audit of &lt;replace this — the system/project&gt;. Use deep analysis — getting this wrong would be costly.
+
+But for this round, only assess: don’t change files, restart services, edit configuration, or run destructive commands.
+
+Deliver a diagnosis with evidence, ranked by risk. Then say exactly what changes you recommend and why — I’ll approve each one before you act.</pre>
+</div>
+<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">How to check:</span> <span class="text-neutral-300 text-sm">the response must present findings with real evidence (file, line, log, or output—not a generic claim), ranked by risk, and make no actual changes to the system. If anything was changed without your approval, the prompt failed to enforce the limit.</span></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> high depth decides <em>how deep</em> the agent thinks; the diagnostic-only mode decides <em>what</em> it can do with what it thought through—the two together provide the safest audit.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">✅ Common mistakes + quick checklist</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m22-t6-p1">Before closing the module, here’s a quick checklist to review the prompts you just learned—calibrated depth (Tip 3) and explicit limits before acting (Tip 4).</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Checklist before sending the prompt</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>I asked “if it goes wrong, what do I lose?” before choosing the level of depth.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Explicitly said what the agent <strong>no</strong> can proceed, not just what it should do.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>I separated diagnosis from execution for any task that touches production or real data.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>I asked for real evidence in the diagnosis—not a generic opinion.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Most common mistakes</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Leaving everything at maximum depth “just to be safe,” without measuring whether the time and cost are worth it.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ask “fix this” without saying what’s off-limits—and be surprised by what the agent touched.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Mixing diagnosis and execution in the same request for a sensitive task.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Accept "done" without evidence—that's the subject of the next module, but it's worth preventing here.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">💡 Practical tip:</strong> save both prompts from this module (calibrated depth + safe analysis) in a template file. You’ll reuse them whenever you ask for something strategic or something that affects a system—and you’ll quickly notice that many of the “surprises” with powerful agents disappear once these two habits become standard.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> calibrate the effort, state the limit — the two habits that prevent most surprises with a capable agent.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">4 depth levels</strong><span class="text-neutral-400"> — low, medium, high, and maximum, calibrated by the question “if this goes wrong, what do I lose?”</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Set limits before acting</strong><span class="text-neutral-400"> — state what the agent cannot touch before asking for technical analysis or execution.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Evaluate first, execute later</strong><span class="text-neutral-400"> — the analysis prompt keeps the agent locked in diagnostic mode until you approve.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">The two work together</strong><span class="text-neutral-400"> — high depth + diagnostic-only mode is the recipe for a safe audit.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Next module:</h3><p class="text-neutral-300">2.3 — Real verification + specialized subagents.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-1.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-3.html">Next Module →</a>
+</div>
+</div>
+</section>
+<p class="text-xs text-neutral-500 mb-4">Source for this module: practical user guide to using Fable 5 as a work agent (tips 3 and 4) — prompts tested in practice, not official Anthropic quotes. Cross-references to Track 1 point to officially supported content: platform.claude.com/docs/en/build-with-claude/effort · platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5</p>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){const ti=button.closest('.topic-item');if(!ti)return;const e=ti.querySelector('.topic-explanation');if(e){e.classList.toggle('active');button.setAttribute('aria-expanded',e.classList.contains('active'));}}
+    (function(){const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){try{var pre=btn.closest('.copybox').querySelector('pre');navigator.clipboard.writeText(pre.textContent);var o=btn.textContent;btn.textContent='copiado ✓';setTimeout(function(){btn.textContent=o;},1500);}catch(e){}}
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&typeof INEMA.init==='function')INEMA.init();});</script>
+</body>
+</html>

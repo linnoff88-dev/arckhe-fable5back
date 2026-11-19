@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>2.5 Visión para interfaces + seguridad defensiva · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37,99,235,0.10); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.06); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .bg-sky-900\/20 { background-color: rgba(3,105,161,0.08); }
+    html:not(.dark) .border-sky-500\/30 { border-color: rgba(3,105,161,0.25); }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Ruta 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Migas de pan" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.5</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-5" data-inema-track="2" id="modulo-2-5">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.5</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">👁️ Visión para interfaces + seguridad defensiva</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Usa la visión de Fable 5 para auditar pantallas, capturas y piezas creativas reales; en seguridad, pide una revisión defensiva en lugar de exploración, para que la respuesta no se bloquee y aun así obtengas un diagnóstico útil.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~35</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">2.4</div><div class="text-xs text-neutral-400">Requisito previo</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-5" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Fable 5 ve la pantalla</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. El prompt de auditoría visual</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. El exploit se bloquea, la defensa no</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. El prompt de revisión defensiva</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Los dos consejos juntos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Errores comunes y lista de verificación</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">👁️ Fable 5 ve la pantalla, no solo el texto</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> llamas a un diseñador de conversión para que mire tu captura de pantalla y solo le dices: «hazlo más bonito». Va a cambiar el color del botón y se detendrá ahí. Ahora imagina que le dices: «cuéntame adónde va la mirada primero, qué confunde y qué frena la venta»; ese mismo diseñador te devuelve un diagnóstico de verdad. La diferencia no está en la herramienta, sino en el pedido.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t1-p1">Modelos con buena capacidad <span class="termo" title="Habilidad del modelo para recibir e interpretar imágenes (capturas de pantalla, fotos, PDFs, piezas gráficas) junto con el texto, no solo leer descripciones en palabras">visual</span> pueden analizar capturas de pantalla, fotos de interfaces, PDF de propuestas y piezas creativas del mismo modo que analizan texto: identificando jerarquías, puntos de atención, ruido y ausencias. Eso cambia el tipo de tarea que vale la pena delegar: no se trata solo de «generar texto sobre la imagen», sino de <strong class="text-blue-400">evaluar la imagen como lo haría un revisor capacitado</strong>.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t1-p2">El error más común es pedir poco: «hazlo más bonito», «mejora este diseño», «échale un vistazo a esto». Son solicitudes vagas que generan respuestas vagas: el modelo no sabe con qué criterio está evaluando, así que propone ajustes estéticos genéricos (color, espaciado) en vez de enfocarse en lo que realmente importa para tu objetivo: <strong class="text-blue-400">que la persona entienda y actúe</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t1-p3">El consejo 9 de esta ruta resuelve esto cambiando la solicitud vaga por una guía de auditoría: dónde se detiene la mirada primero, qué confunde, qué genera deseo, qué genera dudas, qué eliminar y qué cambiar para aumentar la conversión. Seis preguntas objetivas: el prompt listo viene en el próximo tema.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Una captura de pantalla pasa por un análisis visual que revisa cuatro puntos de atención —primera impresión, confusión, deseo y duda, prioridad de recorte— y genera un informe de seis puntos" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="m25a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m25a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m25a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m25a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m25a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m25a-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.65" stroke="#60a5fa" stroke-width="2">
+<path d="M196,120 C300,120 320,38 452,38" marker-end="url(#m25a-ah)"></path>
+<path d="M196,120 C300,120 320,79 452,79" marker-end="url(#m25a-ah)"></path>
+<path d="M196,120 L452,120" marker-end="url(#m25a-ah)"></path>
+<path d="M196,120 C300,120 320,161 452,161" marker-end="url(#m25a-ah)"></path>
+<path d="M196,120 C300,120 320,202 452,202" marker-end="url(#m25a-ah)"></path>
+</g>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="2">
+<path d="M588,38  C700,38 720,120 800,120" marker-end="url(#m25a-ahc)"></path>
+<path d="M588,79  C700,79 720,120 800,120" marker-end="url(#m25a-ahc)"></path>
+<path d="M588,120 L800,120" marker-end="url(#m25a-ahc)"></path>
+<path d="M588,161 C700,161 720,120 800,120" marker-end="url(#m25a-ahc)"></path>
+<path d="M588,202 C700,202 720,120 800,120" marker-end="url(#m25a-ahc)"></path>
+</g>
+<g filter="url(#m25a-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#m25a-grad)" stroke-width="2.5" width="156" x="40" y="88"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="19" font-weight="600" text-anchor="middle" x="118" y="114">Captura de pantalla</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="118" y="134">👁️ entrada visual</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="22"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="43">1.º vistazo</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="63"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="84">confusión</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="104"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="125">deseo/duda</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="145"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="166">qué eliminar</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="186"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="207">qué cambiar</text></g>
+</g>
+<g filter="url(#m25a-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#m25a-grad)" stroke-width="2.5" width="156" x="800" y="88"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="878" y="114">Informe</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="878" y="134">6 puntos objetivos</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2">Lectura del diagrama: la misma captura, al pasar por las 5 preguntas correctas en vez de «hazla más bonita», se convierte en un informe con 6 puntos concretos para actuar.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> Fable 5 lee la pantalla como un revisor capacitado, pero solo te lo muestra si preguntas como preguntaría un revisor capacitado.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔍 El prompt de auditoría visual, listo para copiar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> este no es un fragmento de la documentación oficial de Anthropic: es una plantilla probada en la práctica, pensada para revisar interfaces, capturas de pantalla y creatividades. Adjunta la imagen y pega el texto de abajo junto con ella.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t2-p1">La idea es simple: en vez de describir lo que quieres con adjetivos ("más limpio", "más moderno"), describes el <strong class="text-blue-400">objetivo de negocio</strong> de la pieza — «hacer que una persona entienda rápidamente el valor de la propuesta» — y pide una lista fija de seis observaciones. Esto funciona para una landing page, una pantalla de app, un PDF de propuesta comercial, una publicación de anuncio o una captura de un dashboard.</p>
+<div class="mb-3"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">adjuntar una captura de pantalla/imagen y recibir una auditoría estructurada de claridad y conversión, en lugar de un elogio o un ajuste estético aislado.</span></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">PT-BR · prompt probado en la práctica — consejo 9</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Analise este print ou imagem. Compare com o objetivo: fazer uma pessoa entender
+rapidamente o valor da proposta.
+
+Diga:
+1. onde o olho para primeiro;
+2. o que está confuso;
+3. o que gera desejo;
+4. o que gera dúvida;
+5. o que cortar;
+6. o que mudar para aumentar conversão.</pre>
+</div>
+<div class="mb-6 text-sm text-neutral-300"><span class="text-blue-400 font-semibold">Cómo comprobar:</span> adjunta una captura de pantalla real (una pantalla de tu producto, una landing, una diapositiva) junto con este texto y comprueba si la respuesta menciona elementos concretos de la imagen (posición, color, texto específico) en cada uno de los 6 puntos, y no frases genéricas que servirían para cualquier captura.</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ "Hazlo más bonito"</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Respuesta genérica de estética (color, espaciado)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No indica dónde se dirige la mirada ni qué confunde</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sin relación con la conversión ni con un objetivo real</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">✓ Guion de 6 preguntas</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Señala un elemento específico de la imagen en cada punto</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Distingue «confuso» de «genera dudas»: son cosas diferentes</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Termina en acción: qué recortar, qué cambiar</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> cambia «hazlo más bonito» por seis preguntas objetivas y convertirás una opinión vaga en una auditoría práctica.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🛡️ Pedir un exploit bloquea la respuesta; pedir una revisión defensiva, no</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> "enséñame a hackear este sistema" y "revisa este código en busca de fallas de seguridad" piden, en el fondo, que se observe el mismo problema, pero uno suena a una solicitud de ataque y el otro a una solicitud de defensa. Fable 5 reacciona de forma muy distinta a cada uno.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t3-p1">Cuando la solicitud se plantea como <strong class="text-red-400">exploración o ataque</strong> — "cómo exploro esta falla", "dame el paso a paso para invadir" — el modelo puede clasificar esto como una solicitud de <span class="termo" title="Categoría de rechazo de seguridad de Fable 5: la solicitud podría facilitar daños cibernéticos, como malware o el desarrollo de exploits">daño cibernético</span> y negarse por completo, incluso cuando tu intención real es proteger el propio sistema.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t3-p2">Cuando el mismo tema se plantea como <strong class="text-blue-400">revisión defensiva</strong> — "busca errores, validaciones faltantes, exposición de datos" — el modelo entiende que el objetivo es proteger, no atacar, y entrega un análisis completo: riesgo, archivo afectado, causa probable, corrección. Es literalmente el mismo tema técnico, con un enfoque diferente en la entrada.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t3-p3">Esto no es un truco para «engañar» al modelo: es el encuadre correcto para quien realmente está cuidando un sistema propio o el de un cliente. El trabajo legítimo de ciberseguridad (pentest autorizado, auditoría, revisión de código) es diferente de pedir una receta de ataque genérica, y la forma en que redactas la solicitud es lo que se lo deja claro al modelo.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación lado a lado: la solicitud de explorar una falla se bloquea con stop_reason refusal de categoría cyber; la solicitud de revisar de forma defensiva el mismo código se permite y devuelve un diagnóstico y una corrección" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m25b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m25b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m25b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m25b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="m25b-ahb" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m25b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m25b-grid)" height="260" width="1000" x="0" y="0"></rect>
+<line stroke="#4b5563" stroke-dasharray="6 6" stroke-width="2" x1="500" x2="500" y1="15" y2="245"></line>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="250" y="28">Solicitud de exploración</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="750" y="28">Solicitud de revisión defensiva</text>
+<rect fill="#1f2937" height="52" rx="10" stroke="#9ca3af" stroke-width="2" width="200" x="45" y="45"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="145" y="67">"Cómo exploro</text>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="145" y="85">¿esta falla X?"</text>
+<path d="M245,71 L300,71" fill="none" marker-end="url(#m25b-ahr)" opacity="0.6" stroke="#f87171" stroke-width="1.8"></path>
+<g filter="url(#m25b-glow)"><rect fill="#2a0f16" height="62" rx="12" stroke="#f43f5e" stroke-width="2.5" width="185" x="300" y="40"></rect></g>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="392" y="65">🚫 bloqueado</text>
+<text fill="#fecdd3" font-family="monospace" font-size="10" text-anchor="middle" x="392" y="84">refusal · categoría cyber</text>
+<rect fill="#0e1622" height="52" rx="10" stroke="#60a5fa" stroke-width="2" width="200" x="45" y="150"></rect>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="145" y="172">"Revisa este código</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="145" y="190">como defensa»</text>
+<path d="M245,176 L300,176" fill="none" marker-end="url(#m25b-ahb)" opacity="0.6" stroke="#60a5fa" stroke-width="1.8"></path>
+<g filter="url(#m25b-glow)"><rect fill="#0e1622" height="62" rx="12" stroke="url(#m25b-grad)" stroke-width="2.5" width="185" x="300" y="145"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="392" y="170">✅ diagnóstico</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="392" y="189">riesgo + archivo + corrección</text>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="180" x="560" y="160"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="650" y="184">sin exploit,</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="650" y="202">sin instrucciones paso a paso</text>
+<path d="M485,176 C520,176 520,190 560,190" fill="none" marker-end="url(#m25b-ahc)" opacity="0.5" stroke="#38bdf8" stroke-width="1.8"></path>
+</svg>
+<p class="text-xs text-neutral-500 mt-2">Lectura del diagrama: el mismo tema técnico, planteado como ataque, se bloquea; planteado como revisión defensiva, se convierte en un diagnóstico útil, sin exploit ni instrucciones paso a paso para atacar.</p>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><span class="mr-2">⚠️</span> Qué evitar al definir el enfoque</h3>
+<p class="text-neutral-300 text-sm">Pedir «paso a paso de ataque», «cómo escribir un exploit», «cómo hackear X» — incluso con buena intención — entra directamente en la categoría de rechazo que protege contra daños cibernéticos. El objetivo (proteger tu sistema) queda en segundo plano si el texto de la solicitud suena como una petición de ataque.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> mismo tema, enfoque diferente: el ataque bloquea; la defensa entrega el diagnóstico.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔐 El prompt de revisión defensiva, listo para copiar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> de nuevo, una plantilla probada en la práctica, no una cita oficial. Pégala junto con el código del servidor que quieres revisar.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t4-p1">El prompt de abajo pide explícitamente una <strong class="text-blue-400">revisión defensiva</strong>: errores, validaciones ausentes, problemas de autorización, exposición accidental de datos, fallas de configuración, riesgos operativos. Y termina con dos negaciones claras — nada de exploits, nada de instrucciones paso a paso para atacar — que refuerzan el enfoque del tema anterior.</p>
+<div class="mb-3"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">revisar código del servidor para detectar riesgos de seguridad reales y recibir el riesgo + archivo + causa + corrección, sin activar un rechazo ni generar material ofensivo.</span></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">PT-BR · prompt probado en la práctica — consejo 10</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Analiza mi código de servidor como una revisión defensiva. Busca errores, validaciones
+ausentes, problemas de autorización, exposición accidental de datos, fallas de
+configuración y riesgos operativos.
+
+No crees exploits. No muestres instrucciones paso a paso para atacar. Solo indica el riesgo, el
+archivo afectado, la causa probable y la corrección defensiva.</pre>
+</div>
+<div class="mb-6 text-sm text-neutral-300"><span class="text-blue-400 font-semibold">Cómo comprobar:</span> pégalo junto con un archivo de servidor real (ruta de API, middleware de autenticación, handler de carga) y comprueba si la respuesta enumera hallazgos con archivo/línea, causa probable y corrección, sin ningún fragmento de exploit funcional ni instrucciones de ataque.</div>
+<div class="bg-sky-900/20 rounded-xl border border-sky-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-sky-400 mb-3 flex items-center"><span class="mr-2">🔗</span> Cruce con la trilha 1</h3>
+<p class="text-neutral-300 text-sm mb-2">Este consejo se relaciona directamente con el <a class="text-sky-400 hover:text-sky-300 underline" href="../trilha1/modulo-1-6.html#topico-4">módulo 1.6 de la ruta 1</a>, que explica técnicamente la categoría de rechazo <code>cyber</code> con respaldo oficial de la documentación de Anthropic <em>refusals-and-fallback</em>:</p>
+<p class="text-neutral-300 text-sm italic mb-2">"The request could enable cyber harm, such as malware or exploit development. Benign cybersecurity work can also trigger this category."</p>
+<p class="text-neutral-300 text-sm">En otras palabras: incluso un trabajo legítimo de ciberseguridad puede activar esta categoría si la solicitud suena a ataque. El prompt de revisión defensiva anterior es literalmente la estrategia práctica para <strong class="text-sky-400">no activar ese rechazo</strong> — describe el mismo módulo 1.6 desde el punto de vista técnico/API; aquí está la versión aplicada, lista para copiar y pegar.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> pedir una revisión defensiva, con las dos negaciones explícitas, es la forma práctica de obtener un análisis de seguridad real sin encontrarse con un rechazo <code>cyber</code>.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🧭 Los dos consejos juntos: auditoría visual de un panel de administración</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un dashboard interno mezcla ambos mundos — y una interfaz (consejo 9) que puede estar filtrando información sensible en la propia pantalla, y detrás de ella hay código de servidor que decide qué aparece allí (consejo 10). Auditar solo la interfaz o solo el código deja fuera la mitad del riesgo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t5-p1">Un caso realista: tienes un panel de administración/dashboard interno y quieres saber si está <strong class="text-blue-400">exponiendo datos sensibles en la propia pantalla</strong> — correo electrónico completo de un cliente, token, clave de API, ID interno, campo de depuración olvidado en producción. Esto es al mismo tiempo un problema de <strong>interfaz</strong> (lo que ve el ojo) y un problema de <strong>seguridad</strong> (lo que el servidor decidió enviar al navegador).</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Toma una captura del panel</h4>
+<p class="text-sm text-neutral-400 mb-3">Captura la pantalla tal como la vería una persona usuaria real: tablas, modales, paneles de depuración abiertos</p>
+<p class="text-neutral-300 text-sm">Incluye pantallas con datos reales (o una copia enmascarada, si vas a compartirla fuera del equipo), no solo la pantalla vacía, y en los estados que realmente aparecen en el día a día.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Ejecuta el prompt de auditoría visual (consejo 9)</h4>
+<p class="text-sm text-neutral-400 mb-3">El mismo texto del tema 2, pero con un agregado</p>
+<p class="text-neutral-300 text-sm">Además de las 6 preguntas estándar, pide explícitamente: "señala también cualquier dato que parezca sensible y no debería estar visible en esta pantalla (token, correo electrónico completo, clave, ID interno)".</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Encuentra el código detrás de lo que apareció</h4>
+<p class="text-sm text-neutral-400 mb-3">Toda exposición en pantalla nace de una ruta o una query en el servidor</p>
+<p class="text-neutral-300 text-sm">Si la auditoría visual señaló un dato sensible en la pantalla, localiza la ruta/endpoint que devuelve ese campo; normalmente es un <code>SELECT *</code> demasiado generoso o una respuesta de API sin filtro de permisos.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Ejecuta el prompt de revisión defensiva (consejo 10) en este archivo</h4>
+<p class="text-sm text-neutral-400 mb-3">El mismo texto del tema 4, aplicado solo al archivo sospechoso</p>
+<p class="text-neutral-300 text-sm">El resultado combina ambos lados: «la pantalla X expone el campo Y (hallazgo visual) porque la ruta Z devuelve el objeto completo sin filtrar por permiso (hallazgo de código); corrígelo proyectando el DTO de respuesta».</p>
+</div>
+</div>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t5-p2">Fíjate en que en ningún momento pediste «cómo explotaría un atacante este panel»: pediste claridad en la interfaz y una revisión defensiva del código. Precisamente esa combinación evita el rechazo y cubre el riesgo de punta a punta: desde la pantalla hasta la línea de código que la alimenta.</p>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> la auditoría visual detecta lo que se filtra en pantalla; la revisión defensiva descubre por qué el código permitió que se filtrara — juntos, los dos consejos cubren todo el panel.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">✅ Errores comunes y lista de verificación rápida</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> los dos consejos de esta lección casi siempre fallan por el mismo motivo: la solicitud quedó vaga o fue demasiado ofensiva. Este checklist es el antídoto rápido para ambos casos.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t6-p1">Antes de pegar cualquiera de los dos prompts, revisa estos puntos: son los errores que más hacen que el consejo 9 devuelva una opinión vaga o que el consejo 10 provoque un rechazo.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Evita</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Haz que se vea más bonito" sin decir cuál es el objetivo de la pieza</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pedir la captura de pantalla sin adjuntar la imagen de verdad</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Enséñame a explotar/invadir X"</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pedir «paso a paso» de cualquier cosa relacionada con un ataque</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Revisar solo la pantalla o solo el código, nunca ambos juntos</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">✓ Haz</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Di cuál es el objetivo de la pieza + adjunta la imagen real</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Usa las 6 preguntas fijas del consejo 9, siempre en ese orden</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Enmarca la seguridad como «revisión defensiva», nunca como ataque</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Cierra el prompt con las dos negaciones: sin exploit, sin paso a paso</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>En pantallas con datos, combina la revisión visual (consejo 9) con el código (consejo 10)</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> un objetivo claro + una imagen real (consejo 9) y un encuadre defensivo + dos negaciones (consejo 10) resuelven casi todos los errores comunes de esta lección.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">La visión se convierte en auditoría</strong><span class="text-neutral-400"> — las 6 preguntas fijas del consejo 9 convierten "hazlo más bonito" en un informe práctico a partir de cualquier captura, pantalla o PDF.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">El encuadre determina el rechazo</strong><span class="text-neutral-400"> — pedir exploración se bloquea con <code>refusal</code> categoría <code>cyber</code>; pedir una revisión defensiva del mismo tema ofrece un diagnóstico completo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Dos prompts listos para usar</strong><span class="text-neutral-400"> — auditoría visual (tema 2) y revisión defensiva de código (tema 4), probadas en la práctica.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Los dos se combinan</strong><span class="text-neutral-400"> — auditoría de un panel de administración que cruza lo que se filtra en la pantalla con el código que permitió esa filtración.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3>
+<p class="text-neutral-300">2.6 — Bucles con verificación + memoria externa: cómo convertir una revisión puntual en un ciclo continuo, con criterios, pruebas y lecciones registradas.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-4.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-6.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+<p class="mt-2 text-xs text-neutral-600">Los consejos 9 y 10 de esta página provienen de una guía práctica del autor (no son una cita oficial de Anthropic). La cita de la categoría de rechazo <code>cyber</code> en el tema 4 y en el documento oficial «refusals-and-fallback» — platform.claude.com/docs/en/build-with-claude/refusals-and-fallback (consulta los detalles técnicos en el módulo 1.6 de la ruta 1).</p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>Bonus: subagents, memory, and send_to_user · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-7.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-7.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-7.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-7.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-7.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-7.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Learning Path 1</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Learning Path 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.7</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.7 · BONUS</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎁 Bonus: subagents, memory, and send_to_user</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">This module <strong class="text-emerald-400">didn't come from the video</strong> which gave rise to the rest of the course — extra content, mined directly from the official "Prompting Claude Fable 5" documentation. These are the techniques left out of the video's 6: what else you can do when a session gets long, parallel, or autonomous.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.1–1.6</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Bonus</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.7 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-7" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. Delegation to subagents</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. File-based memory</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. The send_to_user tool</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Rare early stopping</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Refactor old skills</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Quick checklist</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-6 mb-10">
+<p class="text-neutral-200"><strong class="text-emerald-400">Where this came from:</strong> Modules 1.1 to 1.6 followed the video that inspired the course, with a backup in the official doc “Prompting Claude Fable 5.” This module is different: <strong class="text-emerald-400">wasn't in the video</strong>. This is the result of combing through the documentation for one more question: "Fable 5 is designed for long, autonomous sessions—what else can you do with it beyond the 6 techniques you've already seen?" The answers became the 5 topics below, ending with a checklist that brings it all together.</p>
+</div>
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-7#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">Asynchronous delegation to subagents</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">Imagine it this way:</strong> you’re a project manager. Instead of doing every subtask yourself, you assign independent pieces to assistants— <span class="termo" title="A subagent is a helper Claude agent dispatched by the orchestrator (the main session) to handle a subtask on its own.">subagents</span> — and keeps working while they handle their part, intervening only if one of them loses direction.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t1-p1">Fable 5 was trained to work over long, autonomous horizons—and that changes how it handles parallelism. It <strong class="text-emerald-400">dispatches subagents more often than previous models</strong>, because you can trust them with larger subtasks without having to closely supervise every step.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t1-p2">The behavior change Anthropic recommends is subtle but important: prefer <strong class="text-emerald-400">asynchronous communication</strong> between the orchestrator and subagents—dispatch and continue—instead of blocking while waiting for each one to return. And, when possible, use long-lived subagents that retain context between subtasks: this saves time and cost through caching.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="An orchestrator dispatches multiple subagents in parallel; they work asynchronously and converge on a single result, which the orchestrator incorporates back into its response" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="m17a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m17a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m17a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m17a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m17a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m17a-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8">
+<path d="M196,120 C300,120 320,38 452,38" marker-end="url(#m17a-ah)"></path>
+<path d="M196,120 C300,120 320,79 452,79" marker-end="url(#m17a-ah)"></path>
+<path d="M196,120 L452,120" marker-end="url(#m17a-ah)"></path>
+<path d="M196,120 C300,120 320,161 452,161" marker-end="url(#m17a-ah)"></path>
+<path d="M196,120 C300,120 320,202 452,202" marker-end="url(#m17a-ah)"></path>
+</g>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-width="1.8">
+<path d="M588,38  C700,38 720,120 800,120" marker-end="url(#m17a-ahc)"></path>
+<path d="M588,79  C700,79 720,120 800,120" marker-end="url(#m17a-ahc)"></path>
+<path d="M588,120 L800,120" marker-end="url(#m17a-ahc)"></path>
+<path d="M588,161 C700,161 720,120 800,120" marker-end="url(#m17a-ahc)"></path>
+<path d="M588,202 C700,202 720,120 800,120" marker-end="url(#m17a-ahc)"></path>
+</g>
+<g filter="url(#m17a-glow)"><rect fill="#0e2018" height="64" rx="14" stroke="url(#m17a-grad)" stroke-width="2" width="156" x="40" y="88"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="18" font-weight="600" text-anchor="middle" x="118" y="114">Orchestrator</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="118" y="134">main session</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="22"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="43">subagent</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="63"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="84">subagent</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="104"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="125">subagent</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="145"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="166">subagent</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="186"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="207">subagent …</text></g>
+</g>
+<g filter="url(#m17a-glow)"><rect fill="#0e2018" height="64" rx="14" stroke="url(#m17a-grad)" stroke-width="2" width="156" x="800" y="88"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="878" y="114">Result</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="878" y="134">incorporated back</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">The orchestrator dispatches and doesn’t get stuck: it continues while the subagents process in parallel and returns the result when they’re ready.</p>
+</div>
+<div class="space-y-5 mb-8">
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">1</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Dispatches</h4><p class="text-neutral-300 text-sm">The orchestrator identifies independent subtasks and launches one subagent per subtask, passing along the necessary context.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">2</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Works in parallel</h4><p class="text-neutral-300 text-sm">Each subagent handles its subtask without blocking the orchestrator—there’s no sequential wait, one at a time.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">3</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Orchestrator continues</h4><p class="text-neutral-300 text-sm">While the subagents run, the orchestrator keeps monitoring or making progress on other parts of the task.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">4</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Intervenes if needed</h4><p class="text-neutral-300 text-sm">If a subagent goes off track or lacks relevant context, the orchestrator corrects it or fills in the gaps before the error spreads.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold text-sm">5</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Receives and incorporates</h4><p class="text-neutral-300 text-sm">Each subagent’s result goes back to the orchestrator. Long-lived subagents retain context across subtasks, saving time and cost through caching.</p></div></div>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (official) — prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Delegate independent subtasks to subagents and keep working while they run. Intervene if a subagent goes off track or is missing relevant context.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">PT-BR (translation)</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Delegue subtarefas independentes a subagents e continue trabalhando enquanto elas rodam. Intervenha se um subagent sair do rumo ou estiver sem o contexto necessário.</pre>
+</div>
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-neutral-300">Goal:</strong> teach Fable 5 to truly parallelize—dispatch and move on—instead of treating subagents as blocking calls.</p>
+<p class="text-sm text-neutral-400 mb-8"><strong class="text-neutral-300">How to check:</strong> paste this into the CLAUDE.md or system prompt and request something with 3+ genuinely independent subtasks (e.g., “review modules 1.2, 1.3, and 1.4 for typos, in parallel”). In the transcript, check whether it starts multiple subagents and keeps monitoring while they work, instead of waiting for them one at a time.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📄</span> Official context</h3>
+<p class="text-neutral-300 text-sm mb-2"><strong>EN:</strong> "Claude Fable 5 dispatches parallel subagents more readily than prior models... prefer asynchronous communication between orchestrator and subagents over blocking until each subagent returns. Long-lived subagents that keep their context across subtasks save time and cost through cache reads."</p>
+<p class="text-neutral-300 text-sm"><strong>PT-BR:</strong> "Claude Fable 5 dispatches parallel subagents more readily than prior models... prefer asynchronous communication between orchestrator and subagents over blocking until each subagent returns. Long-lived subagents that keep their context across subtasks save time and cost through cache reads."</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> dispatch independent subtasks to subagents and keep going — blocking while you wait for each response wastes exactly the advantage that parallelism gives you.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-7#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">File-based memory system</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">Imagine it this way:</strong> you don’t recount everything you learned that day to the next person on shift. You write a note on the fridge. A file-based memory system is just that: one lesson, one note, one time—and the next shift reads it before repeating the mistake.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t2-p1">Long sessions and projects spanning several days run into an obvious limit: a session’s context doesn’t survive its end. The recommended solution is to externalize what was learned in <strong class="text-emerald-400">memory files</strong> — short notes that future sessions can read before acting, instead of rediscovering the same lesson from scratch.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t2-p2">The golden rule is <strong class="text-emerald-400">one file per lesson</strong>, with a one-line summary right at the top — designed to be scanned before being read in full. Corrections and confirmed approaches are added the same way, always with the "why" — without the reason, the note becomes an isolated fact that no one knows whether to rely on.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="One session records a lesson in a note file; a future session reads that note before acting and can update or delete it if it's wrong" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="m17b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#38bdf8"></stop><stop offset="1" stop-color="#0ea5e9"></stop></lineargradient>
+<filter height="180%" id="m17b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m17b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m17b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m17b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m17b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="15" font-weight="600">
+<rect fill="#0e2018" height="60" rx="12" stroke="#34d399" stroke-width="2" width="200" x="40" y="70"></rect><text fill="#34d399" text-anchor="middle" x="140" y="97">Session 1</text><text fill="#a7f3d0" font-size="11" font-weight="400" text-anchor="middle" x="140" y="115">today’s work</text>
+<path d="M240,100 L400,100" fill="none" marker-end="url(#m17b-ah)" opacity="0.55" stroke="#34d399" stroke-width="1.8"></path><text fill="#6ee7b7" font-size="11" text-anchor="middle" x="320" y="90">save a lesson</text>
+<g filter="url(#m17b-glow)"><rect fill="#0e1b26" height="60" rx="12" stroke="url(#m17b-grad)" stroke-width="2" width="200" x="400" y="70"></rect></g><text fill="#38bdf8" text-anchor="middle" x="500" y="97">Note (file)</text><text fill="#9ad6ff" font-size="11" font-weight="400" text-anchor="middle" x="500" y="115">.claude/memory/*.md</text>
+<path d="M600,100 L760,100" fill="none" marker-end="url(#m17b-ahc)" opacity="0.55" stroke="#38bdf8" stroke-width="1.8"></path><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="680" y="90">read before acting</text>
+<rect fill="#0e2018" height="60" rx="12" stroke="#34d399" stroke-width="2" width="200" x="760" y="70"></rect><text fill="#34d399" text-anchor="middle" x="860" y="97">Future session</text><text fill="#a7f3d0" font-size="11" font-weight="400" text-anchor="middle" x="860" y="115">lesson already available</text>
+<path d="M860,140 C860,190 500,190 500,140" fill="none" marker-end="url(#m17b-ahc)" opacity="0.55" stroke="#38bdf8" stroke-dasharray="6 6" stroke-width="1.6"></path><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="680" y="200">update / delete if wrong</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">The note is the link between sessions: the person who writes it isn’t the one who reads it. A future session can avoid repeating the mistake only if the note exists, is specific, and remains accurate.</p>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (official) — prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Store one lesson per file with a one-line summary at the top. Record corrections and confirmed approaches alike, including why they mattered. Don't save what the repo or chat history already records; update an existing note rather than creating a duplicate; delete notes that turn out to be wrong.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">PT-BR (translation)</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Guarde uma lição por arquivo, com um resumo de uma linha no topo. Registre tanto correções quanto abordagens confirmadas, incluindo por que elas importaram. Não salve o que o repositório ou o histórico de conversas já registra; atualize uma nota existente em vez de criar uma duplicata; apague notas que se mostrarem erradas.</pre>
+</div>
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-neutral-300">Goal:</strong> turn lessons from one session into notes that future sessions can consult without rereading the entire history.</p>
+<p class="text-sm text-neutral-400 mb-8"><strong class="text-neutral-300">How to check:</strong> paste this into the CLAUDE.md or system prompt, work through a few real sessions, and check the memory folder: there should be one file per lesson, each with a one-line summary at the top, without duplicating what's already in the code or conversation history.</p>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-emerald-400 mb-3">Bootstrap from existing history</h3>
+<p class="text-neutral-300 text-sm mb-4">If you already have old sessions but no organized memory, you don’t need to start from scratch by taking notes manually—ask Fable 5 itself to mine the history.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (official) — bootstrap prompt</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Reflect on the previous sessions we've had together. Use subagents to identify core themes and lessons, and store them in [X]. Make sure you know to reference [X] for future use.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">PT-BR (translation) — replace <code>[X]</code> through your memory folder</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Reflita sobre as sessões anteriores que tivemos juntos. Use subagents para identificar temas e lições centrais, e guarde-os em &lt;X&gt;. Garanta que você saiba referenciar &lt;X&gt; para uso futuro.</pre>
+</div>
+<p class="text-sm text-neutral-400 mb-1"><strong class="text-neutral-300">Goal:</strong> distill months of scattered sessions into a handful of reusable memory notes, all at once.</p>
+<p class="text-sm text-neutral-400"><strong class="text-neutral-300">How to check:</strong> run this prompt once, pointing to <code class="text-emerald-400">[X]</code> for your memory folder (e.g., <code class="text-emerald-400">.claude/memory/</code>); check whether new files appear that summarize recurring themes from past sessions, and whether later sessions cite those files when relevant.</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">Don’t duplicate what’s already in the repository or conversation history. If the code or chat already records it, extra memory only creates noise and becomes outdated—write down only what isn’t recorded anywhere else: the lesson, the reason, the fix.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> one lesson per file, a one-line summary at the top, update instead of duplicating, delete what’s no longer correct.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-7#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">The send_to_user tool</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t3-p1"><code class="text-emerald-400">send_to_user</code> is an <span class="termo" title="Client-side tool: the display logic runs in your harness/app, not on the model’s server.">client-side tool</span>: when the model calls it, the interface displays the input text <strong class="text-emerald-400">exactly as written</strong> — word for word, never summarized or rewritten over — and the turn <strong class="text-emerald-400">doesn't finish</strong>. The model keeps working right after calling it.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t3-p2">This solves a common problem with long-running agents: the user only sees the compressed final summary after everything is done. With <code class="text-emerald-400">send_to_user</code>, you can send specific information along the way without waiting for the turn to end.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Use send_to_user when</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>There is a deliverable <strong>partial</strong> ready, but the work continues.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>You want to give a progress update with <strong>specific numbers</strong> (e.g., "I processed 340 of 1,200 records").</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>The user asked a question <strong>in the middle of the loop</strong> and it deserves a direct answer now.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Don’t count on it if</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>It’s just "thinking out loud"—that’s turn-by-turn reasoning, not a deliverable for the user.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>The turn is already ending anyway—so the final summary is enough.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>You only <strong>defined</strong> the tool in the API, without saying in the system prompt when to call it.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">Define the tool <code class="text-primary">send_to_user</code> in the API <strong>isn't enough</strong>. Without an explicit instruction in the system prompt saying WHEN to call it—partial deliverable, update with numbers, answer to a question in the middle of the loop—the model tends to save everything for the final summary, and the tool never fires on its own.</p>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">Illustrative example (not an official verbatim quote)</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Call send_to_user whenever you have a partial deliverable, a concrete progress number, or a direct answer to a question asked during the task. Don’t wait for the final summary to report these things.</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> send_to_user sends what’s ready now, without waiting for the turn to end—but only if you explicitly say when to use it.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-7#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">Rare early stopping in long sessions</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t4-p1">In long, autonomous sessions, Fable 5 may — occasionally — end a turn with just an <strong class="text-emerald-400">intent in writing</strong> ("I'll run the integration tests now") without actually calling the tool that would make it happen. It's rare, but in autonomous pipelines with no one watching, this stray turn can go unnoticed.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t4-p2">The good news is that the mitigation is simple: a <strong class="text-emerald-400">"continue"</strong> fix the problem right away, interactively. In pipelines without a human in the loop, explicitly reinforce in the system prompt when it’s appropriate <strong class="text-emerald-400">stop</strong> versus when appropriate <strong class="text-emerald-400">act</strong> reduces the chance of this happening again.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-3">✗ Weak signal (does not count as progress)</h4>
+<div class="bg-dark-900/60 rounded-lg p-3 font-mono text-xs text-neutral-300 mb-2">"I'll run the integration tests now."<br/><span class="text-neutral-500">— turn ends here, no tool was called —</span></div>
+<p class="text-neutral-400 text-xs">It looks like progress, but nothing verifiable has happened yet.</p>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-3">✓ Real action (counts as progress)</h4>
+<div class="bg-dark-900/60 rounded-lg p-3 font-mono text-xs text-neutral-300 mb-2">bash: npm test<br/><span class="text-neutral-500">→ tool actually executed, result in the transcript —</span></div>
+<p class="text-neutral-400 text-xs">Only this is evidence that can be audited later (see module 1.4).</p>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Attention</h3>
+<p class="text-neutral-300">This is rare, not a behavioral pattern—but in automations without a human watching (overnight runs, CI pipelines, scheduled agents), a turn of "intent without action" can go uncorrected for hours. Reinforce the distinction between stopping and acting in the system prompt for any autonomous pipeline.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> if the turn ended with only a written promise, “continue” fixes it right away; in automation without a human, explicitly reinforce when to stop vs. when to act.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-7#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">Refactor old skills and prompts</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t5-p1">If you migrated skills, CLAUDE.md, or system prompts tuned for earlier models, it’s worth reviewing them before assuming that “more instructions are always safer.” Fable 5’s default behavior is already strong enough that old instructions, designed to compensate for limitations it no longer has, may end up <strong class="text-emerald-400">getting in the way</strong> instead of helping.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (official) — prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Skills developed for prior models are often too prescriptive for Claude Fable 5 and can degrade output quality. Review and consider removing older instructions if default performance is better.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">PT-BR (translation)</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Skills desenvolvidas para modelos anteriores costumam ser prescritivas demais para o Claude Fable 5 e podem piorar a qualidade do resultado. Revise e considere remover instruções antigas se o comportamento padrão já for melhor.</pre>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Opus-era skill</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>- Detailed step-by-step instructions for everything, even the obvious</li>
+<li>- “Always explain your reasoning before acting”</li>
+<li>- Style/formatting micromanagement</li>
+<li>- Tasks calibrated "on the safe side" to avoid mistakes</li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Adapted for Fable 5</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>- Remove redundant instructions; trust the default</li>
+<li>- Request structured reasoning through adaptive thinking, not in text (see module 1.2)</li>
+<li>- Delegate style/formatting, focus on the goal</li>
+<li>- Test tasks at the top of the difficulty range</li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">"<em>Start at the top of your difficulty range</em>" (start at the top of your difficulty range) — give Fable 5 5 harder tasks than you would give a previous model before deciding that it "can’t do it." Calibrating too low is the most common mistake people make when migrating.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t5-p2">For long tasks, self-evaluation alone has an obvious blind spot: the same context that made the mistake is the one auditing it. That’s why it’s worth <strong class="text-emerald-400">establish a check-in interval</strong> and, in the meantime, launch a subagent with fresh context to check the work against the specification—not just reread what’s already been done.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (official) — prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Establish a method for checking your own work at an interval of [X] as you build. Run this every [X interval], verifying your work with subagents against the specification.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">PT-BR (translation) — replace <code>[X]</code> at your interval</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Estabeleça um método para checar seu próprio trabalho a um intervalo de &lt;X&gt; conforme você constrói. Rode isso a cada &lt;intervalo X&gt;, verificando seu trabalho com subagents contra a especificação.</pre>
+</div>
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-neutral-300">Goal:</strong> catching deviations early in long tasks with a verifier that doesn’t inherit the builder’s blind spot.</p>
+<p class="text-sm text-neutral-400 mb-6"><strong class="text-neutral-300">How to check:</strong> paste, replacing <code class="text-emerald-400">[X]</code> at your interval (e.g., “every 3 edited files” or “every 30 minutes” on a long task); watch whether, when that interval is reached, it actually pauses and dispatches a fresh verification subagent against the spec instead of evaluating itself in the same context.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📄</span> Official context</h3>
+<p class="text-neutral-300 text-sm mb-2"><strong>EN:</strong> "Separate, fresh-context verifier subagents tend to outperform self-critique."</p>
+<p class="text-neutral-300 text-sm"><strong>PT-BR:</strong> "Separate verifier subagents with fresh context tend to outperform self-evaluation."</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> review instructions that are too old, start at the top of the difficulty range, and check long tasks with a fresh subagent at fixed intervals.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-7#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">Quick checklist</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t6-p1">A dense cheat sheet to save: it brings together the 6 techniques from the video (modules 1.2 to 1.5), effort and safety (module 1.6), and the 5 from this bonus section (module 1.7). Add it to your CLAUDE.md if you want to bring this into your day-to-day work.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">cheat-sheet-fable5.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">CHEAT SHEET — Prompting Claude Fable 5 (módulos 1.2–1.7)
+
+[1.2] Dê o porquê — contexto de intenção antes da tarefa
+[1.2] Não peça pra mostrar o raciocínio (evita a recusa reasoning_extraction)
+[1.3] Negative prompting — diga o que NÃO fazer, sem refactor/limpeza não pedidos
+[1.4] Deixe agir quando já tem informação suficiente; pause só pro que só o humano decide
+[1.4] Prove que terminou — audite cada alegação contra evidência de ferramenta
+[1.5] Diga menos, não mais — lidere com o resultado, corte o que não muda a próxima ação
+[1.6] Calibre o esforço (low/medium/high/xhigh/max) — baixo no Fable 5 ainda rende bem
+[1.6] Trate stop_reason:"refusal" como HTTP 200, não como erro; configure fallback pro Opus
+[1.7] Delegue subtarefas independentes a subagents; prefira comunicação assíncrona
+[1.7] Guarde memória em arquivo — uma lição por arquivo, resumo de 1 linha no topo
+[1.7] send_to_user pra deliverable parcial/update com números — só com instrução explícita
+[1.7] "Continue" resolve o early stopping raro; reforce quando parar vs. quando agir
+[1.7] Refatore skills antigas — comece no topo da dificuldade; verifique com subagent fresco</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> 11 techniques, 1 cheat sheet — paste into CLAUDE.md and review before starting a long session with Fable 5.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Asynchronous subagents</strong><span class="text-neutral-400"> — delegate and continue; intervene only if the subagent goes off track.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">File-based memory</strong><span class="text-neutral-400"> — 1 lesson per file, 1-line summary, bootstrap via subagents.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">send_to_user</strong><span class="text-neutral-400"> — partial deliverable/progress in real time, with an explicit instruction.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Rare early stopping + old skills</strong><span class="text-neutral-400"> — “continue” does the job; review instructions designed for older models.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-emerald-400 mb-2">This concludes the course:</h3>
+<p class="text-neutral-300">You went through the 7 parts of "Prompting Claude Fable 5"—from launch context to prompting techniques, effort, security, and now the extras for long sessions. Return to the topic 6 checklist whenever you start a long session with Fable 5.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="../../index.html">🏠 Back to Home</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 — 2026 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

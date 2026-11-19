@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>Fable 5: context and window of opportunity · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen" data-inema-module="1-1" data-inema-track="1" id="modulo-1-1"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Learning Path 1</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Home</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Learning Path 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.1</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🪟 Fable 5: context and window of opportunity</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">What Claude Fable 5 is, why it feels different to work with, the redeploy context, the actual price, and what early users are reporting. The foundation before learning to prompt better.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Zero</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Rationale</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-1" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. The strongest (and most expensive) model</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Why it “feels different”</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. The redeploy timeline</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Pricing and comparison</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. The promotional window</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. What early adopters say</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🏆 What Claude Fable 5 is</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it’s like taking the most powerful car in Anthropic’s garage. It costs more at the pump, but it handles any tough stretch of the route without running out of steam.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-1-t1-p1">O <strong class="text-emerald-400">Claude Fable 5</strong> is, today, the most capable model—and also the most expensive—in Anthropic’s public catalog. It was released in <strong>June 9, 2026</strong>, alongside Claude Mythos 5 (same capability, but without the <span class="termo" title="System that analyzes the request and response for risky content (e.g., malware, biological harm). When triggered, the model refuses or limits what it provides.">safety classifiers</span> public — restricted use through Project Glasswing, for defensive cybersecurity only).</p>
+<div class="bg-dark-700/50 border-l-4 border-emerald-500/50 rounded-r-lg p-4 mb-6 text-sm">
+<p class="text-neutral-300"><strong class="text-emerald-400">🆕 New here? Safety classifier —</strong> an automatic filter that examines the request and response for signs of risk (e.g., a security exploit, biological harm). When it triggers, the model refuses part or all of the request. Mythos 5 runs without this public layer, so it’s used only in controlled settings.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t1-p2">The main capability shift is the <span class="termo" title='The amount of text, in tokens, that the model can "see" at once: conversation history, attached files, and the response being drafted.'>context window</span> (context window): <strong class="text-emerald-400">1 million tokens</strong> by default, and up to <strong class="text-emerald-400">128 thousand output tokens</strong> per request—without charging a price “premium” for it.</p>
+<div class="bg-dark-700/50 border-l-4 border-emerald-500/50 rounded-r-lg p-4 mb-6 text-sm">
+<p class="text-neutral-300"><strong class="text-emerald-400">🆕 New here? Token / MTok —</strong> a token is the smallest unit of text the model processes (roughly a piece of a word). "MTok" = 1 million tokens, the unit used in the pricing table (e.g., "$10 per MTok of input"). We’ll use this unit in topic 4.</p>
+</div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📊</span> By the numbers</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-dark-900/40 rounded-lg p-3 text-center"><div class="text-xl font-bold text-emerald-400">1M</div><div class="text-xs text-neutral-400">context tokens</div></div>
+<div class="bg-dark-900/40 rounded-lg p-3 text-center"><div class="text-xl font-bold text-emerald-400">128k</div><div class="text-xs text-neutral-400">max output tokens</div></div>
+<div class="bg-dark-900/40 rounded-lg p-3 text-center"><div class="text-xl font-bold text-emerald-400">2x</div><div class="text-xs text-neutral-400">the price of Opus 4.8</div></div>
+<div class="bg-dark-900/40 rounded-lg p-3 text-center"><div class="text-xl font-bold text-emerald-400">09/06</div><div class="text-xs text-neutral-400">release (2026)</div></div>
+</div>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Context window size comparison: Fable 5 has 1 million tokens, five times larger than the typical previous window of 200,000 tokens" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="m11s1-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m11s1-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m11s1-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m11s1-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="40" y="45">typical previous window</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="160" x="40" y="58"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="120" y="80">~200k tokens</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="40" y="130">Claude Fable 5</text>
+<g filter="url(#m11s1-glow)"><rect fill="#0e2018" height="46" rx="10" stroke="url(#m11s1-grad)" stroke-width="2.5" width="800" x="40" y="143"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="440" y="172">1,000,000 context tokens</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="500" y="210">same window for input and history—with up to 128k reserved for output</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> Fable 5 is Anthropic’s most capable and most expensive model, with a 1M-token context window and up to 128k output.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⚡ Why it “feels different”</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it’s like turning up the volume on a conversation that was already going well. You say less and are understood faster—the model already gets your intent without needing you to repeat the request in three different ways.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t2-p1">The first thing people notice when switching from another model is that Fable 5 follows <strong class="text-emerald-400">short, direct instructions</strong> better than previous models, and supports a <strong class="text-emerald-400">stronger reasoning</strong> on long tasks. This changes how you prompt—the next modules in this track teach exactly how to make the most of it (less enumeration, clearer intent).</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Officially highlighted capabilities</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• <strong>Long-horizon autonomy</strong> — preserves the instruction across runs lasting several days</li>
+<li>• <strong>Getting it right on the first try</strong> in complex systems—complete implementations in a single shot</li>
+<li>• <strong>Vision</strong> — reads dense technical images and screenshots more accurately with fewer tokens</li>
+<li>• <strong>Enterprise workflows</strong> — spreadsheets, slides, and documents</li>
+<li>• <strong>Code review/debugging</strong> — greater recall of bugs than Opus 4.8, outside the domains covered by the <span class="termo" title="Automatic filters that analyze requests and responses for security risks; when triggered, the model refuses or limits its response.">safety classifiers</span></li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+<h4 class="font-bold text-neutral-300 mb-4">✗ Typical limitation of earlier models</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Needed constant supervision on long tasks</li>
+<li>• Several iterations to complete the “last step” in complex systems</li>
+<li>• Could read the image, but got fine details wrong or used more tokens</li>
+<li>• Spreadsheets/slides required manual rework afterward</li>
+<li>• Subtle bugs slipped through more often</li>
+</ul>
+</div>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-blue-400 mb-2">📚 Official source</h3>
+<p class="text-neutral-300 text-sm">This list of capabilities comes from the official “Introducing Claude Fable 5” documentation, which compares it directly with Claude Opus 4.8 (the catalog’s previous most capable model).</p>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300 text-sm">If you’re migrating from another model, resist the urge to write longer prompts “just in case.” Fable 5 responds better to short, clear instructions—the modules 1.2 and 1.5 in this track show exactly how that works in practice.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> Fable 5 follows short instructions better and sustains more autonomy, vision, and code accuracy than previous models.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🕰️ The redeployment timeline</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it’s like a new car recalled by the dealership the day after launch—not because it broke, but because the export paperwork wasn’t settled yet.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t3-p1">This topic is <strong>context</strong>, not the course’s central topic—the focus of this track is learning to prompt Fable 5 well. But it’s worth understanding what happened in the three weeks between launch and full availability today:</p>
+<div class="relative pl-8 mb-6">
+<div class="absolute left-3 top-0 bottom-0 w-0.5 bg-emerald-500/30"></div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">09/06/2026 — Launch</h4>
+<p class="text-neutral-300 text-sm">Claude Fable 5 and Claude Mythos 5 are publicly released. Mythos 5 is the variant without public safety classifiers, available for restricted use via Project Glasswing.</p>
+</div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">12/06/2026 — Export control and full suspension</h4>
+<p class="text-neutral-300 text-sm">The US government applies <span class="termo" title="Government rule that restricts access to a technology based on the user's nationality.">export controls</span> both models, requiring access to be restricted by nationality. Since there was no way to verify nationality in real time, Anthropic suspended access for ALL users — not just foreigners.</p>
+</div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">06/26/2026 — Partial reactivation of Mythos 5</h4>
+<p class="text-neutral-300 text-sm">The government approves Mythos 5’s reactivation for Glasswing partners in the US.</p>
+</div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">06/30/2026 — Export controls lifted</h4>
+<p class="text-neutral-300 text-sm">The official announcement clears the way for both models to return.</p>
+</div>
+<div class="relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">01/07/2026 — Global redeploy (today)</h4>
+<p class="text-neutral-300 text-sm">Fable 5 and Mythos 5 are returning globally on Claude Platform, Claude.ai, Claude Code, and Claude Cowork. AWS/GCP/Microsoft Foundry are still being reactivated.</p>
+</div>
+</div>
+<div class="bg-dark-700/50 border-l-4 border-emerald-500/50 rounded-r-lg p-4 mb-6 text-sm">
+<p class="text-neutral-300"><strong class="text-emerald-400">🆕 New here? Export control —</strong> a government rule that restricts access to a technology based on nationality. Without a way to check nationality in real time, the safest option for Anthropic was to suspend general access, not just access for those targeted by the rule.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-1-t3-p2">The real reason behind the suspension is an important nuance: researchers at <strong>Amazon</strong> reported a method for bypassing Fable 5's safeguards, getting it to identify software vulnerabilities and, in one case, generate code demonstrating how to exploit one.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Common misunderstanding</h4>
+<p class="text-neutral-300 text-sm">"Only Fable 5 could produce that exploit—which is why it was suspended; it's a risk unique to that model."</p>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What Anthropic’s own test showed</h4>
+<p class="text-neutral-300 text-sm">Much less capable models — Opus 4.8, GPT-5.5, Kimi K2.7, and even Haiku 4.5, Sonnet 4.6, Opus 4.6/4.7 — could reproduce the <strong>same</strong> exploit demonstration. The suspension was a regulatory precaution, not because Fable 5 was uniquely dangerous in this area.</p>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> The redeploy took 22 days because of export control, not because Fable 5 was uniquely risky—other models reproduced the same exploit.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">💰 Exact pricing and comparison</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> Think of MTok as “1 million token-words” on your monthly bill—and Fable 5 charges twice as much as Opus 4.8 for every million that passes through it, both for reading and writing.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t4-p1">Fable 5 is, without a doubt, the most expensive model in the catalog. The table below is the official price quote per <span class="termo" title="MTok = 1 million tokens, the standard billing unit for Anthropic’s API.">MTok</span> (input = what you send, output = what the model generates):</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">official pricing · platform.claude.com/docs/en/about-claude/pricing</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Claude Fable 5 / Mythos 5      input  $10.00 / MTok   output  $50.00 / MTok
+Claude Opus 4.8                input   $5.00 / MTok   output  $25.00 / MTok
+Claude Sonnet 5 (até 31/ago)   input   $1.00 / MTok   output   $5.00 / MTok
+Claude Haiku 4.5               input   $0.50 / MTok   output   $2.50 / MTok</pre>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-4 text-center"><h4 class="font-bold text-neutral-300 text-sm mb-1">Haiku 4.5</h4><div class="text-lg font-bold text-neutral-300">$0.50/$2.50</div></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-4 text-center"><h4 class="font-bold text-neutral-300 text-sm mb-1">Sonnet 5</h4><div class="text-lg font-bold text-neutral-300">$1/$5</div></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-4 text-center"><h4 class="font-bold text-neutral-300 text-sm mb-1">Opus 4.8</h4><div class="text-lg font-bold text-neutral-300">$5/$25</div></div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-4 text-center"><h4 class="font-bold text-emerald-400 text-sm mb-1">Fable 5</h4><div class="text-lg font-bold text-emerald-400">$10/$50</div></div>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Price ladder per MTok, from cheapest to most expensive: Haiku 4.5, Sonnet 5, Opus 4.8, and Claude Fable 5 at the top, costing twice as much as Opus 4.8" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m11s2-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m11s2-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m11s2-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m11s2-grid)" height="260" width="1000" x="0" y="0"></rect>
+<path d="M110,210 L310,170 L510,120 L710,60" fill="none" opacity="0.5" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.8"></path>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="100" x="60" y="190"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="110" y="214">Haiku 4.5</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="110" y="248">$0.50 / $2.50</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="100" x="260" y="150"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="310" y="174">Sonnet 5</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="310" y="208">$1 / $5</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="100" x="460" y="100"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="510" y="124">Opus 4.8</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="510" y="158">$5 / $25</text>
+<g filter="url(#m11s2-glow)"><rect fill="#0e2018" height="46" rx="11" stroke="url(#m11s2-grad)" stroke-width="2.5" width="130" x="660" y="40"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="725" y="65">Claude Fable 5</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="725" y="82">$10 / $50—twice as much as Opus</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-blue-400 mb-2">📚 Details worth knowing</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Batch API</strong> (asynchronous processing, 50% discount): Fable 5 drops to $5/$25 per MTok.</li>
+<li><strong>Without a long-context premium:</strong> The price per MTok stays the same even when using the full 1M-token context window.</li>
+</ul>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300 text-sm">For simple, high-volume tasks, consider Haiku 4.5 or Sonnet 5. Save Fable 5 for work that truly needs the extra capability—the higher price often pays off when it prevents rework and iteration.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> Fable 5 costs $10/$50 per MTok—exactly twice as much as Opus 4.8, the most expensive model in the catalog today.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🎁 The promotional window</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> is a generous sample of the store’s most expensive product, for a limited time, before you have to decide whether to pay full price to keep using it.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t5-p1">In today’s redeploy, Anthropic opened a promotional window—but it applies only to Claude subscribers, not API users. It’s worth understanding exactly where the line is drawn:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ This applies to</h4>
+<p class="text-neutral-300 text-sm">Plans <strong>Pro / Max / Team</strong> (and part of Enterprise): up to <strong>50% of the weekly usage limit</strong> in Fable 5, at no extra cost, up to <strong>July 7, 2026</strong>. After this date, additional usage starts consuming <span class="termo" title="Additional credits you purchase to keep using Claude beyond the amount included in your subscription plan.">usage credits</span>.</p>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ This does NOT affect</h4>
+<p class="text-neutral-300 text-sm">The price of <strong>API</strong> ($10/$50 per MTok) has never changed. Anyone using Fable 5 through the Claude API or Claude Platform has always paid—and still pays—the full price. There is no "API promotion" here.</p>
+</div>
+</div>
+<div class="bg-dark-700/50 border-l-4 border-emerald-500/50 rounded-r-lg p-4 mb-6 text-sm">
+<p class="text-neutral-300"><strong class="text-emerald-400">🆕 New here? Usage credits —</strong> credits you buy separately to keep using Claude after your plan’s weekly usage limit runs out. This is different from the API price per MTok.</p>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-blue-400 mb-2">📅 The date that matters</h3>
+<p class="text-neutral-300 text-sm">If you subscribe to Pro/Max/Team, use this week to really test Fable 5—the 50% discount on the weekly limit ends on <strong>July 7, 2026</strong>. After that, extra usage comes out of usage credits as usual (see support.claude.com about managing usage credits).</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> through July 7, Pro/Max/Team subscribers get a 50% discount on the Fable 5 weekly limit — the API has always charged (and still charges) the full price.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🗣️ What early adopters are saying</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> before the spec sheet, word of mouth from people who have actually tested it gives you the first real read on a new model.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t6-p1">In the first few days after the redeploy, some well-known early adopters in the development community shared their first impressions of Fable 5 for coding—it’s worth reading them with the right filter, explained at the end of this topic.</p>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-blue-400 mb-2">📚 Dan Shipper (Every)</h3>
+<p class="text-neutral-300 text-sm">No <span class="termo" title="A standardized test used to compare different models’ ability to perform the same task.">benchmark</span> the internal “Senior Engineer” at Every, Fable 5 scored <strong class="text-blue-400">91 out of 100</strong>, compared with Opus 4.8's 63 (the previous record). Shipper called the model <em>"warp drive for coding"</em>: it handles large tasks over hours, but isn’t the ideal choice for quick, low-cost tasks (source: every.to, "Vibe Check: Fable 5 Is the Best Coding Model in the World").</p>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">quote · Boris Cherny (Anthropic), via X</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"><span class="text-neutral-500">EN (oficial):</span> "the best model I have used for coding, by a wide margin"
+
+<span class="text-neutral-500">PT-BR (tradução):</span> "o melhor modelo que já usei para programar, por uma margem ampla"</pre>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Editorial caution note</h3>
+<p class="text-neutral-300 text-sm">The two citations above came from posts on X and an external blog— <strong>no</strong> from Anthropic’s official documentation. Treat them as enthusiastic, informative early adopter accounts, but not as officially confirmed facts from Anthropic.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> The first reports point to major coding gains—but these are early adopter impressions, not an official claim from Anthropic.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">The most capable and most expensive model</strong><span class="text-neutral-400"> — 1M tokens of context, up to 128k output, with no price premium for it.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Feels different</strong><span class="text-neutral-400"> — follows short instructions better, with more autonomy, vision, enterprise workflows, and debugging.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">The redeploy was regulatory, not exclusive to Fable 5</strong><span class="text-neutral-400"> — export control suspended general access; other models reproduced the same exploit.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Pricing: $10/$50 per MTok</strong><span class="text-neutral-400"> — exactly twice the price of Opus 4.8, the most expensive in the catalog.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Promotional period through July 7</strong><span class="text-neutral-400"> — only for Pro/Max/Team subscriptions; the API price never changed.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Early adopters report major gains in coding</strong><span class="text-neutral-400"> — Dan Shipper and Boris Cherny, but these are accounts, not official facts.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Next module:</h3><p class="text-neutral-300">1.2 — Give the why + don’t ask for reasoning.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-2.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+<p class="text-xs text-neutral-600 mt-2">Official sources: anthropic.com/news/redeploying-fable-5 · platform.claude.com/docs (introducing-claude-fable-5-and-claude-mythos-5, prompting-claude-fable-5, pricing) · every.to/vibe-check (early adopter report, unofficial)</p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

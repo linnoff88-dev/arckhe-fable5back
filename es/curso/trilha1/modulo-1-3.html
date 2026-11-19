@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>1.3 Prompting negativo + límites · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Ruta 1</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Migas de pan" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Ruta 1</a><span>/</span>
+<span class="text-emerald-400">Módulo 1.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧱 Negative prompting + límites</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Elimina el exceso que Fable 5 agrega por su cuenta y define por escrito dónde debe detenerse y preguntarte antes de actuar; los dos prompts oficiales de esta lección, listos para copiar.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.2</div><div class="text-xs text-neutral-400">Requisito previo</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 1.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. Por qué «no hagas X» funciona</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. El prompt oficial contra el ordenamiento innecesario</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Cuándo va más allá por su cuenta</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. El prompt oficial para definir límites</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Cuándo actuar sin preguntar</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. La analogía del pasante</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" data-inema-module="1-3" data-inema-track="1" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🎯 Por qué decir "no hagas X" funciona</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> le das una misión a un pasante talentoso y solo le dices qué hacer, nunca qué no hacer. Sin límites explícitos, llena los vacíos a su manera, y «a su manera» puede incluir refactorizar, agregar pruebas y crear validaciones que nadie pidió. El prompting negativo es la lista de límites que estableces antes de empezar.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t1-p1">Un LLM funciona haciendo predicciones, un <span class="termo" title="Fragmento más pequeño de texto que el modelo lee y predice, uno a la vez">token</span> a la vez, cuál es la continuación más probable del texto hasta ahora. Eso significa que no se detiene exactamente donde la tarea «termina»: continúa hasta que cree que la respuesta está <strong class="text-emerald-400">completa</strong> según su propio criterio. En <span class="termo" title="Nivel de capacidad de razonamiento configurado en la llamada a la API: low, medium, high, xhigh o max">effort</span> cuanto más alto, más generoso es este criterio de "completo": el modelo reúne más contexto y delibera más tiempo antes de responder.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t1-p2">Esto no es un fallo, sino un efecto secundario de ser <strong>capaz y cuidadoso</strong>. Fable 5, especialmente en tareas rutinarias con effort alto, puede decidir que la «respuesta completa» para corregir un bug incluye limpiar el código circundante, agregar un <span class="termo" title="Reestructurar código existente sin cambiar el comportamiento observable">refactor</span> o crear una capa de validación para un caso que nunca va a ocurrir. Nada de eso se pidió, pero tampoco se prohibió.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m13-t1-p3">Las instrucciones negativas resuelven esto de raíz: en lugar de dejar que el modelo adivine dónde detenerse, le dices explícitamente «no hagas X». Esto elimina la ambigüedad que, de manera predeterminada, resolvería en la dirección de «más completo», y te devuelve el control del alcance.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Dato técnico (documentación oficial sobre el esfuerzo)</h3>
+<p class="text-neutral-300 text-sm">"Effort is a behavioral signal, not a strict token budget. At lower effort levels, Claude will still think on sufficiently difficult problems, but it will think less than it would at higher effort levels for the same problem." — cuanto mayor sea el esfuerzo, más espacio tiene el modelo para "ir más allá"; y es precisamente ese espacio el que el negative prompting debe contener.</p>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: sin prompting negativo, la solicitud de corregir un bug se convierte en tres extras no solicitados; con prompting negativo, el resultado se limita al alcance solicitado" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="fb13a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="fb13a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="fb13a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="fb13a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#9ca3af"></path></marker>
+<marker id="fb13a-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="fb13a-ahg" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#fb13a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<line stroke="#4b5563" stroke-dasharray="6 6" stroke-width="2" x1="500" x2="500" y1="15" y2="245"></line>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="250" y="28">SIN prompting negativo</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="750" y="28">CON negative prompting</text>
+<rect fill="#1f2937" height="46" rx="10" stroke="#9ca3af" stroke-width="2" width="170" x="60" y="45"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="145" y="73">Corrige el bug X</text>
+<path d="M145,91 L145,120" fill="none" marker-end="url(#fb13a-ah)" opacity="0.6" stroke="#9ca3af" stroke-width="1.8"></path>
+<rect fill="#1f2937" height="40" rx="10" stroke="#9ca3af" stroke-width="2" width="170" x="60" y="120"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="145" y="145">effort alto</text>
+<path d="M230,130 C260,130 250,55 300,55" fill="none" marker-end="url(#fb13a-ahr)" opacity="0.6" stroke="#f87171" stroke-width="1.8"></path>
+<path d="M230,140 L300,140" fill="none" marker-end="url(#fb13a-ahr)" opacity="0.6" stroke="#f87171" stroke-width="1.8"></path>
+<path d="M230,150 C260,150 250,205 300,205" fill="none" marker-end="url(#fb13a-ahr)" opacity="0.6" stroke="#f87171" stroke-width="1.8"></path>
+<rect fill="#2a0f16" height="40" rx="9" stroke="#f87171" stroke-width="2" width="185" x="300" y="32"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="392" y="57">+ refactor no solicitado</text>
+<rect fill="#2a0f16" height="40" rx="9" stroke="#f87171" stroke-width="2" width="185" x="300" y="120"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="392" y="145">+ pruebas adicionales</text>
+<rect fill="#2a0f16" height="40" rx="9" stroke="#f87171" stroke-width="2" width="185" x="300" y="185"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="392" y="210">+ validación no solicitada</text>
+<rect fill="#0e2018" height="46" rx="10" stroke="#34d399" stroke-width="2" width="170" x="560" y="45"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="645" y="73">Corrige el bug X</text>
+<path d="M645,91 L645,120" fill="none" marker-end="url(#fb13a-ahg)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<rect fill="#0e2018" height="40" rx="10" stroke="#34d399" stroke-width="2" width="170" x="560" y="120"></rect>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="645" y="145">+ negative prompting</text>
+<path d="M730,140 L800,140" fill="none" marker-end="url(#fb13a-ahg)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<g filter="url(#fb13a-glow)"><rect fill="#0e2018" height="56" rx="12" stroke="url(#fb13a-grad)" stroke-width="2.5" width="150" x="800" y="112"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="875" y="136">Solo el bug</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="875" y="154">nada más</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2">Lectura del diagrama: la misma solicitud, con un nivel de esfuerzo alto, puede generar tres extras no solicitados (izquierda) o mantenerse dentro del alcance pedido si se especifica explícitamente qué no debe incluir (derecha).</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> el modelo predice el siguiente token hasta que cree que «terminó»; el prompting negativo define desde fuera dónde debe estar ese «terminó».</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🚫 El prompt oficial anti-tidying</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> esto no es teoría de un video, es un párrafo extraído de la propia documentación oficial de Anthropic para Fable 5. Pégalo directamente en tu CLAUDE.md o system prompt.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t2-p1">La documentación oficial <em>"Prompting Claude Fable 5"</em> describe exactamente el mecanismo del tema anterior, con las palabras de la propia Anthropic:</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<p class="text-neutral-300 text-sm italic">"On routine work at higher effort, Claude Fable 5 can gather context and deliberate beyond what the task needs… To prevent unrequested tidying or refactoring at higher effort:"</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t2-p2">Y a continuación, el bloque que la documentación recomienda pegar en el <span class="termo" title="Instrucción inicial que moldea el comportamiento del modelo durante toda la conversación">system prompt</span> o en el CLAUDE.md. Y el negative prompting oficial contra el "orden" (tidying) y los refactors no solicitados:</p>
+<div class="mb-3"><span class="text-emerald-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">impedir que Fable 5 agregue refactors, abstracciones, validaciones o manejo de errores para situaciones que no se solicitaron, en tareas rutinarias con effort alto.</span></div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">EN (oficial) · doc «Prompting Claude Fable 5» — prompting negativo</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Don't add features, refactor, or introduce abstractions beyond what the task requires. A bug fix doesn't need surrounding cleanup and a one-shot operation usually doesn't need a helper. Don't design for hypothetical future requirements: do the simplest thing that works well. Avoid premature abstraction and half-finished implementations. Don't add error handling, fallbacks, or validation for scenarios that cannot happen. Trust internal code and framework guarantees. Only validate at system boundaries (user input, external APIs). Don't use feature flags or backwards-compatibility shims when you can just change the code.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">PT-BR (traducción)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">No agregues funcionalidades, no refactorices ni introduzcas abstracciones más allá de lo que exige la tarea. Una corrección de errores no necesita una limpieza alrededor, y una operación puntual por lo general no necesita una función auxiliar. No diseñes para requisitos hipotéticos futuros: haz lo más sencillo que funcione bien. Evita la abstracción prematura y las implementaciones a medias. No agregues manejo de errores, fallbacks ni validaciones para situaciones que no pueden ocurrir. Confía en las garantías internas del código y del framework. Valida solo en los límites del sistema (entrada del usuario, APIs externas). No uses feature flags ni atajos de compatibilidad retroactiva cuando puedes simplemente cambiar el código.</pre>
+</div>
+<div class="mb-6 text-sm text-neutral-300"><span class="text-emerald-400 font-semibold">Cómo comprobar:</span> pega esto en tu CLAUDE.md o system prompt y observa, en las próximas sesiones, si el modelo deja de hacer refactorizaciones, abstracciones o validaciones no solicitadas en correcciones simples; pide una corrección puntual de un bug y comprueba si el diff se limita al archivo o función relevante.</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Sin el prompt</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>La corrección del bug viene acompañada de «limpieza» alrededor</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Aparecen funciones auxiliares para un solo uso</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Validación para casos que nunca ocurren</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Feature flag para algo que podía cambiarse sin más</span></li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Con el prompt</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Diff mínimo, solo lo necesario para el bug</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Sin abstracciones para «requisitos futuros»</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Validación solo en los límites reales del sistema</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Cambia el código directamente, sin shim de compatibilidad</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> el prompt oficial de Anthropic contra el tidying evita directamente en la fuente los refactors, las abstracciones y las validaciones que no se pidieron.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🌀 Cuando Fable 5 "va más allá" por sí solo</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> no es solo una refactorización de código. El mismo instinto de «ser útil más allá de lo solicitado» aparece en acciones fuera del código, como redactar un correo que nadie pidió o crear una red de seguridad por cuenta propia.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t3-p1">Dos ejemplos concretos ilustran bien el patrón. Ninguno de los dos es malicioso — ambos parten de una buena intención (ser cuidadoso, ser útil) que simplemente <strong class="text-emerald-400">excedió el alcance</strong> de lo que se pidió:</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+<span class="text-emerald-400 font-bold">✉️</span>
+</div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Redactar un correo que nadie pidió</h4>
+<p class="text-sm text-neutral-400 mb-3">Pediste investigar un problema con un proveedor</p>
+<p class="text-neutral-300 text-sm">Al terminar la investigación, el modelo decide que el siguiente paso «lógico» es comunicarse con el proveedor y ya deja listo un borrador de correo, sin que nadie se lo haya pedido. ¿Es útil? Tal vez. ¿Se lo pidieron? No.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+<span class="text-emerald-400 font-bold">🌿</span>
+</div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Crear un <span class="termo" title="Copia paralela del historial de git, creada solo por precaución, sin que nadie la pidiera">rama de respaldo</span> defensivo</h4>
+<p class="text-sm text-neutral-400 mb-3">Pediste refactorizar un módulo directamente en la rama principal</p>
+<p class="text-neutral-300 text-sm">Antes de empezar, el modelo crea una rama adicional «solo por seguridad», sin avisar y sin que se le haya indicado hacerlo. De nuevo: buena intención (no perder trabajo), pero una acción que cambia el estado del repositorio sin autorización explícita.</p>
+</div>
+</div>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m13-t3-p2">El patrón común: en ambos casos, el modelo decidió por su cuenta que una acción relacionada «formaba parte» de la tarea. Eso es precisamente lo que resuelven los dos prompts oficiales de esta clase: el anti-tidying (tema 2) recorta el exceso dentro del código, y el prompt de límites (tema 4) recorta el exceso fuera del alcance solicitado, incluidas las acciones que cambian el estado.</p>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> buena intención + alcance indefinido = acción relacionada no solicitada; la solución es definir el alcance por escrito.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🧱 El prompt oficial de límites (boundaries)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> hay una diferencia enorme entre "pensar en voz alta" con un colega y "pedirle que ejecute algo". El prompt de límites enseña al modelo a reconocer esa diferencia y a no confundir ambas cosas.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t4-p1">Esta es una técnica extra que no estaba en el video, pero aparece en la documentación oficial de Anthropic: <strong class="text-emerald-400">límites explícitos (boundaries)</strong>. Resuelve el mismo problema del tema 3, pero para el caso más serio: acciones que cambian el estado del sistema (eliminar, reiniciar, editar la configuración) sin confirmación.</p>
+<div class="mb-3"><span class="text-emerald-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">hacer que el modelo distinga entre «describir un problema / pensar en voz alta» y «pedir un cambio», y que nunca aplique una corrección ni ejecute un comando que cambie el estado sin esa distinción clara.</span></div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">EN (oficial) · doc «Prompting Claude Fable 5» — límites explícitos</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">When the user is describing a problem, asking a question, or thinking out loud rather than requesting a change, the deliverable is your assessment. Report your findings and stop. Don't apply a fix until they ask for one. Before running a command that changes system state (restarts, deletes, config edits), check that the evidence actually supports it.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">PT-BR (traducción)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Quando o usuario esta descrevendo um problema, fazendo uma pergunta ou pensando em voz alta em vez de pedir uma mudanca, o entregavel e a sua avaliacao. Reporte os achados e pare. Nao aplique uma correcao ate que peçam uma. Antes de rodar um comando que muda o estado do sistema (reiniciar, deletar, editar configuracao), confira se a evidencia realmente sustenta essa acao.</pre>
+</div>
+<div class="mb-6 text-sm text-neutral-300"><span class="text-emerald-400 font-semibold">Cómo comprobar:</span> pega esto en tu CLAUDE.md o system prompt y, después, describe un problema en voz alta («creo que esta query está lenta») sin pedir una acción; confirma que el modelo solo te da el diagnóstico y se detiene, en vez de ponerse a aplicar cambios.</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><span class="mr-2">⚠️</span> Sin este límite</h3>
+<p class="text-neutral-300 text-sm">Sin el prompt de límites, «creo que esta configuración está mal» puede interpretarse como «corrige esta configuración», y el modelo aplica el cambio antes de que confirmes que eso era lo que querías. En comandos que reinician servicios, eliminan datos o editan configuraciones, esa confusión cuesta caro.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> describir un problema no es pedir una corrección; el prompt de límites hace que el modelo respete esa diferencia.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⚖️ Cuándo SÍ debe actuar sin preguntar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> los límites no son sinónimo de parálisis. Un buen colega sabe distinguir entre "esto lo resuelvo por mi cuenta" y "esto tengo que confirmarlo antes". Fable 5 necesita el mismo criterio, expresado explícitamente.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t5-p1">El prompt de límites del tema 4 resuelve el caso «describiendo x pidiendo». Pero falta el otro lado de la moneda: una vez que él <em>ya tiene</em> ¿información suficiente para actuar, cuándo debe detenerse de todos modos para preguntar y cuándo simplemente debe seguir adelante? La documentación oficial de Anthropic (en la técnica contra la planificación excesiva, profundizada en el módulo 1.4) establece el criterio:</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<p class="text-neutral-300 text-sm italic">"Pause for the user only when the work genuinely requires them: a destructive or irreversible action, a real scope change, or input that only they can provide. If you hit one of these, ask and end the turn, rather than ending on a promise."</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m13-t5-p2">Traducido a un criterio práctico: <strong class="text-emerald-400">destructivo o irreversible</strong> (eliminar, sobrescribir, force push), <strong class="text-emerald-400">cambio real de alcance</strong> (el pedido original era X, y el siguiente paso obvio sería Y — algo más grande o diferente) o <strong class="text-emerald-400">información que solo tú tienes</strong> (una decisión de negocio, una preferencia personal) son los tres motivos legítimos para pausar. Fuera de eso, es trabajo rutinario, y el trabajo rutinario se hace, no se pregunta.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Diagrama de flujo de decisión: si la acción es destructiva, irreversible o cambia el alcance real, pausa y pregunta; de lo contrario, actúa directamente y verifica las evidencias antes" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<filter height="180%" id="fb13b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="fb13b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="fb13b-ahg" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="fb13b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="fb13b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#fb13b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<polygon fill="#1f2937" points="230,40 380,120 230,200 80,120" stroke="#9ca3af" stroke-width="2"></polygon>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="230" y="110">Destructivo, irreversible</text>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="230" y="128">¿o cambia el alcance?</text>
+<path d="M380,120 L520,70" fill="none" marker-end="url(#fb13b-ahr)" opacity="0.6" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="450" y="65">sí</text>
+<g filter="url(#fb13b-glow)"><rect fill="#2a0f16" height="70" rx="14" stroke="#f43f5e" stroke-width="2.5" width="220" x="520" y="35"></rect></g>
+<text fill="#fb7185" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="630" y="65">Pausar y preguntar</text>
+<text fill="#fecdd3" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="630" y="85">termina el turno con la pregunta</text>
+<path d="M380,120 L520,170" fill="none" marker-end="url(#fb13b-ahg)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="450" y="185">no</text>
+<g filter="url(#fb13b-glow)"><rect fill="#0e2018" height="70" rx="14" stroke="#34d399" stroke-width="2.5" width="220" x="520" y="135"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="630" y="165">Actuar directamente</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="630" y="185">trabajo rutinario, sin pausas</text>
+<rect fill="#0e1b26" height="70" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="800" y="85"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="875" y="112">Evidencia</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="875" y="130">comprueba antes de actuar</text>
+<path d="M740,70 C780,70 780,95 800,105" fill="none" marker-end="url(#fb13b-ahc)" opacity="0.5" stroke="#38bdf8" stroke-width="1.8"></path>
+<path d="M740,170 C780,170 780,145 800,135" fill="none" marker-end="url(#fb13b-ahc)" opacity="0.5" stroke="#38bdf8" stroke-width="1.8"></path>
+</svg>
+<p class="text-xs text-neutral-500 mt-2">Lectura del diagrama: pausa solo cuando la acción sea destructiva, irreversible o cambie el alcance real; durante el resto del proceso, el modelo comprueba la evidencia y actúa.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Pausa y pregunta</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Eliminar una tabla, hacer un force push, sobrescribir un archivo</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Que «Corregir el error» se convierta en «reescribir el módulo»</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Decisión que solo tú puedes tomar (precio, plazo)</span></li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Actúa directamente</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Ejecutar las pruebas, dar formato y corregir el bug reportado</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Investigar e informar los hallazgos sin aplicar cambios</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Seguir una convención ya establecida en el proyecto</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> solo pausa por una acción destructiva, irreversible o un cambio real de alcance; lo demás es rutina y se hace directamente.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎓 La analogía del video: trátalo como a un pasante</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> esta es la analogía que se usa en el video (no es una cita oficial de Anthropic, sino una forma de organizar el razonamiento): escribe el prompt como si se lo explicaras a un pasante en su primer día.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t6-p1">Un pasante en su primer día no tiene el <strong>criterio</strong> que un colega sénior ya construyó. No sabe por instinto que "corregir este bug" no significa "reescribir todo el módulo", ni que "investigar este problema" significa "enviar ya el correo al cliente". Por eso, con un nuevo pasante, dices explícitamente qué <strong class="text-emerald-400">no</strong> hacer, no porque sea malo, sino porque todavía no tiene suficiente contexto para adivinar correctamente.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m13-t6-p2">Y ese es exactamente el papel del prompting negativo y de los límites explícitos en esta lección: sustituyen el criterio que el modelo aún no ha demostrado tener en tu contexto específico. No se trata de que Fable 5 sea «tonta», sino de que no sabe, si no se lo dices, dónde están los límites de tu proyecto.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m13-t6-p3">La parte interesante es cómo esto <strong>evoluciona</strong>. Con un pasante al que ya viste trabajar durante meses, relajas las instrucciones explícitas: ya interiorizó el estándar. Aquí pasa lo mismo: a medida que acumulas sesiones con Fable 5 en el mismo proyecto (y registras lo que funcionó, tema del módulo extra 1.7 sobre memoria), necesitas repetir menos instrucciones negativas explícitas cada vez. La confianza se construye con un historial, no se da por sentada desde el principio.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">🆕 Pasante nuevo</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>Instrucciones negativas explícitas y detalladas</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>Límites escritos con todas las letras, sin dar nada por sentado</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>Revisión de cada diff antes de confiar</span></li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">🤝 Colega de confianza</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">•</span><span>Instrucciones más cortas, solo lo que cambió</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">•</span><span>Límites ya registrados en CLAUDE.md/memoria</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">•</span><span>Más autonomía en el trabajo rutinario</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> escríbele al modelo como al pasante de hoy, pero relaja las instrucciones a medida que crece el historial de confianza.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Las instrucciones negativas recortan el exceso</strong><span class="text-neutral-400"> — decir "no hagas X" resuelve la ambigüedad sobre dónde el modelo cree que la respuesta está "completa".</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Dos prompts oficiales listos para usar</strong><span class="text-neutral-400"> — anti-tidying (tema 2) y límites explícitos (tema 4), directamente de la doc "Prompting Claude Fable 5".</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Criterio para pausar vs. actuar</strong><span class="text-neutral-400"> — si algo es destructivo, irreversible o supone un cambio real de alcance, pausa; lo demás es rutina y se hace directamente.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">La confianza evoluciona</strong><span class="text-neutral-400"> — trátalo como a un pasante al principio y relaja las instrucciones a medida que acumule aciertos en el historial.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-emerald-400 mb-2">Próximo módulo:</h3>
+<p class="text-neutral-300">1.4 — Déjalo actuar + demuestra que terminó: cómo evitar la planificación excesiva y verificar la evidencia antes de informar el progreso.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-1-2.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-4.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+<p class="mt-2 text-xs text-neutral-600">Prompts oficiales citados en esta página: doc "Prompting Claude Fable 5" — platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5 · doc "Effort" — platform.claude.com/docs/en/build-with-claude/effort</p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

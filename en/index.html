@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>Start · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<!-- ANTI-FOUC: script bloqueante, SEPARADO, ANTES do Tailwind. Le inema.prefs e aplica
+       .dark + data-theme + variaveis de leitura ANTES do primeiro paint. Default dark no erro. -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k];
+          }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro';
+          else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark');
+      else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr);
+      else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style;
+      var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system'
+        ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura'
+          ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif'
+          : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = {
+        emerald: [152, 76, 45], blue: [217, 91, 60], purple: [258, 90, 66],
+        amber: [38, 92, 50], teal: [174, 72, 41], rose: [350, 89, 60]
+      };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0] + '');
+      s.setProperty('--accent-s', a[1] + '%');
+      s.setProperty('--accent-l', a[2] + '%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) {
+      try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {}
+    }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO, identico byte-a-byte em toda pagina) -->
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+
+    /* Light mode: base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode: emerald (trilha unica) */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+
+    /* Light mode: blue (box de dados/pricing) */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode: red (grid "o que nao e") */
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+
+    /* Light mode: remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode: nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    /* Dark mode: bordas e linhas divisorias suavizadas */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG: adaptar ao light mode */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    /* Pulse animation para os nos-agente do SVG */
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s} .wf-a:nth-child(6){animation-delay:1.25s}
+    }
+  </style>
+<link href="https://inematds.github.io/fable5back/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../es/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="./index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="./curso/trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Learning Path 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="./curso/trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>My journey</span>
+<span aria-hidden="true" class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span>
+</button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors" data-inema-appearance-toggle="[data-inema-appearance]" type="button">
+<span aria-hidden="true">◑</span><span class="hidden sm:inline">Appearance</span>
+</button>
+<div class="inema-appearance-pop" data-inema-appearance="">
+<div aria-label="Theme" class="inema-segment" role="group">
+<button data-inema-set-theme="inema-dark">Dark</button>
+<button data-inema-set-theme="claro">Clear</button>
+<button data-inema-set-theme="sepia">Sepia</button>
+<button data-inema-set-theme="foco">Focus</button>
+<button data-inema-set-theme="contraste">High contrast</button>
+</div>
+<div aria-label="Source" class="inema-segment" role="group">
+<button data-inema-set-font="inter">Inter</button>
+<button data-inema-set-font="system">System</button>
+<button data-inema-set-font="leitura">Reading</button>
+</div>
+<div aria-label="Text length" class="inema-segment" role="group">
+<button data-inema-set-fontscale="100">A</button>
+<button data-inema-set-fontscale="112">A+</button>
+<button data-inema-set-fontscale="125">A++</button>
+</div>
+<div aria-label="Line width" class="inema-segment" role="group">
+<button data-inema-set-linewidth="60">Narrow</button>
+<button data-inema-set-linewidth="68">Medium</button>
+<button data-inema-set-linewidth="75">Wide</button>
+</div>
+<div aria-label="Subtext" class="inema-segment" role="group">
+<button data-inema-set-leading="1.45">Compact</button>
+<button data-inema-set-leading="1.7">Comfortable</button>
+</div>
+<div aria-label="Accent color" class="inema-accent-grid" role="group">
+<button data-inema-set-accent="emerald" title="Emerald"></button>
+<button data-inema-set-accent="blue" title="Blue"></button>
+<button data-inema-set-accent="purple" title="Purple"></button>
+<button data-inema-set-accent="amber" title="Amber"></button>
+<button data-inema-set-accent="teal" title="Teal"></button>
+<button data-inema-set-accent="rose" title="Pink"></button>
+</div>
+</div>
+</div>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- HERO -->
+<header class="bg-gradient-to-br from-emerald-900/20 via-dark-900 to-dark-900 py-16 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<div class="rounded-2xl overflow-hidden border border-dark-600 mb-8 max-w-4xl mx-auto">
+<img alt="Banner: Fable 5 Real Strategies — next-gen reasoning, real results, with panels for memory, agents, code, and workflow." class="w-full h-auto" height="941" src="../assets/img/real.png" width="1672"/>
+</div>
+<span class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4 border border-primary/30">COURSE · PROMPT ENGINEERING</span>
+<h1 class="text-4xl sm:text-5xl font-bold mb-4">Prompting Claude Fable 5</h1>
+<p class="text-lg text-neutral-300 max-w-3xl mx-auto mb-2">How to get the most out of Anthropic’s strongest (and most expensive) model.</p>
+<p class="text-neutral-400 max-w-3xl mx-auto mb-8">7 practical modules with the most useful prompting techniques for Fable 5 — drawn from a video lesson and verified line by line against Anthropic's official documentation. Without making up numbers or capabilities that the docs don't confirm.</p>
+<!-- Hero SVG futurista (fan-out): prompt comum -> 6 tecnicas -> Fable 5 no auge -->
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden max-w-4xl mx-auto">
+<svg aria-label="A typical prompt goes through six Fable 5 prompting techniques and converges on a result: fewer wasted tokens and more first-try accuracy" class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="lh-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="lh-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="lh-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="lh-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="lh-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#lh-grid)" height="300" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8">
+<path d="M220,150 C320,150 340,31 460,31" marker-end="url(#lh-ah)"></path>
+<path d="M220,150 C320,150 340,77 460,77" marker-end="url(#lh-ah)"></path>
+<path d="M220,150 C320,150 340,123 460,123" marker-end="url(#lh-ah)"></path>
+<path d="M220,150 C320,150 340,169 460,169" marker-end="url(#lh-ah)"></path>
+<path d="M220,150 C320,150 340,215 460,215" marker-end="url(#lh-ah)"></path>
+<path d="M220,150 C320,150 340,261 460,261" marker-end="url(#lh-ah)"></path>
+</g>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-width="1.8">
+<path d="M640,31  C720,31 730,150 800,150" marker-end="url(#lh-ahc)"></path>
+<path d="M640,77  C720,77 730,150 800,150" marker-end="url(#lh-ahc)"></path>
+<path d="M640,123 C720,123 730,150 800,150" marker-end="url(#lh-ahc)"></path>
+<path d="M640,169 C720,169 730,150 800,150" marker-end="url(#lh-ahc)"></path>
+<path d="M640,215 C720,215 730,150 800,150" marker-end="url(#lh-ahc)"></path>
+<path d="M640,261 C720,261 730,150 800,150" marker-end="url(#lh-ahc)"></path>
+</g>
+<g filter="url(#lh-glow)"><rect fill="#0e2018" height="64" rx="14" stroke="url(#lh-grad)" stroke-width="2.5" width="180" x="40" y="118"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="130" y="144">Common prompt</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="130" y="164">before the course</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="14"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="35">Context + why</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="81">Negative prompting</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="106"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="127">Decisive action</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="152"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="173">Proof of completion</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="198"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="219">Say less</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="244"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="265">Effort + security</text></g>
+</g>
+<g filter="url(#lh-glow)"><rect fill="#0e2018" height="64" rx="14" stroke="url(#lh-grad)" stroke-width="2.5" width="160" x="800" y="118"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="880" y="144">Fable 5 at its peak</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="880" y="164">fewer wasted tokens</text>
+</svg>
+</div>
+<!-- Stats row -->
+<div class="flex flex-wrap justify-center gap-4 mb-8 max-w-3xl mx-auto">
+<div class="bg-dark-800/50 rounded-lg px-4 py-2 border border-dark-600 text-center"><span class="block text-2xl font-bold text-emerald-400">2</span><span class="text-xs text-neutral-400">tracks</span></div>
+<div class="bg-dark-800/50 rounded-lg px-4 py-2 border border-dark-600 text-center"><span class="block text-2xl font-bold text-emerald-400">14</span><span class="text-xs text-neutral-400">modules</span></div>
+<div class="bg-dark-800/50 rounded-lg px-4 py-2 border border-dark-600 text-center"><span class="block text-2xl font-bold text-emerald-400">84</span><span class="text-xs text-neutral-400">topics</span></div>
+<div class="bg-dark-800/50 rounded-lg px-4 py-2 border border-dark-600 text-center"><span class="block text-2xl font-bold text-emerald-400">~8h30</span><span class="text-xs text-neutral-400">of content</span></div>
+<div class="bg-dark-800/50 rounded-lg px-4 py-2 border border-dark-600 text-center"><span class="block text-2xl font-bold text-emerald-400">Intermed.</span><span class="text-xs text-neutral-400">level</span></div>
+</div>
+<!-- Progresso + CTA -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-center gap-4 max-w-3xl mx-auto">
+<div aria-label="Course progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3 bg-dark-800/50 rounded-lg px-4 py-3 border border-dark-600" data-inema-meter="curso" role="progressbar">
+<span class="text-sm text-neutral-400">Your progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 84</span>
+</div>
+<button class="inline-flex items-center justify-start gap-2 px-5 py-3 rounded-lg bg-primary/10 border border-primary/30 text-primary font-semibold hover:bg-primary/20 transition-colors" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span> Continue where I left off</button>
+<a class="inline-flex items-center justify-start gap-2 px-5 py-3 rounded-lg bg-dark-800 border border-dark-600 text-neutral-200 font-semibold hover:border-emerald-500/40 hover:text-emerald-400 transition-colors" download="" href="../assets/docs/prompting-fable-5-lesson-pt.pdf"><span aria-hidden="true">📄</span> Download the original lesson (PDF)</a>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT -->
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="conteudo">
+<!-- O QUE E -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-4">What this course is</h2>
+<p class="text-neutral-300 mb-4 leading-relaxed max-w-3xl">Claude Fable 5 is the strongest—and most expensive—model in Anthropic’s current lineup. It became available globally again on July 1, 2026, after a temporary suspension related to U.S. government export controls. This course teaches you to <strong class="text-emerald-400">prompt this specific model well</strong>, not using Claude in general.</p>
+<p class="text-neutral-400 mb-8 max-w-3xl">The content cross-checks a video lesson with 6 practical techniques against Anthropic’s official documentation, citing the official text whenever there’s a verifiable citation — and clearly marking when something is general prompt engineering practice, not a literal quote from the Fable 5 docs.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-8">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">💰</span> Official pricing (platform.claude.com/docs/pricing)</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead>
+<tr class="text-neutral-400 border-b border-dark-600">
+<th class="py-2 pr-4 font-medium">Model</th>
+<th class="py-2 pr-4 font-medium">Input</th>
+<th class="py-2 pr-4 font-medium">Cache hit</th>
+<th class="py-2 font-medium">Output</th>
+</tr>
+</thead>
+<tbody class="text-neutral-300">
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4 font-semibold text-blue-400">Claude Fable 5 / Claude Mythos 5</td>
+<td class="py-2 pr-4">$10/MTok</td>
+<td class="py-2 pr-4">$1/MTok</td>
+<td class="py-2">$50/MTok</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4">Claude Opus 4.8</td>
+<td class="py-2 pr-4">$5/MTok</td>
+<td class="py-2 pr-4">—</td>
+<td class="py-2">$25/MTok</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4">Claude Sonnet 5 (through Aug 31, 2026)</td>
+<td class="py-2 pr-4">$1/MTok</td>
+<td class="py-2 pr-4">—</td>
+<td class="py-2">$5/MTok</td>
+</tr>
+<tr>
+<td class="py-2 pr-4">Claude Haiku 4.5</td>
+<td class="py-2 pr-4">$0.50/MTok</td>
+<td class="py-2 pr-4">—</td>
+<td class="py-2">$2.50/MTok</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-xs text-neutral-500 mt-4">Fable 5 costs exactly twice as much as Opus 4.8 (input and output)—the most expensive in the catalog. Batch API (50% off) brings Fable 5 down to $5/$25 per MTok. For context: a 1M-token window by default, with no “premium” for long context.</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-8">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🗓️</span> Quick context: why this course now</h3>
+<p class="text-neutral-300 text-sm leading-relaxed">Fable 5 and Mythos 5 launched on June 9, 2026. On June 12, the U.S. government imposed export controls on both models, and because nationality couldn’t be verified in real time, Anthropic suspended access for ALL users. The real reason: Amazon researchers reported a way to bypass Fable 5’s safeguards—but Anthropic’s own test confirmed that much less capable models (Opus 4.8, GPT-5.5, Kimi K2.7, and even Haiku 4.5, Sonnet 4.6, and Opus 4.6/4.7) could produce the same exploit demonstration. This wasn’t a capability unique to Fable 5—the suspension was a regulatory precaution. On July 1, 2026 (today), both models are returning globally.</p>
+</div>
+<h3 class="text-lg font-semibold mb-4">Capabilities officially highlighted (vs. Opus 4.8)</h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-3">
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🕐</div><div class="text-xs text-neutral-400">Long-horizon autonomy</div></div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🎯</div><div class="text-xs text-neutral-400">Getting it right on the first try in complex systems</div></div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">👁️</div><div class="text-xs text-neutral-400">Vision: reads dense technical images</div></div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🐛</div><div class="text-xs text-neutral-400">Bug recall higher than Opus 4.8</div></div>
+</div>
+<p class="text-xs text-neutral-500 max-w-3xl">Source: official “Introducing Claude Fable 5” doc, comparing it with Opus 4.8. Early adopter reports (unofficial): Dan Shipper/Every scored it 91/100 on the “Senior Engineer” benchmark (compared with Opus 4.8’s 63); Boris Cherny (Anthropic) publicly called it “the best model I’ve ever used for code, by a wide margin.”</p>
+</section>
+<!-- COMO EU DECIDO QUAL MODELO USAR -->
+<section class="mb-16">
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 max-w-3xl mx-auto">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center justify-center"><span class="mr-2">💡</span> How I decide which model to use</h3>
+<p class="text-neutral-300 text-sm leading-relaxed text-center">This corresponds to how I manage the process day to day. I use the <strong class="text-neutral-100">Opus</strong> for the architecture stage, the <strong class="text-neutral-100">Sonnet</strong> when the task is well defined, and <strong class="text-neutral-100">Fable</strong> when the task is complex and needs its own investigation cycle. The calling feature for <strong class="text-primary">OpusPlan</strong> is underrated: most people never use it explicitly, then wonder why Opus doesn’t switch over automatically.</p>
+</div>
+</section>
+<!-- COMO FUNCIONA -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-4">How the course works</h2>
+<p class="text-neutral-300 mb-6 max-w-3xl">2 tracks, 14 modules, 84 topics. Track 1: the 6 techniques from a video lesson, each cross-referenced with Anthropic’s official documentation, plus a bonus module with extra tricks found only in the docs. Track 2: 12 practical tips for using Fable 5 as a work agent — the right task, depth, limits, verification, subagents, memory, and loops — plus a bonus module with the master prompt.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What this course covers</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>The 6 prompting techniques from the lesson, each paired with an official citation when available</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Effort levels (max / xhigh / high / medium / low) and when to use each</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>The 4 security refusal categories and ways to configure fallback to Opus 4.8</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Official extras: subagents, memory system, and the send_to_user tool</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ What this course is NOT</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>This isn’t about the geopolitical export control controversy—that’s context for one paragraph, not the central topic</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>This isn’t a generic “how to use Claude” course—it’s specifically about prompting for Fable 5</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Don’t invent numbers or capabilities beyond what Anthropic has documented</span></li>
+</ul>
+</div>
+</div>
+</section>
+<!-- TRILHA 1 — Prompting Claude Fable 5 (Emerald) -->
+<section class="mb-12">
+<div class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/40 p-6 sm:p-8 transition-all">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">TRACK 1</span>
+<span class="text-xs text-neutral-500 px-2 py-0.5 rounded bg-dark-700">Intermediate</span>
+</div>
+<h2 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">📖 Prompting Claude Fable 5</h2>
+<p class="text-neutral-400 mb-6 max-w-2xl">Context, official prompting techniques, effort levels, safety routing, and documentation extras—all to get the most out of Anthropic’s strongest model.</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-1.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.1</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Fable 5: context and window of opportunity</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-2.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.2</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Give the why + don’t ask for reasoning</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-3.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.3</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Negative prompting + boundaries</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-4.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.4</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Let it act + prove it’s finished</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-5.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.5</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Say less, not more</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-6.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.6</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Effort and security routing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod sm:col-span-2 lg:col-span-1" href="curso/trilha1/modulo-1-7.html">
+<span class="text-emerald-400 font-mono text-sm font-bold">1.7</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Bonus: subagents, memory, and send_to_user</span>
+</a>
+</div>
+<div class="flex flex-wrap items-center gap-6 mb-4">
+<div class="text-center"><span class="block text-lg font-bold text-emerald-400">7</span><span class="text-xs text-neutral-500">modules</span></div>
+<div class="text-center"><span class="block text-lg font-bold text-emerald-400">42</span><span class="text-xs text-neutral-500">topics</span></div>
+<div class="text-center"><span class="block text-lg font-bold text-emerald-400">~4h30</span><span class="text-xs text-neutral-500">duration</span></div>
+</div>
+<a class="inline-flex items-center justify-start gap-2 px-5 py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold hover:bg-emerald-500/20 transition-colors text-sm" href="curso/trilha1/index.html">Start Track 1 <span class="group-hover:translate-x-1 transition-transform">→</span></a>
+</div>
+</section>
+<!-- TRILHA 2 — Fable 5 como Agente de Trabalho (Blue) -->
+<section class="mb-12">
+<div class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/40 p-6 sm:p-8 transition-all">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="text-blue-400 text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30">TRACK 2</span>
+<span class="text-xs text-neutral-500 px-2 py-0.5 rounded bg-dark-700">Intermediate</span>
+</div>
+<h2 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🧠 Fable 5 as a Work Agent</h2>
+<p class="text-neutral-400 mb-6 max-w-2xl">From one-off answers to a work system: 12 practical tips for using Fable 5 as a senior agent—choosing the right task, depth, limits, verification, subagents, memory, and loops—plus a bonus module with the master prompt.</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-1.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.1</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Choose the right task + explain why</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-2.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.2</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Control the depth + set limits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-3.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.3</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Real verification + specialized subagents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-4.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.4</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Project memory + continue until complete</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-5.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.5</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Vision for interfaces + defensive security</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-6.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.6</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Loops with verification + external memory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod sm:col-span-2 lg:col-span-1" href="curso/trilha2/modulo-2-7.html">
+<span class="text-blue-400 font-mono text-sm font-bold">2.7</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Bonus: the master prompt</span>
+</a>
+</div>
+<div class="flex flex-wrap items-center gap-6 mb-4">
+<div class="text-center"><span class="block text-lg font-bold text-blue-400">7</span><span class="text-xs text-neutral-500">modules</span></div>
+<div class="text-center"><span class="block text-lg font-bold text-blue-400">42</span><span class="text-xs text-neutral-500">topics</span></div>
+<div class="text-center"><span class="block text-lg font-bold text-blue-400">~4h</span><span class="text-xs text-neutral-500">duration</span></div>
+</div>
+<a class="inline-flex items-center justify-start gap-2 px-5 py-2.5 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 font-semibold hover:bg-blue-500/20 transition-colors text-sm" href="curso/trilha2/index.html">Start Track 2 <span class="group-hover:translate-x-1 transition-transform">→</span></a>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- V1 core functions -->
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+  </script>
+<!-- learn.js + INEMA.init() -->
+<script src="../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') {
+      window.INEMA.init();
+    }
+  </script>
+</body>
+</html>

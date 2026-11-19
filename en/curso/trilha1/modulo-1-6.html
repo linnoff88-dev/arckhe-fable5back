@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>Effort and security routing · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function(){try{var html=document.documentElement;var DEF={theme:'inema-dark',font:'inter',fontScale:100,lineWidth:68,leading:1.7,accent:'emerald'};function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}var p=clone(DEF);try{var raw=localStorage.getItem('inema.prefs');if(raw){var parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'){for(var k in DEF)if(parsed[k]!=null)p[k]=parsed[k];}}else{var legacy=localStorage.getItem('theme');if(legacy==='light')p.theme='claro';else if(legacy==='dark')p.theme='inema-dark';}}catch(e){p=clone(DEF);}var THEMES={'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'}};var t=THEMES[p.theme]||THEMES['inema-dark'];if(t.dark===true)html.classList.add('dark');else if(t.dark===false)html.classList.remove('dark');if(t.attr)html.setAttribute('data-theme',t.attr);else html.removeAttribute('data-theme');html.style.colorScheme=(t.cs?t.cs:(html.classList.contains('dark')?'dark':'light'));html.setAttribute('data-font',p.font||'inter');html.setAttribute('data-accent',p.accent||'emerald');var s=html.style,scale=(+p.fontScale||100);s.setProperty('--inema-font-scale',(scale/100).toString());s.setProperty('font-size',scale+'%');s.setProperty('--measure',(+p.lineWidth||68)+'ch');s.setProperty('--lh-body',(+p.leading||1.7).toString());}catch(err){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}catch(e){}}})()
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body{font-family:'Inter',sans-serif}.dark body{background-color:#111827}[id^="topico-"],[id^="modulo-"]{scroll-margin-top:5rem}.termo{border-bottom:1px dashed #34d399;cursor:help;font-weight:600;color:#6ee7b7}html:not(.dark) .termo{color:#047857;border-color:#059669}.copybox pre{white-space:pre-wrap;word-break:break-word}
+    html:not(.dark) body{background-color:#f8fafc}html:not(.dark) .bg-dark-900{background-color:#fff}html:not(.dark) .bg-dark-800{background-color:#f9fafb}html:not(.dark) .bg-dark-700{background-color:#f3f4f6}html:not(.dark) .bg-dark-600{background-color:#e5e7eb}html:not(.dark) .text-neutral-100{color:#111827}html:not(.dark) .text-neutral-300{color:#4b5563}html:not(.dark) .text-neutral-400{color:#6b7280}html:not(.dark) .text-neutral-500{color:#9ca3af}html:not(.dark) .border-dark-600{border-color:#d1d5db}html:not(.dark) .border-dark-700{border-color:#e5e7eb}html:not(.dark) .text-emerald-400{color:#059669}html:not(.dark) .bg-emerald-500\/20{background-color:rgba(5,150,105,0.12)}html:not(.dark) .bg-emerald-500\/10{background-color:rgba(5,150,105,0.08)}html:not(.dark) .bg-emerald-900\/20{background-color:rgba(5,150,105,0.08)}html:not(.dark) .border-emerald-500\/30{border-color:rgba(5,150,105,0.25)}html:not(.dark) .hover\:bg-emerald-500\/30:hover{background-color:rgba(5,150,105,0.18)}html:not(.dark) .hover\:text-emerald-400:hover{color:#059669}html:not(.dark) [class*="bg-gradient-to"]{background-image:none!important}html:not(.dark) .text-primary{color:#a16207}html:not(.dark) .bg-primary\/10{background-color:rgba(161,98,7,0.08)}html:not(.dark) .border-primary\/30{border-color:rgba(161,98,7,0.25)}html:not(.dark) .text-sky-400{color:#0369a1}html:not(.dark) .text-yellow-400{color:#a16207}html:not(.dark) .hover\:text-sky-300:hover{color:#0284c7}html:not(.dark) .text-red-400{color:#b91c1c}html:not(.dark) .text-blue-400{color:#2563eb}html:not(.dark) .bg-blue-900\/20{background-color:rgba(37,99,235,0.08)}html:not(.dark) .border-blue-500\/30{border-color:rgba(37,99,235,0.25)}html:not(.dark) .bg-blue-500\/20{background-color: rgba(37,99,235,0.12);}html:not(.dark) .bg-blue-500\/10{background-color: rgba(37,99,235,0.08);}html:not(.dark) .hover\:bg-blue-500\/30:hover{background-color: rgba(37,99,235,0.18);}html:not(.dark) .hover\:bg-blue-500\/10:hover{background-color: rgba(37,99,235,0.12);}html:not(.dark) .hover\:text-blue-400:hover{color: #2563eb;}html:not(.dark) .group:hover .group-hover\:text-blue-400{color: #2563eb;}html:not(.dark) .bg-red-900\/20{background-color:rgba(185,28,28,0.07)}html:not(.dark) .border-red-500\/30{border-color:rgba(185,28,28,0.25)}html:not(.dark) .bg-dark-900\/95{background-color:rgba(255,255,255,0.95)}
+    .dark .border-dark-600{border-color:#374151}.dark .divide-dark-600>:not([hidden])~:not([hidden]){border-color:#374151}html:not(.dark) svg[role="img"]{filter:saturate(0.82) brightness(0.96)}
+    .lang-tab{font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:9999px}
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html">
+<span class="sm:hidden">T1</span>
+<span class="hidden sm:inline">Learning Path 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>My journey</span>
+<span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Breadcrumb" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Learning Path 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.6</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.6</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">⚙️ Effort and safety routing</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Fable 5’s 5 effort levels (and when to use each), and how safety refusals work behind the scenes— <code>stop_reason</code>, not an error—and the 3 ways to configure a fallback to Opus 4.8, with real cost figures to make a decision without guessing.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.1</div><div class="text-xs text-neutral-400">Prereq</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.6 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-inema-module="1-6" data-inema-track="1" id="modulo-1-6">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. The 5 effort levels</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Configure via output_config</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. The right default for Fable 5</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Refusal is HTTP 200, not an error</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Billing and the 3 fallback routes</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. When low effort pays off</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🪜 The 5 effort levels</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> <span class="termo" title="An API output parameter that controls how much Claude 'thinks' before responding">effort</span> it's not a "dumb/smart" button — it's a control for how much reasoning the model devotes to a problem before answering. Five levels, from fastest to unlimited.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t1-p1">Claude Fable 5 exposes five effort levels that you can configure per call: <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code> e <code>max</code>. Each level is a behavioral signal—not a hard token limit—that tells the model how much it's worth deliberating before acting or responding.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t1-p2">This is different from simply truncating the response: in <code>low</code>, Fable 5 still thinks enough for genuinely difficult problems—it just thinks <em>less</em> than it would think about the same problem in <code>high</code> or <code>xhigh</code>. The right level depends on the type of task, not on "how much you trust the model".</p>
+<div class="rounded-xl border border-dark-600 overflow-x-auto mb-6">
+<table class="w-full text-sm">
+<thead>
+<tr class="bg-dark-800 border-b border-dark-600 text-left">
+<th class="px-4 py-3 font-semibold text-emerald-400">Level</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Official description</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Typical use case</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-600">
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">low</td>
+<td class="px-4 py-3 text-neutral-300">More efficient, significant savings</td>
+<td class="px-4 py-3 text-neutral-400">Simple tasks that need speed/minimal cost, e.g. subagents</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">medium</td>
+<td class="px-4 py-3 text-neutral-300">Balance, moderate savings</td>
+<td class="px-4 py-3 text-neutral-400">Agentic tasks that need a balance of speed/cost/performance</td>
+</tr>
+<tr class="bg-emerald-500/10">
+<td class="px-4 py-3 font-mono font-semibold text-emerald-400">high <span class="text-xs font-sans font-normal text-emerald-400/80">(default)</span></td>
+<td class="px-4 py-3 text-neutral-200">High capability—equivalent to not setting the parameter</td>
+<td class="px-4 py-3 text-neutral-300">Complex reasoning, difficult coding, agentic tasks</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">xhigh</td>
+<td class="px-4 py-3 text-neutral-300">Extended capacity for long-horizon work</td>
+<td class="px-4 py-3 text-neutral-400">Long-running agentic/coding tasks (&gt;30min), budgets in the millions of tokens</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100">max</td>
+<td class="px-4 py-3 text-neutral-300">Absolute maximum capacity, with no token spending limit</td>
+<td class="px-4 py-3 text-neutral-400">Deeper reasoning, more complete analysis</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-xs text-neutral-500 mb-6">Source: official doc <em>effort</em> — platform.claude.com/docs/en/build-with-claude/effort</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Fable 5’s 5-level effort ladder, rising from low to max in capability and allowed tokens, with the high step marked as the default" class="w-full h-auto" role="img" viewbox="0 0 1000 360">
+<defs>
+<lineargradient id="m16lvl-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m16lvl-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m16lvl-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m16lvl-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m16lvl-grid)" height="360" width="1000" x="0" y="0"></rect>
+<path d="M40,330 L950,330" fill="none" marker-end="url(#m16lvl-ahc)" opacity="0.55" stroke="#38bdf8" stroke-dasharray="9 9" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="495" y="352">more allowed capacity · more reasoning tokens →</text>
+<path d="M40,282 L230,232" fill="none" opacity="0.4" stroke="#34d399" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<path d="M230,232 L420,182" fill="none" opacity="0.4" stroke="#34d399" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<path d="M420,182 L610,132" fill="none" opacity="0.4" stroke="#34d399" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<path d="M610,132 L800,82" fill="none" opacity="0.4" stroke="#34d399" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<g><rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="150" x="40" y="230"></rect><text fill="#6ee7b7" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="115" y="264">low</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="115" y="304">fast · minimal cost</text></g>
+<g><rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="150" x="230" y="180"></rect><text fill="#6ee7b7" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="305" y="214">medium</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="305" y="254">balance</text></g>
+<g filter="url(#m16lvl-glow)"><rect fill="#0e2018" height="56" rx="12" stroke="url(#m16lvl-grad)" stroke-width="2.5" width="150" x="420" y="130"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="495" y="120">STANDARD</text>
+<text fill="#6ee7b7" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="495" y="164">high</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="495" y="204">complex reasoning</text>
+<g><rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="150" x="610" y="80"></rect><text fill="#6ee7b7" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="685" y="114">xhigh</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="685" y="154">long horizon</text></g>
+<g><rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="150" x="800" y="30"></rect><text fill="#6ee7b7" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="875" y="64">max</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="875" y="104">without a token limit</text></g>
+</svg>
+</div>
+<p class="text-xs text-neutral-500 -mt-6 mb-6">The 5-level ladder: each step increases the allowed capability (dashed cyan line)— <code>high</code> it’s the highlighted step because it’s what you get without setting anything.</p>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> 5 levels (low→max), configurable per call, where <code>high</code> is what you already have today if you don’t change anything.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">🔌 How to configure via API</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t2-p1">The effort level enters the body of the call through <code>output_config</code>, an object that accepts a single field <span class="termo" title="One of 5 strings: low, medium, high, xhigh, or max">effort</span> with one of the five strings. Omitting the entire field is equivalent to using <code>"high"</code> — it's literally the default.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t2-p2">This means switching levels doesn't require changing models, endpoints, or SDKs: it's one more parameter in the same call you already make today. You can vary the level by call type within the same agent—for example, an orchestrator at <code>high</code> and subagents in <code>low</code>.</p>
+<div class="mb-2"><span class="text-emerald-400 font-semibold text-sm">Goal:</span> <span class="text-neutral-300 text-sm">test a routine call in <code>medium</code> before assuming you need <code>high</code>.</span></div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">Messages API payload with output_config</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">{
+  "model": "claude-fable-5",
+  "max_tokens": 4096,
+  "output_config": { "effort": "medium" },
+  "messages": [
+    { "role": "user", "content": "&lt;isto você troca — descreva a tarefa&gt;" }
+  ]
+}</pre>
+</div>
+<div class="mb-6"><span class="text-emerald-400 font-semibold text-sm">How to check:</span> <span class="text-neutral-300 text-sm">run this call and compare the field <code>usage</code> (output tokens) and response time against the same task with <code>"effort": "high"</code>. In <code>medium</code>, expect fewer reasoning tokens and faster responses—if quality drops for your task, move up a level.</span></div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">The same field <code>output_config</code> works the same with the Claude API, Claude Platform on AWS (Bedrock), and Vertex AI—there’s no different parameter for each cloud provider. This makes it easier to test different levels without rewriting the integration layer.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> <code>output_config: {"effort": "..."}</code> in the request body — without a parameter, you're already in <code>high</code>.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🎯 Official recommendation for Fable 5</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🧭</span> The practical scale</h3>
+<p class="text-neutral-300 mb-4">For Fable 5, the recommended guideline isn’t “always use the maximum to ensure quality”—it’s to calibrate by task type:</p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong class="text-emerald-400">high</strong> as the default—it covers most agentic work and hard coding, and it's what you already get without changing anything.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong class="text-emerald-400">xhigh</strong> for work <em>capability-sensitive</em> — long sessions (&gt;30min), million-token budgets, where reasoning capacity matters more than speed.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong class="text-emerald-400">medium/low</strong> for routine tasks—subagents, simple and repetitive tasks, where speed and cost matter more than reasoning depth.</span></li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t3-p1">Anthropic’s own documentation is explicit about what the parameter <em>no</em> is a fixed-budget cutter. It’s a behavioral signal that the model interprets on a case-by-case basis.</p>
+<div class="mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+<span class="lang-tab bg-dark-700 text-neutral-300 inline-block">EN (official)</span>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">official docs · effort</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Effort is a behavioral signal, not a strict token budget. At lower effort
+levels, Claude will still think on sufficiently difficult problems, but
+it will think less than it would at higher effort levels for the same
+problem.</pre>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2 mt-3">
+<span class="lang-tab bg-dark-700 text-neutral-300 inline-block">PT-BR (translation)</span>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">free translation</span><button class="text-xs px-2 py-1 rounded bg-dark-700 text-neutral-300 hover:bg-dark-600 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-300 font-mono leading-relaxed">Esforço é um sinal comportamental, não um orçamento rígido de tokens.
+Em níveis de esforço mais baixos, o Claude ainda vai pensar em problemas
+suficientemente difíceis, mas vai pensar menos do que pensaria em níveis
+mais altos para o mesmo problema.</pre>
+</div>
+<p class="text-xs text-neutral-500 mt-2">Source: platform.claude.com/docs/en/build-with-claude/effort</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-primary rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-primary">Important caveat:</strong> low effort in Fable 5 <strong>isn't</strong> a “dumb downgrade.” It’s a frontier model operating with less deliberation—in practice, it still delivers solid results for tasks within its actual complexity. People coming from Opus 4.8 tend to overestimate the level they need out of habit.</p></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What to DO</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Let <code>high</code> as the default for hard coding and routine agentic tasks.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Move up to <code>xhigh</code> only when the task has a long horizon (&gt;30min, millions of tokens of budget).</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Scroll down to <code>medium</code>/<code>low</code> on subagents, routine work, and simple tasks that just need speed.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ What to AVOID</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Assuming that <code>effort</code> low gives a "half-baked" answer — Fable 5 still performs well at <code>low</code>.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Leave everything at <code>max</code> "just in case," without measuring whether the benefit is worth the cost.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Never compare the same prompt at 2 different levels before setting your app’s standard.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> <code>high</code> by default, <code>xhigh</code> for work where capability matters, <code>medium</code>/<code>low</code> for routine tasks—and low effort doesn’t mean weak.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🛡️ The refusal mechanism</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Attention—this isn’t a mistake</h3>
+<p class="text-neutral-300">When Fable 5 refuses a request for safety reasons, the HTTP response is <strong class="text-red-400">200</strong> — success — with <code>stop_reason: "refusal"</code> in the body. It's not an exception, it's not a <code>4xx</code>/<code>5xx</code>, and your generic error handling won’t catch this on its own. You need to check <code>stop_reason</code> explicitly.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t4-p1">When this happens, <code>stop_details.category</code> comes filled in with one of four possible categories. None of them means “your request was malicious”—the official texts make it explicit that <span class="termo" title="Legitimate work can trigger the classifier even without harmful intent">benign work can also trigger the category</span>.</p>
+<div class="rounded-xl border border-dark-600 overflow-x-auto mb-2">
+<table class="w-full text-sm">
+<thead>
+<tr class="bg-dark-800 border-b border-dark-600 text-left">
+<th class="px-4 py-3 font-semibold text-emerald-400">category</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">What it means (official text)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-600">
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100 align-top">cyber</td>
+<td class="px-4 py-3 text-neutral-300"><em>"The request could enable cyber harm, such as malware or exploit development. Benign cybersecurity work can also trigger this category."</em><br/><span class="text-xs text-neutral-500">The request could enable cyber harm (malware/exploit); legitimate cybersecurity work can also trigger it.</span></td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100 align-top">bio</td>
+<td class="px-4 py-3 text-neutral-300"><em>"The request could enable biological harm, such as dangerous lab methods. Beneficial life sciences work can also trigger this category."</em><br/><span class="text-xs text-neutral-500">The request could enable biological harm; beneficial life sciences work can also trigger it.</span></td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100 align-top">frontier_llm</td>
+<td class="px-4 py-3 text-neutral-300"><em>"The request could assist the development of competing AI models, which is restricted under Anthropic's commercial terms. Benign machine learning work can also trigger this category."</em><br/><span class="text-xs text-neutral-500">The request could help develop competing AI models (restricted by the commercial terms); benign ML work can also trigger it.</span></td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-mono font-semibold text-neutral-100 align-top">reasoning_extraction</td>
+<td class="px-4 py-3 text-neutral-300"><em>"The request asks the model to reproduce its internal reasoning in the response text. To get reasoning in a structured form instead, use adaptive thinking."</em><br/><span class="text-xs text-neutral-500">The request asks the model to reproduce its internal reasoning as text; use adaptive thinking to get this in a structured way.</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-xs text-neutral-500 mb-6">Source: official doc <em>refusals-and-fallback</em> — platform.claude.com/docs/en/build-with-claude/refusals-and-fallback</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t4-p2">The category <code>reasoning_extraction</code> deserves special attention because it’s the easiest to trigger by accident: all it takes is an old skill or system prompt asking the model to “show its reasoning” in the response. Anthropic itself recommends auditing instructions like this when migrating to Fable 5.</p>
+<div class="mb-6">
+<span class="lang-tab bg-dark-700 text-neutral-300 inline-block mb-2">EN (official)</span>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">official docs · prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Don't instruct Claude to reproduce its reasoning in the response. Prompts,
+skills, or harness instructions that tell the model to echo, transcribe,
+or explain its internal reasoning as response text can trigger the
+reasoning_extraction refusal category on Claude Fable 5, causing elevated
+fallbacks to Claude Opus 4.8. Audit existing skills and system prompts for
+reflection or show-your-thinking instructions when migrating. If your
+application needs reasoning visibility, read the structured thinking
+blocks from adaptive thinking instead.</pre>
+</div>
+<span class="lang-tab bg-dark-700 text-neutral-300 inline-block mb-2 mt-3">PT-BR (translation)</span>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">free translation</span><button class="text-xs px-2 py-1 rounded bg-dark-700 text-neutral-300 hover:bg-dark-600 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-300 font-mono leading-relaxed">Não instrua o Claude a reproduzir seu raciocínio na resposta. Prompts,
+skills ou instruções de harness que pedem pro modelo ecoar, transcrever ou
+explicar seu raciocínio interno como texto de resposta podem disparar a
+categoria de recusa reasoning_extraction no Claude Fable 5, causando mais
+fallbacks pro Claude Opus 4.8. Audite skills e system prompts existentes
+em busca de instruções de reflexão ou de "mostre seu raciocínio" ao
+migrar. Se sua aplicação precisa de visibilidade do raciocínio, leia os
+blocos de thinking estruturado do adaptive thinking em vez disso.</pre>
+</div>
+<p class="text-xs text-neutral-500 mt-2">How to check: paste the notice (EN or PT-BR, either is fine—it’s for you to read, not the model) as a reminder in your migration process, audit your project’s skills/system prompts for instructions like "explain your reasoning" or "show how you arrived at that answer," and remove them. The sign of success: fewer refusals <code>reasoning_extraction</code> in the logs.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> safety refusal is HTTP 200 with <code>stop_reason: "refusal"</code> + 1 of 4 categories — never a network exception.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🧾 Billing for a refusal + how to configure a fallback</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📐</span> Billing rule</h3>
+<ul class="space-y-2 text-neutral-300">
+<li><strong>Refusal before any output</strong> — is not charged. The field <code>usage</code> appears in the response, but does not incur a charge or use up the rate limit.</li>
+<li><strong>Refusal mid-stream</strong> — charges for the input and output already generated up to the refusal point (you pay for what’s already been generated, not the entire request).</li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t5-p1">To keep end users from running into a refusal, Anthropic offers three ways to route automatically to the <strong class="text-emerald-400">Claude Opus 4.8</strong> when Fable 5 refuses — each with a different level of implementation effort.</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Server-side fallback</h4>
+<p class="text-sm text-neutral-400 mb-3">Claude API / Claude Platform on AWS, via beta header</p>
+<p class="text-neutral-300 text-sm">Resolved in one <strong>single request</strong> — you make the normal call with the beta header enabled, and if Fable 5 refuses, the platform itself reissues it to Opus 4.8 before returning the response to you. No extra logic in your code.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">SDK middleware</h4>
+<p class="text-sm text-neutral-400 mb-3"><code>BetaRefusalFallbackMiddleware</code> — TS/Python/Go/Java/C#</p>
+<p class="text-neutral-300 text-sm">An official SDK middleware intercepts the <code>stop_reason: "refusal"</code> in your own process and automatically resubmits the request to Opus 4.8 — useful when you already orchestrate calls in your backend and want to keep control there.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Manual retry with fallback credit</h4>
+<p class="text-sm text-neutral-400 mb-3">Raw Ruby/PHP/HTTP — languages without official middleware</p>
+<p class="text-neutral-300 text-sm">You check it yourself <code>stop_reason</code> in the response and, if <code>"refusal"</code>, triggers a new call to Opus 4.8 using the <em>fallback credit</em> — the most manual approach, but the only one available outside the official SDK ecosystem.</p>
+</div>
+</div>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Flow: the user’s request passes through the safety classifier; if approved, it proceeds as a normal response; if refused, it becomes stop_reason refusal with a category and is redirected as a fallback to Claude Opus 4.8" class="w-full h-auto" role="img" viewbox="0 0 1020 260">
+<defs>
+<lineargradient id="m16flow-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m16flow-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m16flow-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.1" r="1.3"></circle></pattern>
+<marker id="m16flow-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m16flow-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="m16flow-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m16flow-grid)" height="260" width="1020" x="0" y="0"></rect>
+<rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="160" x="20" y="110"></rect>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="100" y="134">Request from the</text>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="100" y="152">user</text>
+<path d="M180,138 L210,138" fill="none" marker-end="url(#m16flow-ah)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<g filter="url(#m16flow-glow)" transform="rotate(45 280 143)"><rect fill="#0e2018" height="100" rx="14" stroke="url(#m16flow-grad)" stroke-width="2.5" width="100" x="230" y="93"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="280" y="138">Classifi-</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="280" y="153">cador</text>
+<path d="M350,140 C400,140 400,60 460,60" fill="none" marker-end="url(#m16flow-ah)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="90">OK</text>
+<rect fill="#0e2018" height="50" rx="12" stroke="#34d399" stroke-width="2" width="240" x="460" y="35"></rect>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="580" y="65">response proceeds as usual</text>
+<path d="M350,146 C400,146 400,210 460,210" fill="none" marker-end="url(#m16flow-ahr)" opacity="0.65" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="200">refusal</text>
+<rect fill="#2a0f16" height="50" rx="12" stroke="#f87171" stroke-width="2" width="270" x="460" y="185"></rect>
+<text fill="#fca5a5" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle" x="595" y="208">stop_reason: "refusal"</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="595" y="226">HTTP 200 · cyber/bio/frontier_llm/reasoning_extraction</text>
+<path d="M730,210 L778,210" fill="none" marker-end="url(#m16flow-ahc)" opacity="0.7" stroke="#38bdf8" stroke-width="1.8"></path>
+<rect fill="#0e1b26" height="50" rx="12" stroke="#38bdf8" stroke-width="2.5" width="220" x="780" y="185"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="890" y="208">fallback</text>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="890" y="226">Claude Opus 4.8</text>
+</svg>
+</div>
+<p class="text-xs text-neutral-500 mb-6">Cyan marks the detour: request → classifier (focused on glow) → if refused, the category becomes a bridge to Opus 4.8; if approved, it continues through the normal Fable 5 flow.</p>
+<div class="mb-2"><span class="text-emerald-400 font-semibold text-sm">Goal:</span> <span class="text-neutral-300 text-sm">use Claude Code to decide which of the 3 fallback routes makes sense for your stack instead of choosing at random.</span></div>
+<div class="mb-6">
+<span class="lang-tab bg-dark-700 text-neutral-300 inline-block mb-2">EN</span>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">prompt: which fallback to use</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Look at how we call the Claude API in this codebase (SDK, language,
+whether we stream responses) and tell me which of the three Fable 5
+refusal-fallback options fits best: (1) server-side fallback via the
+beta header, (2) SDK middleware (BetaRefusalFallbackMiddleware), or
+(3) manual retry with a fallback credit. Point to the exact file/line
+where I'd wire it in, and flag if we're on a language (Ruby/PHP/raw
+HTTP) that only supports the manual-retry path.</pre>
+</div>
+<span class="lang-tab bg-dark-700 text-neutral-300 inline-block mb-2 mt-3">PT-BR (translation)</span>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">free translation</span><button class="text-xs px-2 py-1 rounded bg-dark-700 text-neutral-300 hover:bg-dark-600 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-300 font-mono leading-relaxed">Olhe como chamamos a API da Claude neste código (SDK, linguagem, se as
+respostas são via streaming) e me diga qual das três opções de fallback
+de recusa do Fable 5 se encaixa melhor: (1) fallback no servidor via
+beta header, (2) middleware do SDK (BetaRefusalFallbackMiddleware), ou
+(3) retry manual com fallback credit. Aponte o arquivo/linha exatos onde
+eu conectaria isso, e avise se estamos numa linguagem (Ruby/PHP/HTTP cru)
+que só suporta o caminho de retry manual.</pre>
+</div>
+</div>
+<div class="mb-6"><span class="text-emerald-400 font-semibold text-sm">How to check:</span> <span class="text-neutral-300 text-sm">paste the prompt (in whichever language you prefer—it goes to Claude Code, not Fable 5) into a real project that makes calls to the Claude API. You should get back the recommended route name + the exact file/line, not a generic response listing the 3 options without deciding.</span></div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> refusal before output is not billed; for automatic fallback, choose between server-side, SDK middleware, or manual retry based on your stack.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">📊 Cost comparison</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m16-t6-p1">Fable 5 costs exactly <strong class="text-emerald-400">twice as much</strong> for Opus 4.8 per token, for both input and output. At first glance, it always seems more expensive. But price per token and total task cost are different things—and that’s where the practical insight of this topic lies.</p>
+<div class="rounded-xl border border-dark-600 overflow-x-auto mb-2">
+<table class="w-full text-sm">
+<thead>
+<tr class="bg-dark-800 border-b border-dark-600 text-left">
+<th class="px-4 py-3 font-semibold text-emerald-400">Model</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Input</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Cache write 5m</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Cache write 1h</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Cache hit</th>
+<th class="px-4 py-3 font-semibold text-emerald-400">Output</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-600">
+<tr class="bg-emerald-500/10">
+<td class="px-4 py-3 font-semibold text-emerald-400">Fable 5 / Mythos 5</td>
+<td class="px-4 py-3 text-neutral-200">$10/MTok</td>
+<td class="px-4 py-3 text-neutral-300">$12.50/MTok</td>
+<td class="px-4 py-3 text-neutral-300">$20/MTok</td>
+<td class="px-4 py-3 text-neutral-300">$1/MTok</td>
+<td class="px-4 py-3 text-neutral-200">$50/MTok</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-semibold text-neutral-100">Opus 4.8</td>
+<td class="px-4 py-3 text-neutral-300">$5/MTok</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-300">$25/MTok</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-semibold text-neutral-100">Sonnet 5 <span class="text-xs text-neutral-500">(through Aug 31, 2026)</span></td>
+<td class="px-4 py-3 text-neutral-300">$1/MTok</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-300">$5/MTok</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-semibold text-neutral-100">Haiku 4.5</td>
+<td class="px-4 py-3 text-neutral-300">$0.50/MTok</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-500">—</td>
+<td class="px-4 py-3 text-neutral-300">$2.50/MTok</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-xs text-neutral-500 mb-6">Source: platform.claude.com/docs/en/about-claude/pricing · MTok = million tokens. Batch API (50% off) brings Fable 5 to $5/$25 per MTok — the same list price as synchronous Opus 4.8.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🧮</span> Illustrative example (hypothetical token counts—not an official benchmark)</h3>
+<p class="text-neutral-300 text-sm mb-3">Hypothetical coding task: 300k input tokens + 40k output tokens to finish.</p>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-emerald-400">Fable 5 at low effort, gets it right on the first try</strong> (1 round): 0.3 × $10 + 0.04 × $50 = $3 + $2 = <strong class="text-emerald-400">$5</strong></li>
+<li><strong class="text-neutral-100">Opus 4.8 @ xhigh, needs 3 rounds</strong> to get the same result (rereading context with each iteration—900k input + 120k output accumulated): 0.9 × $5 + 0.12 × $25 = $4.5 + $3 = <strong class="text-neutral-100">$7.5</strong></li>
+</ul>
+<p class="text-neutral-300 text-sm mt-3">Even at twice the cost per token, Fable 5 comes out <strong class="text-emerald-400">cheaper overall</strong> in this scenario — because "getting it right on the first try in complex systems" (a capability Anthropic itself highlights for Fable 5 vs. Opus 4.8) eliminates entire rounds of iteration, not just reduces the cost per round.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What to DO</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Measure the cost <strong>total</strong> of the task (input + output through to the final result), not just the $/MTok.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Use the Batch API (50% off) for asynchronous jobs that don't need an immediate response.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Take advantage of caching (5min = 1.25x, 1h = 2x, hit = 0.1x) when the same large context is repeated across calls.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ What to AVOID</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Conclude that Opus 4.8 is always cheaper just because it costs half as much per token.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ignoring how many rounds/iterations the task needs to actually finish.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Forgetting the multiplier <code>inference_geo:"us"</code> (1.1x) when budgeting by region.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">💡 Extra context:</strong> Fable 5 has a 1M-token context window by default and up to 128k tokens of output per request, <strong>without</strong> price premium for long context — another variable in the "total cost" calculation that you won't see by looking only at the table's $/MTok.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> Fable 5 at low effort can cost less overall than Opus 4.8 at xhigh/max—even though it costs twice as much per token—because it makes fewer mistakes.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">5 levels of effort</strong><span class="text-neutral-400"> — low to max, <code>high</code> it’s the default, configurable via <code>output_config.effort</code>.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Practical recommendation</strong><span class="text-neutral-400"> — <code>high</code> for most people, <code>xhigh</code> only on long tasks, <code>medium</code>/<code>low</code> for routine tasks—and low effort still performs well.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Refusal is <code>stop_reason</code>, not an error</strong><span class="text-neutral-400"> — HTTP 200, 4 categories (cyber/bio/frontier_llm/reasoning_extraction); refusals before output aren’t charged.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Fallback to Opus 4.8</strong><span class="text-neutral-400"> — 3 approaches (server-side/middleware/manual retry)—and the cheapest option isn’t always the one with the lowest price per token.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Next module:</h3><p class="text-neutral-300">1.7 — Bonus: subagents, memory, and send_to_user.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-1-5.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-7.html">Next Module →</a>
+</div>
+</div>
+</section>
+<p class="text-xs text-neutral-500 mb-4">Sources for this module: platform.claude.com/docs/en/build-with-claude/effort · platform.claude.com/docs/en/build-with-claude/refusals-and-fallback · platform.claude.com/docs/en/about-claude/pricing · platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5</p>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){const ti=button.closest('.topic-item');if(!ti)return;const e=ti.querySelector('.topic-explanation');if(e){e.classList.toggle('active');button.setAttribute('aria-expanded',e.classList.contains('active'));}}
+    (function(){const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){try{var pre=btn.closest('.copybox').querySelector('pre');navigator.clipboard.writeText(pre.textContent);var o=btn.textContent;btn.textContent='copiado ✓';setTimeout(function(){btn.textContent=o;},1500);}catch(e){}}
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&typeof INEMA.init==='function')INEMA.init();});</script>
+</body>
+</html>

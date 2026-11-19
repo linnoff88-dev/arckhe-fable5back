@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>2.3 Real verification + specialized subagents · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function(){try{var html=document.documentElement;var DEF={theme:'inema-dark',font:'inter',fontScale:100,lineWidth:68,leading:1.7,accent:'emerald'};function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}var p=clone(DEF);try{var raw=localStorage.getItem('inema.prefs');if(raw){var parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'){for(var k in DEF)if(parsed[k]!=null)p[k]=parsed[k];}}else{var legacy=localStorage.getItem('theme');if(legacy==='light')p.theme='claro';else if(legacy==='dark')p.theme='inema-dark';}}catch(e){p=clone(DEF);}var THEMES={'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'}};var t=THEMES[p.theme]||THEMES['inema-dark'];if(t.dark===true)html.classList.add('dark');else if(t.dark===false)html.classList.remove('dark');if(t.attr)html.setAttribute('data-theme',t.attr);else html.removeAttribute('data-theme');html.style.colorScheme=(t.cs?t.cs:(html.classList.contains('dark')?'dark':'light'));html.setAttribute('data-font',p.font||'inter');html.setAttribute('data-accent',p.accent||'emerald');var s=html.style,scale=(+p.fontScale||100);s.setProperty('--inema-font-scale',(scale/100).toString());s.setProperty('font-size',scale+'%');s.setProperty('--measure',(+p.lineWidth||68)+'ch');s.setProperty('--lh-body',(+p.leading||1.7).toString());}catch(err){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}catch(e){}}})()
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body{font-family:'Inter',sans-serif}
+    .dark body{background-color:#111827}
+    [id^="topico-"],[id^="modulo-"]{scroll-margin-top:5rem}
+    .termo{border-bottom:1px dashed #60a5fa;cursor:help;font-weight:600;color:#93c5fd}
+    html:not(.dark) .termo{color:#1d4ed8;border-color:#2563eb}
+    .copybox pre{white-space:pre-wrap;word-break:break-word}
+    blockquote{margin:0}
+
+    @keyframes wf-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+    @media (prefers-reduced-motion: no-preference){
+      .wf-a{animation:wf-pulse 2.6s ease-in-out infinite}
+    }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body{background-color:#f8fafc}
+    html:not(.dark) .bg-dark-900{background-color:#fff}
+    html:not(.dark) .bg-dark-800{background-color:#f9fafb}
+    html:not(.dark) .bg-dark-700{background-color:#f3f4f6}
+    html:not(.dark) .bg-dark-600{background-color:#e5e7eb}
+    html:not(.dark) .text-neutral-100{color:#111827}
+    html:not(.dark) .text-neutral-300{color:#4b5563}
+    html:not(.dark) .text-neutral-400{color:#6b7280}
+    html:not(.dark) .text-neutral-500{color:#9ca3af}
+    html:not(.dark) .border-dark-600{border-color:#d1d5db}
+    html:not(.dark) .border-dark-700{border-color:#e5e7eb}
+
+    /* Light mode - cores de acento (trilha blue) */
+    html:not(.dark) .text-blue-400{color:#2563eb}
+    html:not(.dark) .bg-blue-500\/20{background-color:rgba(37,99,235,0.12)}
+    html:not(.dark) .bg-blue-500\/10{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .bg-blue-900\/20{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .bg-blue-900\/40{background-color:rgba(37,99,235,0.1)}
+    html:not(.dark) .border-blue-500\/30{border-color:rgba(37,99,235,0.25)}
+    html:not(.dark) .hover\:bg-blue-500\/30:hover{background-color:rgba(37,99,235,0.18)}
+    html:not(.dark) .hover\:bg-blue-500\/10:hover{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .hover\:text-blue-400:hover{color:#2563eb}
+
+    /* Light mode - remove gradientes (fundo uniforme) */
+    html:not(.dark) [class*="bg-gradient-to"]{background-image:none!important}
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary{color:#a16207}
+    html:not(.dark) .bg-primary\/10{background-color:rgba(161,98,7,0.08)}
+    html:not(.dark) .border-primary\/30{border-color:rgba(161,98,7,0.25)}
+    html:not(.dark) .text-sky-400{color:#0369a1}
+    html:not(.dark) .text-yellow-400{color:#a16207}
+    html:not(.dark) .hover\:text-sky-300:hover{color:#0284c7}
+    html:not(.dark) .text-red-400{color:#b91c1c}
+    html:not(.dark) .text-rose-400{color:#9f1239}
+    html:not(.dark) .bg-red-900\/20{background-color:rgba(185,28,28,0.07)}
+    html:not(.dark) .border-red-500\/30{border-color:rgba(185,28,28,0.25)}
+    html:not(.dark) .text-emerald-400{color:#059669}
+    html:not(.dark) .hover\:text-emerald-400:hover{color:#059669}
+    html:not(.dark) .hover\:text-emerald-300:hover{color:#047857}
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover{background-color:rgba(5,150,105,0.08)}
+    html:not(.dark) .border-emerald-500\/30{border-color:rgba(5,150,105,0.25)}
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95{background-color:rgba(255,255,255,0.95)}
+
+    /* Dark mode - bordas e linhas divisorias mais suaves */
+    .dark .border-dark-600{border-color:#374151}
+    .dark .divide-dark-600>:not([hidden])~:not([hidden]){border-color:#374151}
+
+    /* Diagramas: contido no light mode */
+    html:not(.dark) svg[role="img"]{filter:saturate(0.82) brightness(0.96)}
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span>
+<span class="hidden sm:inline">Learning Path 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>My journey</span>
+<span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Breadcrumb" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-blue-400" href="index.html">Learning Path 2</a>
+<span>/</span>
+<span class="text-blue-400">Module 2.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔍 Real verification + specialized subagents</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Two disciplines that give Fable 5 real strength as a work agent: never accept “done” without proof, and replace a single opinion with advice from specialized subagents — each required to bring evidence, not just an opinion.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermed.</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 2.3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. "Done" isn't proof</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Verification prompt</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. One opinion is a blind spot</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Prompt for the council of 5</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. The two tips together</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Common errors + checklist</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" data-inema-module="2-3" data-inema-track="2" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🔎 “Done” is a claim—not proof</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a contractor calls and says, “I finished the renovation.” You don’t pay without going to the site, inspecting the work, and testing the faucet. With an AI agent, the instinct is the opposite: it writes “done ✅” so confidently that we forget to ask for the same proof we’d ask of a person.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t1-p1">In <span class="termo" title="Code, automations (scripts, integrations), databases, production deployments, and documents—any deliverable Fable 5 might claim to have completed">code, automation, databases, deploys, and documents</span>, Fable 5 may report success even when something failed, was incomplete, or was never actually checked. It’s not bad faith—it’s the model describing what <strong class="text-blue-400">should</strong> having happened, rather than what actually happened in the tool.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t1-p2">The risk is higher precisely because Fable 5 is good at sounding confident: a well-written “everything’s fine” report inspires the same confidence as a real report. Without requiring evidence, silent errors turn into accumulated errors—and the cost of finding out late is always higher than the cost of checking early.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> What really changes</h3>
+<ul class="space-y-2 text-neutral-300">
+<li><strong>Claim</strong> — “I’m done,” “working,” “deployed” (text, with no evidence attached)</li>
+<li><strong>Evidence</strong> — test run, file changed, log, command output, verifiable result</li>
+<li><strong>Practical rule</strong> — “done” only exists when the claim comes with evidence</li>
+</ul>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Code</div><div class="text-neutral-400 text-xs">did the test actually pass?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Automation</div><div class="text-neutral-400 text-xs">did it run and generate a log?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Database/Deploy</div><div class="text-neutral-400 text-xs">does the command output check out?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Documents</div><div class="text-neutral-400 text-xs">does the changed file exist?</div></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> "done" without evidence is just optimistic text—treat it as a hypothesis, not a fact, until you see the proof.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">📋 The verification prompt: require evidence before saying "done"</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> The central idea</h3>
+<p class="text-neutral-300 mb-4">This is the direct antidote to the problem in topic 1: instead of trusting the report’s confident tone, the prompt requires Fable 5 to do 4 specific things, always in this order:</p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Confirm with real evidence: test, changed file, log, command output</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>If you didn't check, say "not verified" — instead of omitting it or generalizing</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>If it failed, show the failure — don't dress it up as "almost right"</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>If you skipped a step, admit that you skipped it</span></li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t2-p1">Notice that the prompt doesn't ask you to "be honest"—a vague request the model already "thinks" it is fulfilling. It defines a <strong class="text-blue-400">audit procedure</strong> concrete: every progress claim needs a specific kind of evidence behind it, or it must be labeled as unverified.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Goal:</strong> eliminate the generic “done” and make Fable 5 report only what it can prove—explicitly acknowledging what hasn’t been checked instead of sweeping it under the rug.</p></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt tested in practice · professional usage guide for Fable 5</span></div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Before saying something is ready, confirm it with real evidence: a test run, changed file, log, command output, or verifiable result.
+
+If it wasn’t verified, say clearly: “not verified.”
+If it failed, show the failure.
+If you skipped a step, say so.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">How to check:</strong> paste this at the beginning of the conversation or into the <code>CLAUDE.md</code>/system prompt for the project. Ask for a task with a verifiable step (run a test, apply a diff, check a log) and read the final report: it should cite the exact evidence ("3 of 3 tests passed, output: ...") instead of "everything works"—and say "not verified" when that's the case, without hedging.</p></div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-2 overflow-hidden">
+<svg aria-label="Flowchart: every claim of completion goes through the question “Is there real evidence from this session?”; if yes, it’s verified; if not, Fable 5 must explicitly say it wasn’t verified" class="w-full h-auto" role="img" viewbox="0 0 900 260">
+<defs>
+<filter height="180%" id="m23b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="m23b-ok" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23b-no" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fb7185"></path></marker>
+</defs>
+<polygon fill="#0e1622" points="150,50 260,130 150,210 40,130" stroke="#60a5fa" stroke-width="2"></polygon>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="150" y="122">There’s real evidence</text>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="150" y="140">from this session?</text>
+<path d="M260,110 C400,80 480,65 610,55" fill="none" marker-end="url(#m23b-ok)" opacity="0.7" stroke="#60a5fa" stroke-width="1.8"></path>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="430" y="65">yes</text>
+<g filter="url(#m23b-glow)"><rect fill="#0e1622" height="70" rx="14" stroke="#60a5fa" stroke-width="2.5" width="250" x="610" y="20"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="735" y="48">✅ Verified</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="735" y="68">report with the evidence attached</text>
+<path d="M260,150 C400,180 480,195 610,205" fill="none" marker-end="url(#m23b-no)" opacity="0.7" stroke="#fb7185" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="430" y="200">no</text>
+<rect fill="#1f2937" height="70" rx="14" stroke="#9ca3af" stroke-width="2" width="250" x="610" y="170"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="735" y="198">⚠️ “Not verified”</text>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="735" y="218">say that—never omit it</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 text-center mt-1 mb-6">The diamond is the only filter that matters: without real evidence from this session, the right answer is to admit “not verified” — never “it should be working.”</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-4 sm:p-5 mb-6 overflow-hidden">
+<div class="flex items-center gap-2 mb-3"><span class="text-lg">🔗</span><h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wide">Cross-reference with Track 1</h3></div>
+<p class="text-neutral-300 text-sm mb-3">This tip directly echoes the technique <strong class="text-emerald-400">"prove it's finished"</strong> of the module <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-4.html">1.4 — Let it act + prove it’s done</a>, which is backed by Anthropic’s official documentation. Anthropic measured the effect of this type of instruction:</p>
+<blockquote class="border-l-4 border-emerald-500 pl-4 text-neutral-200 text-sm italic">"In Anthropic's testing, this nearly eliminated fabricated status reports even on tasks designed to elicit them."</blockquote>
+<p class="text-neutral-400 text-xs mt-3">Translation: "In Anthropic's tests, this nearly eliminated fabricated status reports, even in tasks deliberately designed to induce them." → <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-4.html">see the full module 1.4</a>.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What to DO</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Ask for the exact evidence before accepting any “done”</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Accept "unverified" as a valid answer—it's better than false optimism</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ What to AVOID</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Trusting “everything works” without a number, log, or attached output</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Letting silence about a skipped step go unchallenged</span></li>
+</ul>
+</div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🎭 A single opinion is a blind spot</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a company that makes an important decision by listening only to sales gets it wrong in a different way than one that listens to sales, product, finance, and the skeptical board member at the same time. It’s not that sales is wrong—it’s that one lens alone never sees the whole picture.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t3-p1">When you ask Fable 5 for a generic "analysis," it responds based on <strong class="text-blue-400">a single angle</strong> — usually whatever the question itself suggested. If you asked about code, it focuses on code; it rarely connects the dots on its own to market positioning, the user journey, or execution risk, even when those angles are relevant to the actual decision.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t3-p2">The problem isn’t the quality of the answer—it’s the <span class="termo" title="A decision that seems complete but actually considered only one relevant factor because no one explicitly asked for the other perspectives">coverage</span>. A product, offer, or campaign decision has at least 4-5 dimensions pulling in different directions; asking for a single answer means asking one of those dimensions to dominate the others without warning.</p>
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-2">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Strategy</div><div class="text-neutral-400 text-xs">positioning</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Product</div><div class="text-neutral-400 text-xs">user journey</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Communication</div><div class="text-neutral-400 text-xs">content and message</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Technology</div><div class="text-neutral-400 text-xs">technical feasibility and risk</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Skeptical</div><div class="text-neutral-400 text-xs">deliberately looks for flaws</div></div>
+</div>
+<p class="text-sm text-neutral-500 text-center mb-6">5 typical perspectives a single answer tends to leave out — topic 4 turns that into a prompt.</p>
+<div class="bg-dark-800/60 border-l-4 border-neutral-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-neutral-200">A note from someone who uses this every day:</strong> asking it to “be more critical” or “look at it from other angles” almost never works—it’s too vague for the model to know which angles. Explicitly naming the roles (next topic) is what actually forces coverage.</p></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> a response has only one point of view built in—to truly evaluate an idea, offer, or product, you need to name the perspectives you want to see.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🧭 The council prompt: 5 subagents, 5 lenses, 1 recommendation</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t4-p1">Instead of asking for a single opinion, this prompt builds a <strong class="text-blue-400">advice from 5 subagents</strong>, each with a fixed specialty, and ends by asking for a consolidated single recommendation with priorities — the opposite of 5 separate reports with no synthesis.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Goal:</strong> evaluate ideas, offers, products, projects, or campaigns through multiple specialized lenses at the same time — without any one lens dominating by default.</p></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt tested in practice · professional usage guide for Fable 5</span></div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Use a subagent structure:
+
+Agent 1: analyzes strategy and positioning.
+Agent 2: analyzes the product and user journey.
+Agent 3: analyzes content and communications.
+Agent 4: analyzes technology and automation.
+Agent 5: acts as a skeptic and looks for flaws.
+
+Then consolidate everything into a single recommendation with priorities.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">How to check:</strong> use in <code>&lt;isto voce troca&gt;</code> — replace the object of analysis (idea, offer, product, project, campaign) before pasting. Confirm that the final answer has 5 clearly separated blocks, one per agent, and ends with a consolidation section with priorities — not a loose, unranked list.</p></div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-4 sm:p-5 mb-6 overflow-hidden">
+<div class="flex items-center gap-2 mb-3"><span class="text-lg">🔗</span><h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wide">Cross-reference with Track 1</h3></div>
+<p class="text-neutral-300 text-sm mb-3">The module <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-7.html">1.7 — Bonus: subagents, memory, and send_to_user</a> explains, with official backing from Anthropic, <strong class="text-emerald-400">how to delegate</strong> technically to subagents (asynchronously, with their own context). This topic here is about <strong class="text-blue-400">what role structure</strong> use within this delegation—the two complement each other.</p>
+<blockquote class="border-l-4 border-emerald-500 pl-4 text-neutral-200 text-sm italic">"Claude Fable 5 dispatches parallel subagents more readily than prior models... prefer asynchronous communication between orchestrator and subagents over blocking until each subagent returns."</blockquote>
+<p class="text-neutral-400 text-xs mt-3">Translation: "Claude Fable 5 dispatches subagents in parallel more readily than previous models... prefer asynchronous communication between the orchestrator and subagents instead of blocking while waiting for each one to return." → <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-7.html">see the full module 1.7</a>.</p>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-2 overflow-hidden">
+<svg aria-label="A task is dispatched to 5 specialized subagents — strategy, product, communications, technology, and skeptic — who work in parallel and converge on a single recommendation with priorities" class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<lineargradient id="m23a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m23a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m23a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m23a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m23a-grid)" height="280" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="2">
+<path d="M196,140 C300,140 320,38 452,38" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 C300,140 320,89 452,89" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 L452,140" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 C300,140 320,191 452,191" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 C300,140 320,242 452,242" marker-end="url(#m23a-ah)"></path>
+</g>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="2">
+<path d="M614,38  C720,38 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,89  C720,89 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,140 L800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,191 C720,191 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,242 C720,242 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+</g>
+<g filter="url(#m23a-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#m23a-grad)" stroke-width="2.5" width="156" x="40" y="108"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="118" y="134">Decision</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="118" y="154">to be assessed</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="22"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="43">1. Strategy</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="73"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="94">2. Product</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="145">3. Communication</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="175"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="196">4. Technology</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="226"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="247">5. Skeptic</text></g>
+</g>
+<g filter="url(#m23a-glow)"><rect fill="#0e1622" height="70" rx="14" stroke="url(#m23a-grad)" stroke-width="2.5" width="170" x="800" y="105"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="885" y="133">Recommendation</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="885" y="152">only + priorities</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 text-center mt-1 mb-6">5 cyan boxes = the 5 specialized agents, each analyzing in parallel. The blue box on the right, with a glow, is the point that completes the prompt: consolidation into a single recommendation.</p>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🤝 The two tips together: advice that brings proof, not just opinion</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Scenario:</strong> you’re deciding whether to launch a new pricing plan. Asking the 5 agents only "what do you think?" gets you 5 well-written opinions—but they’re still <em>guesswork</em>. Tip 5 comes in here: each council agent must provide evidence, just like any other claim that something is "done".</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t5-p1">Tip 6 gives you the <strong class="text-blue-400">structure</strong> (5 perspectives, no blind spots). Tip 5 gives you the <strong class="text-blue-400">rigor</strong> (no lens is complete without proof). Together, they become a single rule: each agent on the council must point to concrete evidence before weighing in — not "I think the market responds well," but the data that supports that claim.</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Strategy Agent</h4>
+<p class="text-sm text-neutral-400 mb-3">Analyze positioning vs. the competition.</p>
+<p class="text-neutral-300 text-sm">Required evidence: <strong class="text-blue-400">price/offer benchmark of 3-5 direct competitors</strong>, not “I think it’s expensive.”</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Product Agent</h4>
+<p class="text-sm text-neutral-400 mb-3">Analyzes the user journey.</p>
+<p class="text-neutral-300 text-sm">Required evidence: <strong class="text-blue-400">churn, NPS, or funnel data</strong> that points out where the new plan helps or hinders.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Communications Agent</h4>
+<p class="text-sm text-neutral-400 mb-3">Analyzes the value proposition.</p>
+<p class="text-neutral-300 text-sm">Required evidence: <strong class="text-blue-400">A/B test, research, or campaign history</strong> — not “this sentence sounds better.”</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Technology Agent</h4>
+<p class="text-sm text-neutral-400 mb-3">Analyze feasibility and automation.</p>
+<p class="text-neutral-300 text-sm">Required evidence: <strong class="text-blue-400">effort estimate and real dependencies</strong> of the billing system.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">5</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Skeptical Agent</h4>
+<p class="text-sm text-neutral-400 mb-3">Looks for flaws on purpose.</p>
+<p class="text-neutral-300 text-sm">Required evidence: <strong class="text-blue-400">historical case or risk scenario</strong> where a similar change went wrong.</p>
+</div>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🧾</span> The consolidation</h3>
+<p class="text-neutral-300">Only after all 5 agents have brought evidence (not unsupported opinions) does the prompt's final step — "consolidate everything into a single recommendation, with priorities" — become a reliable synthesis. Consolidating 5 guesses still produces a well-organized guess; consolidating 5 pieces of evidence produces a decision.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> if a council agent doesn’t provide evidence, it isn’t finished — that’s the same standard as tip 5, now applied to each of the 5 lenses.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">⚠️ Common mistakes with these 2 tips — and the quick checklist</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t6-p1">The two prompts in this module fail in the same way when only partially applied: they become a show of rigor without truly changing the outcome. The most common mistakes:</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Where this breaks in practice</h3>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Accept "all good" without asking for the exact evidence again (returning to the blind spot in topic 1)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ask only “be more critical” instead of explicitly naming the 5 roles</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Leaving out the Skeptical Agent “so you don’t dampen the enthusiasm”—without it, the advice becomes an optimistic echo chamber</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Consolidating without requiring evidence from each agent—5 opinions become 5 well-formatted guesses</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Run the 5 agents but skip the consolidation step — you end up with 5 separate reports and no priorities</span></li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Quick checklist</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Did every claim of "done" come with a test, log, diff, or command output?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Is there an explicit “not verified” where it couldn’t be checked?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Does the council have all 5 named roles, including the skeptic?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Did each agent cite evidence, not just an opinion?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Is there a final consolidation with priorities—not 5 separate reports?</span></li>
+</ul>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-6">
+<h4 class="font-bold text-blue-400 mb-4">💡 Ready-to-paste combo</h4>
+<p class="text-neutral-300 text-sm mb-3">In upcoming sessions, try pasting both prompts from this module (topics 2 and 4) together in the same analysis request, and see whether the final result has 5 blocks with evidence + 1 synthesis—not loose text.</p>
+<p class="text-neutral-400 text-xs">This is literally the example from topic 5, applied to your own project.</p>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> verification and advice only work when complete—halfway, both become a performance of rigor instead of actual rigor.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button></div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">"Done" ≠ finished</strong><span class="text-neutral-400"> — it's a claim; it only becomes a fact with real evidence from this session.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Verification prompt</strong><span class="text-neutral-400"> — confirm with evidence, admit “not verified,” show the failure, acknowledge the skipped step.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">One opinion = one blind spot</strong><span class="text-neutral-400"> — strategy, product, communication, technology, and a skeptic rarely show up together unless you ask.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt for the board of 5</strong><span class="text-neutral-400"> — 5 specialized subagents, consolidated into a single recommendation with priorities.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">The two together</strong><span class="text-neutral-400"> — the advice only applies if each agent brings evidence, not just an opinion.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Next module:</h3><p class="text-neutral-300">2.4 — Project memory + continue until complete: how to turn decisions into persistent memory and keep Fable 5 from stopping too early on long tasks.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-4.html">Next Module →</a>
+</div>
+</div>
+</section>
+</main>
+</div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p class="mb-2">Main source for this module: practical guide to professional use of Fable 5 (tips 5 and 6). Official references cited: doc <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank">Prompting Claude Fable 5</a> (Anthropic), through the modules <a class="text-sky-400 hover:text-sky-300" href="../trilha1/modulo-1-4.html">1.4</a> e <a class="text-sky-400 hover:text-sky-300" href="../trilha1/modulo-1-7.html">1.7</a> from Track 1.</p>
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){const ti=button.closest('.topic-item');if(!ti)return;const e=ti.querySelector('.topic-explanation');if(e){e.classList.toggle('active');button.setAttribute('aria-expanded',e.classList.contains('active'));}}
+    (function(){const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){try{var scope=btn.closest('.copybox-lang')||btn.closest('.copybox');var pre=scope.querySelector('pre');navigator.clipboard.writeText(pre.textContent);var o=btn.textContent;btn.textContent='copiado ✓';setTimeout(function(){btn.textContent=o;},1500);}catch(e){}}
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&typeof INEMA.init==='function')INEMA.init();});</script>
+</body>
+</html>

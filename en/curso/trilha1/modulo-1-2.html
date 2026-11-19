@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>1.2 Give the why + don’t ask for reasoning · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen" data-inema-module="1-2" data-inema-track="1"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Learning Path 1</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Home</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Learning Path 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎯 Give the reason + don't ask for reasoning</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">The simplest technique of all—and the one that most separates a generic prompt from one that gets it right on the first try. Fable 5 is a <span class="termo" title="A model that does exactly what was requested, without filling gaps with its own common sense">instruction-follower</span> extremely literal: without the why, it follows the request to the letter and may miss the real goal. And there's a specific side effect: asking it to "show its reasoning" in the text can trigger a silent safety refusal.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.1</div><div class="text-xs text-neutral-400">Prereq</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-2" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. The problem with only saying what to do</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. The why formula</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Strong instruction follower</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. The hidden trigger</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. reasoning_extraction</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Read the thinking blocks</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">❓ The problem: only the "what," never the "why"</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a language model can’t read minds—it predicts the most likely next token based on the text it has already seen. If your prompt only says WHAT (“write a function that validates email”), Fable 5 has to GUESS what it’s for, who will use it, and what “good” means here. It usually guesses well... until it doesn’t.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t1-p1">At its core, an LLM is a machine for <span class="termo" title="The central statistical mechanism of an LLM: predicting which piece of text (token) comes next, given everything that came before">next-token prediction</span>. It doesn't have access to what's in your head—only to the prompt text. A request that describes only the task ("do X") leaves a gap: why X matters, who it's for, and what the quality criteria are. The model fills that gap with the statistically most common interpretation for that type of request, which may or may not be yours.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p2">The cost of this “guess” grows with the model’s autonomy. Fable 5 was built to keep instructions in <strong class="text-emerald-400">long-horizon runs</strong>, sometimes spanning multiple days. If the real intent wasn’t provided at the start, it doesn’t fail fast and ask—it executes for hours in the wrong but plausible direction, and you only discover the detour after it has already cost time and tokens.</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">💡</span> Main concept</h3>
+<p class="text-neutral-300">Token forecast <strong>≠</strong> mind reading. The “why” isn’t polite window dressing in the prompt—it’s the missing data the model needs to choose among several equally valid ways to carry out the same “what.”</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+<h4 class="font-bold text-red-400 mb-3">✗ Just what</h4>
+<p class="text-neutral-300 text-sm mb-2">"Write a function that validates email."</p>
+<p class="text-neutral-400 text-xs">The model doesn’t know whether a false positive or a false negative is more costly here — so it will choose on its own.</p>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+<h4 class="font-bold text-emerald-400 mb-3">✓ What + why</h4>
+<p class="text-neutral-300 text-sm mb-2">"Write a function that validates email because we’re filtering spam sign-ups before they reach the CRM — false negatives are worse than false positives here."</p>
+<p class="text-neutral-400 text-xs">Now the criterion for "right" is explicit. The model decides in line with your direction, not the statistical average.</p>
+</div>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: without the reason, Fable 5 predicts the next token and guesses the context, producing generic output; with the reason, it uses the actual intent and produces output aligned with the goal." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<pattern height="32" id="f12a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="f12a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="f12a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="f12a-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="f12a-ahe" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#f12a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<line opacity="0.5" stroke="#4b5563" stroke-dasharray="6 6" stroke-width="1.5" x1="500" x2="500" y1="15" y2="245"></line>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="250" y="24">WITHOUT THE WHY</text>
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="42"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="160" y="71">Instruction (just what)</text>
+<path d="M160,90 L160,112" fill="none" marker-end="url(#f12a-ahc)" opacity="0.55" stroke="#38bdf8" stroke-width="1.8"></path>
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="240" x="40" y="112"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="160" y="141">Fable 5 predicts the next token</text>
+<path d="M160,160 L160,182" fill="none" marker-end="url(#f12a-ahr)" opacity="0.6" stroke="#f87171" stroke-width="1.8"></path>
+<rect fill="#2a0f16" height="58" rx="12" stroke="#f87171" stroke-dasharray="5 4" stroke-width="2" width="280" x="20" y="182"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="160" y="206">Guess the context</text>
+<text fill="#f9b4b4" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="160" y="225">→ generic output</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="750" y="24">WITH THE WHY</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="260" x="580" y="42"></rect>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11.5" font-weight="600" text-anchor="middle" x="710" y="71">Instruction + why (intent)</text>
+<path d="M710,90 L710,112" fill="none" marker-end="url(#f12a-ahe)" opacity="0.55" stroke="#34d399" stroke-width="1.8"></path>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="260" x="580" y="112"></rect>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11.5" font-weight="600" text-anchor="middle" x="710" y="141">Fable 5 uses the actual context</text>
+<path d="M710,160 L710,182" fill="none" marker-end="url(#f12a-ahe)" opacity="0.55" stroke="#34d399" stroke-width="1.8"></path>
+<g filter="url(#f12a-glow)"><rect fill="#0e2018" height="58" rx="14" stroke="#34d399" stroke-width="2.5" width="300" x="560" y="182"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="710" y="206">Aligned output</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="710" y="225">to the real goal</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> without the why, Fable 5 can’t read your mind — it predicts the next token and guesses the missing context.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🧩 The why formula in practice</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> instead of just asking for the task, you provide the full brief—what’s at stake, who it’s for, and what the answer needs to enable. It’s the difference between shouting an order and giving a real brief.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t2-p1">This is an established prompt engineering practice in general—not a direct quote from Fable 5’s official documentation (the source video already made the case, and the research did not confirm a specific verbatim statement for this technique). Treat it as a solid recommendation, not as an “official rule set in stone.” The formula has four parts: <strong class="text-emerald-400">a larger task</strong> (the project this fits into), <strong class="text-emerald-400">who</strong> (who depends on the result), <strong class="text-emerald-400">what the output enables</strong> (the decision or action that comes next) and only then <strong class="text-emerald-400">the request</strong> concrete.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p2">Notice the order: the why comes <strong>before</strong> of the request, not as a footnote afterward. This matters because the model weighs context more heavily when it’s closer (in terms of attention) to the final request—a “why” tacked on at the end of the prompt carries less weight against the request itself.</p>
+<div class="mb-6">
+<p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">Copyable model/formula — EN and PT-BR</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">🇬🇧 EN</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">I'm working on &lt;bigger task, e.g. "security review of the payments API"&gt; for &lt;who, e.g. "the compliance team"&gt;.
+They need &lt;what the output enables, e.g. "a prioritized list of vulnerabilities with severity, to decide what to fix before release"&gt;.
+With that: &lt;concrete ask, e.g. "review auth.py and payments.py and list the risks found"&gt;.</pre>
+</div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">🇧🇷 Brazilian Portuguese</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Estou trabalhando em &lt;tarefa maior, ex.: "revisão de segurança da API de pagamentos"&gt; para &lt;quem, ex.: "o time de compliance"&gt;.
+Eles precisam de &lt;o que a saída habilita, ex.: "uma lista priorizada de vulnerabilidades com severidade, pra decidir o que corrigir antes do release"&gt;.
+Com isso: &lt;pedido concreto, ex.: "revise auth.py e payments.py e liste os riscos encontrados"&gt;.</pre>
+</div>
+</div>
+<div class="relative pl-8 mb-6">
+<div class="absolute left-3 top-0 bottom-0 w-0.5 bg-emerald-500/30"></div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">Step 1 — Larger task</h4>
+<p class="text-neutral-300 text-sm">What project or goal does this fit into? It’s not the command in isolation, but its broader context.</p>
+</div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">Step 2 — Who</h4>
+<p class="text-neutral-300 text-sm">Who will use, read, or depend on the result? A compliance team wants something different from a solo dev.</p>
+</div>
+<div class="mb-6 relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">Step 3 — What the output enables</h4>
+<p class="text-neutral-300 text-sm">What decision or action comes after the response? That determines the right format and priorities.</p>
+</div>
+<div class="relative">
+<div class="absolute left-[-1.35rem] top-1 w-3 h-3 bg-emerald-400 rounded-full"></div>
+<h4 class="font-semibold text-emerald-400">Step 4 — The request</h4>
+<p class="text-neutral-300 text-sm">Only now comes the concrete request — after the model already knows why it matters.</p>
+</div>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Copy-run example: system prompt before and after</h3>
+<p class="text-neutral-300 text-sm mb-3"><strong>Goal:</strong> show, in a real system prompt for a PR review agent, how the why changes what the model prioritizes—without changing the requested “what.”</p>
+<p class="text-xs uppercase tracking-wide text-neutral-500 mb-2 mt-4">🇬🇧 EN</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">before / after — system prompt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">❌ BEFORE (what only):
+"You are an agent that reviews Pull Requests. Point out bugs and style suggestions."
+
+✅ AFTER (what + why):
+"You are an agent that reviews Pull Requests for a team that ships to production 3
+times a day and has no dedicated QA. The goal of this review is to catch what would
+break production — not style. They need a short, prioritized list (bugs &gt; security &gt;
+logic), because long, nitpick-heavy reviews get ignored. With that: review the
+attached diff and list only what would block the merge."</pre>
+</div>
+<p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">🇧🇷 Brazilian Portuguese</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">before / after — system prompt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">❌ ANTES (só o quê):
+"Você é um agente que revisa Pull Requests. Aponte bugs e sugestões de estilo."
+
+✅ DEPOIS (quê + porquê):
+"Você é um agente que revisa Pull Requests para um time que faz deploy 3x ao dia e
+não tem QA dedicado. O objetivo desta revisão é pegar o que quebraria produção — não
+estilo. Eles precisam de uma lista curta e priorizada (bugs &gt; segurança &gt; lógica),
+porque revisões longas e cheias de nitpick são ignoradas. Com isso: revise o diff
+anexado e liste só o que bloquearia o merge."</pre>
+</div>
+<p class="text-neutral-300 text-sm"><strong>How to check:</strong> run both versions against the same diff and compare the output. The “before” version tends to return a long, generic list (including style nitpicks); the “after” version prioritizes what would break production, in the right order. If the “after” output is still generic, the reason wasn’t explicit enough — reinforce it with concrete numbers/criteria.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> a larger task + who + what the output enables + request—in that order; the why comes before the what.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📏 Why this matters even more with Fable 5</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it’s the difference between making a wish to a literal genie and asking a friend who "gets the spirit" of your request. Fable 5 is the literal genie—extremely good at it, which cuts both ways.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t3-p1">Weaker models in <span class="termo" title="How faithfully the model follows exactly what was requested, without deviating or filling in gaps with its own assumptions">instruction-following</span> often “soften” ambiguous requests using common sense learned during training — sometimes accidentally getting your intent right even when you haven’t stated it explicitly. Fable 5 follows exactly what was requested. The official docs describe the benefit as: <em>"Instruction-following is improved enough that you can steer most behaviors with a brief instruction rather than enumerating each behavior by name."</em> <span class="text-neutral-500 text-xs">(source: official doc "Prompting Claude Fable 5" — technique 6, "say less, not more," expanded in module 1.5; translation: "instruction-following has improved enough that you can guide most behaviors with a brief instruction instead of listing every behavior by name.")</span></p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p2">That strength becomes a risk precisely when the why is missing: without it, Fable 5 won’t accidentally “guess well” the way a weaker model sometimes does—it follows the literal request to the letter, even if that misses the real goal behind it. The stronger the instruction follower, the more costly a poorly specified request becomes.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+<h4 class="font-bold text-neutral-300 mb-4">→ Weak instruction follower</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Fills gaps with common sense from training</li>
+<li>• Sometimes “gets it right by accident” without the why</li>
+<li>• Deviates from the literal request more often</li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Strong instruction-follower (Fable 5)</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Does exactly what was asked</li>
+<li>• Without the why, it follows the literal request—even when that’s wrong</li>
+<li>• With the why, gets it right on the first try much more consistently</li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> the more literal the instruction-follower, the more expensive it is to make a request without explaining why.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">⚠️ The hidden trigger: asking it to “show its reasoning”</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> It seems harmless to ask “explain your reasoning”—it’s the kind of phrase any old “be transparent” skill might use. With Fable 5, it can trigger a safety refusal and silently switch models.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t4-p1">There's a direct irony with the rest of this module: asking the model to <strong>explain why you did something in the response text itself</strong> it’s the wrong way to get transparency. Prompts, skills, and harness instructions that ask the model to echo, transcribe, or narrate its internal reasoning as part of the response fall into a specific safety category—and that’s <strong class="text-emerald-400">specific to Fable 5</strong>, not generic behavior from any Claude.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p2">This usually comes from skills migrated from older models, where "show your reasoning step by step" was a valid prompting technique. In Fable 5, the right channel for this already exists—the <span class="termo" title="Structured blocks that carry the model’s internal reasoning, separate from the final response text">thinking blocks</span> — and asking for it to be duplicated in the text response is itself the risk trigger (see topics 5 and 6).</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="font-semibold text-red-400 mb-3">⚠️ Watch out: phrases that seem harmless</h3>
+<p class="text-neutral-300 text-sm">If a skill, system prompt, or harness tells the model to “explain,” “transcribe,” or “echo” its own reasoning in the response visible to the user, it may trigger the safety refusal discussed in the next topic—even if the intent is simply to “be transparent.”</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+<h4 class="font-bold text-red-400 mb-3">✗ Triggers the filter</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• "Explain your reasoning in the response."</li>
+<li>• "Show how you thought, step by step."</li>
+<li>• "Think out loud and write everything before the final answer."</li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+<h4 class="font-bold text-emerald-400 mb-3">✓ Safe</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• "Answer directly with the result."</li>
+<li>• "If you need to record decisions, use an action changelog — not a narration of your reasoning."</li>
+<li>• Need real visibility? → topic 6: read the thinking blocks.</li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> asking Fable 5 to reproduce its reasoning in the text response is a safety trigger, not a neutral request.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🚦 reasoning_extraction: the silent fallback to Opus 4.8</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it's not an error that shows up with a red alert — it's a <code>stop_reason: "refusal"</code> inside a normal HTTP 200 response. If you don’t know to look for it, your app keeps running, just silently on a cheaper model.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t5-p1">The official refusals-and-fallback documentation defines four possible categories in <code class="text-emerald-400">stop_details.category</code>: <code>cyber</code>, <code>bio</code>, <code>frontier_llm</code> and the one that matters here, <span class="termo" title="Refusal category triggered when the request asks the model to reproduce its internal reasoning in the response">reasoning_extraction</span>. This is exactly the trigger from the previous topic.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Official data — category definition</h3>
+<p class="text-neutral-300 text-sm mb-2">🇬🇧 EN (official, doc "refusals-and-fallback"): <em>"The request asks the model to reproduce its internal reasoning in the response text. To get reasoning in a structured form instead, use adaptive thinking."</em></p>
+<p class="text-neutral-400 text-sm">🇧🇷 PT-BR (translation): "The request asks the model to reproduce its internal reasoning in the response text. To get the reasoning in a structured form, use adaptive thinking."</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p2">When this triggers, the refusal happens <strong>before any output</strong> and is not billed. There are three ways to configure an automatic fallback to Claude Opus 4.8 when this happens: server-side fallback (Claude API / Claude Platform on AWS, via beta header), SDK middleware (<code>BetaRefusalFallbackMiddleware</code>) or a manual retry with "fallback credit". In all three cases, if you don't audit your skills/prompts, the fallback becomes a silent leak in quality and cost — the app "works," just with a different model than you think you're using.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Decision flow: a request passes through the safety classifier; if it asks to reproduce the reasoning in the text, it generates refusal reasoning_extraction and falls back automatically to Opus 4.8; otherwise, it proceeds normally with Fable 5." class="w-full h-auto" role="img" viewbox="0 0 1080 430">
+<defs>
+<pattern height="32" id="f12b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="f12b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="f12b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="f12b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="f12b-ahe" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#f12b-grid)" height="430" width="1080" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="160" x="20" y="160"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="100" y="185">Request from the</text>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="100" y="202">user</text>
+<path d="M180,190 L260,190" fill="none" marker-end="url(#f12b-ahc)" opacity="0.55" stroke="#38bdf8" stroke-width="1.8"></path>
+<polygon fill="#111827" points="400,100 540,190 400,280 260,190" stroke="#34d399" stroke-width="2"></polygon>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="400" y="183">Safety classifier</text>
+<text fill="#c9f5df" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="200">asks you to reproduce</text>
+<text fill="#c9f5df" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="400" y="214">the reasoning in the text?</text>
+<path d="M540,190 C610,190 630,110 700,110" fill="none" marker-end="url(#f12b-ahr)" opacity="0.65" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="610" y="140">yes</text>
+<rect fill="#2a0f16" height="70" rx="14" stroke="#f87171" stroke-width="2" width="320" x="700" y="75"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="860" y="103">Refusal: reasoning_extraction</text>
+<text fill="#f9b4b4" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="860" y="123">stop_reason: refusal · HTTP 200</text>
+<path d="M860,145 L860,195" fill="none" marker-end="url(#f12b-ahr)" opacity="0.55" stroke="#f87171" stroke-width="1.8"></path>
+<g filter="url(#f12b-glow)"><rect fill="#0e1b26" height="75" rx="16" stroke="#38bdf8" stroke-width="2.5" width="320" x="700" y="195"></rect></g>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="860" y="228">Automatic fallback</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="860" y="250">→ Claude Opus 4.8</text>
+<path d="M360,270 C360,310 300,325 230,340" fill="none" marker-end="url(#f12b-ahe)" opacity="0.65" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="330" y="318">no</text>
+<rect fill="#0e2018" height="70" rx="14" stroke="#34d399" stroke-width="2" width="340" x="60" y="340"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="230" y="370">Works as usual in Fable 5</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="230" y="390">(no refusal, no fallback)</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Copy-run example: auditing existing skills</h3>
+<p class="text-neutral-300 text-sm mb-3"><strong>Goal:</strong> having an official Anthropic checklist for auditing old prompts/skills for instructions that ask the model to "show its reasoning" in the text—the exact trigger for topic 4. This is the official briefing text, used as an example of what <strong>DON’T</strong> / of what <strong>audit</strong> on existing skills (this isn’t a prompt to “run directly” on the task—it’s the policy you paste at the top of a CLAUDE.md, or give an agent as instructions for auditing the skills repository itself).</p>
+<p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">🇬🇧 EN (official — doc "Prompting Claude Fable 5")</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">5. don't ask claude to show its reasoning</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Don't instruct Claude to reproduce its reasoning in the response. Prompts, skills, or
+harness instructions that tell the model to echo, transcribe, or explain its internal
+reasoning as response text can trigger the reasoning_extraction refusal category on
+Claude Fable 5, causing elevated fallbacks to Claude Opus 4.8. Audit existing skills
+and system prompts for reflection or show-your-thinking instructions when migrating.
+If your application needs reasoning visibility, read the structured thinking blocks
+from adaptive thinking instead.</pre>
+</div>
+<p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">🇧🇷 PT-BR (translation)</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">5. don't ask to show the reasoning</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Não instrua o Claude a reproduzir o raciocínio dele na resposta. Prompts, skills ou
+instruções de harness que pedem pro modelo ecoar, transcrever ou explicar o raciocínio
+interno como texto de resposta podem disparar a categoria de recusa reasoning_extraction
+no Claude Fable 5, causando fallbacks mais frequentes pro Claude Opus 4.8. Ao migrar,
+audite skills e system prompts existentes em busca de instruções de reflexão ou
+"mostre seu raciocínio". Se sua aplicação precisa de visibilidade do raciocínio, leia os
+blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
+</div>
+<p class="text-neutral-300 text-sm"><strong>How to check:</strong> grep your skills/system prompts repository for phrases like "explain your reasoning", "show your thinking", "reproduce your reasoning" (and the Portuguese equivalents from topic 4). If you find any, it's a candidate for <code>reasoning_extraction</code> — replace it with the reading on thinking blocks (topic 6) and monitor the fallback rate to Opus 4.8 before and after the fix.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> <code>reasoning_extraction</code> is a <code>stop_reason: refusal</code> as HTTP 200—audit your skills before it becomes a silent fallback to Opus 4.8.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🔍 The alternative: read the thinking blocks, don’t ask it to “tell you”</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> instead of asking the actor to narrate the behind-the-scenes details in the middle of the scene, you read the behind-the-scenes script separately. The <span class="termo" title="API feature that makes the model think in separate structured blocks apart from the final response text">adaptive thinking</span> already separates the two channels—the job is to read the right channel, not force both into one.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t6-p1">If your application needs real visibility into reasoning — for debugging, auditing, or logging — the right answer isn't to ask the model to rewrite its reasoning in the text the user sees. It's to read the <strong class="text-emerald-400">structured thinking blocks</strong> that adaptive thinking already produces, in a channel separate from the final response. This preserves both things at once: the model thinks as much as it needs to, and you have visibility — without triggering topic 5.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p2">In practice, this is a change of <em>where</em> the instruction says: instead of "explain your reasoning <strong>in the response</strong>", the instruction (or your harness code) becomes "read the reasoning <strong>in the thinking block</strong>". See the official adaptive thinking documentation for the exact API configuration.</p>
+<div class="mb-6">
+<p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">Illustrative response structure (not a verbatim quote from the docs—just shows where each channel goes)</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">response content[]—illustrative</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">{
+  "content": [
+    { "type": "thinking", "thinking": "...raciocínio interno estruturado..." },
+    { "type": "text", "text": "...resposta final que o usuário vê..." }
+  ]
+}</pre>
+</div>
+</div>
+<p class="text-neutral-300 text-sm mb-6"><strong>How to check:</strong> if your application needs to audit decisions, read the blocks with <code>type === "thinking"</code> in your code, instead of instructing it to "explain your reasoning" in the prompt. Confirm that the <code>type === "text"</code> the final output stays clean, direct, and free of behind-the-scenes narration—and the fallback rate to Opus 4.8 (topic 5) doesn’t increase.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+<h4 class="font-bold text-red-400 mb-3">✗ Ask it to reproduce in the text</h4>
+<p class="text-neutral-300 text-sm">"Explain your reasoning before answering." → risk of <code>reasoning_extraction</code> + silent fallback.</p>
+</div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+<h4 class="font-bold text-emerald-400 mb-3">✓ Read the thinking blocks</h4>
+<p class="text-neutral-300 text-sm">Enable adaptive thinking and read <code>type: "thinking"</code> in your code. No trigger, with real visibility.</p>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> reasoning visibility lives in the thinking blocks, not in the response text.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- FONTES -->
+<section class="mb-12">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+<h3 class="font-semibold text-neutral-300 mb-3 text-sm">📚 Sources for this module</h3>
+<ul class="space-y-1 text-xs text-neutral-400">
+<li>• <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" rel="noopener" target="_blank">Prompting Claude Fable 5</a> (official docs — techniques and code boxes)</li>
+<li>• <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback" rel="noopener" target="_blank">Refusals and fallback</a> (official docs — reasoning_extraction category)</li>
+<li>• <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking" rel="noopener" target="_blank">Adaptive thinking</a> (official docs — thinking blocks)</li>
+</ul>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">The reason provides context about intent</strong><span class="text-neutral-400"> — without it, Fable 5 (a literal instruction-follower) guesses and may miss the real goal.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Practical formula</strong><span class="text-neutral-400"> — larger task + who + what the output enables + specific request, in that order.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Never ask for “show your reasoning” in the response</strong><span class="text-neutral-400"> — this can trigger reasoning_extraction and silently fall back to Opus 4.8.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Do you need reasoning visibility?</strong><span class="text-neutral-400"> Read the structured thinking blocks from adaptive thinking—don't ask for them to be rewritten in the response.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-emerald-400 mb-2">Next module:</h3>
+<p class="text-neutral-300">1.3 — Negative prompting + boundaries: what NOT to do and when to stop and ask.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-1-1.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-3.html">Next Module →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

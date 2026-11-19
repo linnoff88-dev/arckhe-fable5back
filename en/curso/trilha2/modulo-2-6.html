@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>2.6 Loops with verification + external memory · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<!-- ANTI-FOUC: script bloqueante, SEPARADO, ANTES do Tailwind. Le inema.prefs e aplica
+       .dark + data-theme + variaveis de leitura ANTES do primeiro paint. Default dark no erro. -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k];
+          }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro';
+          else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark');
+      else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr);
+      else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style;
+      var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system'
+        ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura'
+          ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif'
+          : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = {
+        emerald: [152, 76, 45], blue: [217, 91, 60], purple: [258, 90, 66],
+        amber: [38, 92, 50], teal: [174, 72, 41], rose: [350, 89, 60]
+      };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0] + '');
+      s.setProperty('--accent-s', a[1] + '%');
+      s.setProperty('--accent-l', a[2] + '%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) {
+      try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {}
+    }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO, identico byte-a-byte em toda pagina) -->
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    details.inema-deepen > summary { cursor: pointer; list-style: none; }
+    details.inema-deepen > summary::-webkit-details-marker { display: none; }
+
+    /* Light mode: base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode: blue (trilha 2 - primária) */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37,99,235,0.10); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37,99,235,0.14); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+
+    /* Light mode: emerald (cruzamento com a trilha 1) */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:text-emerald-300:hover { color: #047857; }
+
+    /* Light mode: red (alertas + grid evitar) */
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+
+    /* Light mode: sky (citação oficial) */
+    html:not(.dark) .border-sky-500 { border-color: #0369a1; }
+
+    /* Light mode: remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode: nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    /* Dark mode: bordas e linhas divisorias suavizadas */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG: adaptar ao light mode */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Learning Path 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>My journey</span>
+<span aria-hidden="true" class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span>
+</button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors" data-inema-appearance-toggle="[data-inema-appearance]" type="button">
+<span aria-hidden="true">◑</span><span class="hidden sm:inline">Appearance</span>
+</button>
+<div class="inema-appearance-pop" data-inema-appearance="">
+<div aria-label="Theme" class="inema-segment" role="group">
+<button data-inema-set-theme="inema-dark">Dark</button>
+<button data-inema-set-theme="claro">Clear</button>
+<button data-inema-set-theme="sepia">Sepia</button>
+<button data-inema-set-theme="foco">Focus</button>
+<button data-inema-set-theme="contraste">High contrast</button>
+</div>
+<div aria-label="Source" class="inema-segment" role="group">
+<button data-inema-set-font="inter">Inter</button>
+<button data-inema-set-font="system">System</button>
+<button data-inema-set-font="leitura">Reading</button>
+</div>
+<div aria-label="Text length" class="inema-segment" role="group">
+<button data-inema-set-fontscale="100">A</button>
+<button data-inema-set-fontscale="112">A+</button>
+<button data-inema-set-fontscale="125">A++</button>
+</div>
+<div aria-label="Line width" class="inema-segment" role="group">
+<button data-inema-set-linewidth="60">Narrow</button>
+<button data-inema-set-linewidth="68">Medium</button>
+<button data-inema-set-linewidth="75">Wide</button>
+</div>
+<div aria-label="Subtext" class="inema-segment" role="group">
+<button data-inema-set-leading="1.45">Compact</button>
+<button data-inema-set-leading="1.7">Comfortable</button>
+</div>
+<div aria-label="Accent color" class="inema-accent-grid" role="group">
+<button data-inema-set-accent="emerald" title="Emerald"></button>
+<button data-inema-set-accent="blue" title="Blue"></button>
+<button data-inema-set-accent="purple" title="Purple"></button>
+<button data-inema-set-accent="amber" title="Amber"></button>
+<button data-inema-set-accent="teal" title="Teal"></button>
+<button data-inema-set-accent="rose" title="Pink"></button>
+</div>
+</div>
+</div>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- BREADCRUMB -->
+<nav aria-label="Breadcrumb" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-blue-400" href="index.html">Learning Path 2</a>
+<span>/</span>
+<span class="text-blue-400">Module 2.6</span>
+</div>
+</nav>
+<!-- HEADER -->
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-6" data-inema-track="2" id="modulo-2-6">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.6</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔁🗂️ Loops with verification + external memory</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Repeating "every now and then" without criteria isn't continuous improvement—it's noise with a date. Set up a real verification loop, with a focus, criteria, test, and record, and give it a memory that survives the end of the chat.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">2.3-2.4</div><div class="text-xs text-neutral-400">Prereq</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 2.6 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<!-- TOC -->
+<nav aria-label="Index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Weak loop vs. strong loop</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. The 7-step loop</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Chat alone isn’t enough</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. What goes in memory</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Loop + memory together</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Common mistakes</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🔁 Repeating isn't improving: what's missing from a weak loop</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> going to the gym every single day without logging any weights, reps, or measurements isn’t training—it’s just showing up. Without a benchmark saved from one session to the next, you don’t know whether you’ve made progress or just gone in circles.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m26-t1-p1">A real improvement loop isn't "taking another look from time to time" — it's a cycle with <strong class="text-blue-400">focus</strong> (one small area at a time), <strong class="text-blue-400">criterion saved</strong> from one cycle to the next, <strong class="text-blue-400">test</strong> that confirms whether the change worked and a <strong class="text-blue-400">record</strong> of what was learned. Remove any one of these four pieces, and what remains is repetition, not improvement.</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">✗</span> Weak loop (avoid)</h3>
+<p class="text-neutral-300">"Review my app every day." It sounds disciplined, but it doesn’t say what to review, what criteria to use, what to do if you find something, or where to save what you discover. Without those answers, the agent repeats the same generic scan every day — or worse, uses different criteria each time because none were saved.</p>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Comparison between a weak loop, which just repeats review in circles without criteria or records, and a strong loop, which chains choosing, testing, and recording, ending with project memory that also informs the next cycle" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m26a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m26a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m26a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#60a5fa" opacity="0.10" r="1.3"></circle></pattern>
+<marker id="m26a-ah-neutral" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#9ca3af"></path></marker>
+<marker id="m26a-ah-blue" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m26a-ah-cyan" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m26a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<line opacity="0.5" stroke="#6b7280" stroke-dasharray="9 9" stroke-width="1.5" x1="500" x2="500" y1="20" y2="240"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="250" y="30">BEFORE · weak loop</text>
+<rect fill="#1f2937" height="64" rx="14" stroke="#6b7280" stroke-width="1.8" width="170" x="60" y="98"></rect>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="145" y="124">review</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="145" y="144">from time to time</text>
+<path d="M100,98 C80,52 210,52 190,98" fill="none" marker-end="url(#m26a-ah-neutral)" opacity="0.6" stroke="#9ca3af" stroke-dasharray="4 5" stroke-width="1.6"></path>
+<circle cx="145" cy="200" fill="#1f2937" r="16" stroke="#9ca3af" stroke-width="1.6"></circle>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="145" y="205">?</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="145" y="228">without criteria, without a record</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="750" y="30">NOW · strong loop</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1622" height="44" rx="10" stroke="#60a5fa" stroke-width="2" width="110" x="560" y="50"></rect><text fill="#bfe0ff" text-anchor="middle" x="615" y="76">choose</text>
+<rect fill="#0e1622" height="44" rx="10" stroke="#60a5fa" stroke-width="2" width="110" x="705" y="50"></rect><text fill="#bfe0ff" text-anchor="middle" x="760" y="76">test</text>
+<rect fill="#0e1622" height="44" rx="10" stroke="#60a5fa" stroke-width="2" width="110" x="850" y="50"></rect><text fill="#bfe0ff" text-anchor="middle" x="905" y="76">record</text>
+</g>
+<path d="M670,72 L705,72" fill="none" marker-end="url(#m26a-ah-blue)" opacity="0.7" stroke="#60a5fa" stroke-width="2"></path>
+<path d="M815,72 L850,72" fill="none" marker-end="url(#m26a-ah-blue)" opacity="0.7" stroke="#60a5fa" stroke-width="2"></path>
+<g filter="url(#m26a-glow)"><rect fill="#0e1b26" height="64" rx="14" stroke="url(#m26a-grad)" stroke-width="2.5" width="280" x="640" y="150"></rect></g>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="780" y="176">🗂️ project memory</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="780" y="196">criterion saved + lesson recorded</text>
+<path d="M905,94 C905,125 830,125 830,150" fill="none" marker-end="url(#m26a-ah-cyan)" stroke="#38bdf8" stroke-width="1.8"></path>
+<path d="M700,150 C700,118 650,105 618,94" fill="none" marker-end="url(#m26a-ah-cyan)" stroke="#38bdf8" stroke-dasharray="5 5" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10" text-anchor="end" x="955" y="120">save</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10" text-anchor="start" x="642" y="118">read the criteria</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">Caption: on the left, "review" just revolves around itself, with no criterion or record; on the right, choose → test → record ends with a memory that also feeds the next cycle.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ What the strong loop guarantees</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Choose one small area per cycle, not “the entire app.”</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Uses a criterion saved from one cycle to the next — it doesn't reinvent the yardstick each time.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Only apply the change if it's safe and reversible.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Run a real test before accepting that it "improved."</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Ask a verifier to try to find an error.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Records the lesson in something that survives the end of the cycle.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ What the weak loop has</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Review from time to time" without saying what to review.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No criteria saved—each cycle reinvents what “good” means.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Applies a change without checking whether it’s reversible.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Accepts "seems better" without any testing.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Only the opinion of the person who made the change, without a second check.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No record—the next session starts from scratch.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> a real loop has a focus, criteria, tests, and a record—without all four, it’s just repetition that looks disciplined.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">🛠️ The 7-step loop — copy-run prompt</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it’s an F1 team’s pit-stop checklist—every stop follows the same steps, in the same order, and ends with a note about what to adjust next time. No one improvises the sequence at each stop.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m26-t2-p1">Tip 11 of the guide gives you the concrete recipe for turning “review from time to time” into a real cycle: 7 fixed steps, always in the same order, ending by updating the project memory (tip 12, topic 4 below).</p>
+<div class="mb-6">
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Goal:</strong> give the agent a fixed routine for continuous verification — one that reads the saved criterion before acting and records the lesson learned afterward, instead of reevaluating everything from scratch each cycle.</p></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">prompt tested in practice (not an official quote) · loop-verificacao-7-passos.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">A cada ciclo:
+1. escolha uma área pequena do sistema;
+2. analise com base nos critérios já salvos em memória;
+3. proponha uma melhoria;
+4. implemente somente se for segura e reversível;
+5. rode teste;
+6. peça ao verificador para tentar encontrar erro;
+7. registre a lição aprendida.</pre>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">How to check:</strong> run a complete cycle from start to finish and confirm at the end that there is (a) a record of a criterion that was actually consulted in step 2 and (b) a new line recorded in step 7. If step 7 left no trace anywhere, the next cycle will start from scratch — the loop didn’t really close.</p></div>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="A circular 7-stage loop—choose, analyze, propose, implement, test, verify, and record—revolving around a central project memory: the analyze stage reads the criteria already saved in memory, and the record stage saves the lesson learned back to it, closing the loop" class="w-full h-auto" role="img" viewbox="0 0 1000 360">
+<defs>
+<lineargradient id="m26b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#38bdf8"></stop><stop offset="1" stop-color="#0ea5e9"></stop></lineargradient>
+<filter height="180%" id="m26b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m26b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#60a5fa" opacity="0.10" r="1.3"></circle></pattern>
+<marker id="m26b-ah-blue" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m26b-ah-cyan" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m26b-grid)" height="360" width="1000" x="0" y="0"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="26">the 7-step loop, ending with memory</text>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="2">
+<path d="M500,60 L602,109" marker-end="url(#m26b-ah-blue)"></path>
+<path d="M602,109 L627,219" marker-end="url(#m26b-ah-blue)"></path>
+<path d="M627,219 L556,307" marker-end="url(#m26b-ah-blue)"></path>
+<path d="M556,307 L444,307" marker-end="url(#m26b-ah-blue)"></path>
+<path d="M444,307 L373,219" marker-end="url(#m26b-ah-blue)"></path>
+<path d="M373,219 L398,109" marker-end="url(#m26b-ah-blue)"></path>
+<path d="M398,109 L500,60" marker-end="url(#m26b-ah-blue)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="440" y="40"></rect><text fill="#bfe0ff" text-anchor="middle" x="500" y="65">1 choose</text>
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="542" y="89"></rect><text fill="#bfe0ff" text-anchor="middle" x="602" y="114">2 analyze</text>
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="567" y="199"></rect><text fill="#bfe0ff" text-anchor="middle" x="627" y="224">3 propose</text>
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="496" y="287"></rect><text fill="#bfe0ff" font-size="10.5" text-anchor="middle" x="556" y="312">4 implement</text>
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="384" y="287"></rect><text fill="#bfe0ff" text-anchor="middle" x="444" y="312">5 test</text>
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="313" y="199"></rect><text fill="#bfe0ff" text-anchor="middle" x="373" y="224">6 verify</text>
+<rect fill="#0e1622" height="40" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="338" y="89"></rect><text fill="#bfe0ff" text-anchor="middle" x="398" y="114">7 record</text>
+</g>
+<g filter="url(#m26b-glow)"><rect fill="#0e1b26" height="54" rx="12" stroke="url(#m26b-grad)" stroke-width="2.5" width="120" x="440" y="163"></rect></g>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="500" y="186">🗂️ memory</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="500" y="202">of the project</text>
+<path d="M500,163 Q555,140 596,120" fill="none" marker-end="url(#m26b-ah-cyan)" stroke="#38bdf8" stroke-dasharray="5 5" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10" text-anchor="start" x="600" y="150">read the criteria</text>
+<path d="M404,120 Q445,140 500,163" fill="none" marker-end="url(#m26b-ah-cyan)" stroke="#38bdf8" stroke-dasharray="5 5" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10" text-anchor="end" x="330" y="150">save a lesson</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">Caption: the 7 steps rotate in a circle, always in the same order; the dashed cyan arrows show the link to memory—"analyze" reads the saved criterion, "record" saves the lesson learned, closing the loop for the next rotation.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-5 mb-6">
+<p class="text-xs uppercase tracking-wide text-sky-400 font-semibold mb-2">Cross-reference with track 1 · official source</p>
+<blockquote class="border-l-4 border-sky-500 pl-4 text-neutral-200 text-sm italic mb-3">"Establish a method for checking your own work at an interval of [X] as you build. Run this every [X interval], verifying your work with subagents against the specification."</blockquote>
+<p class="text-neutral-300 text-sm mb-3">Steps 5 and 6 of this loop (run a test + ask the verifier to find errors) echo exactly the technique from module 1.4 of track 1, which is backed by Anthropic’s official documentation. There, the focus is on how to delegate this check technically (a fresh-context subagent); here, it’s the practical rhythm of when to trigger that check within a continuous improvement cycle.</p>
+<a class="inline-flex items-center gap-1 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors" href="../trilha1/modulo-1-4.html">→ Go deeper in module 1.4 — Let it act + prove it’s done</a>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> 7 fixed steps, always in the same order—the criterion goes in at step 2, the lesson comes out recorded at step 7.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🗂️ The problem with relying only on chat history</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a company where all important knowledge lives only in one person’s head, or only in a chat nobody saves. The day that person leaves—or the chat resets—the company loses everything it learned, even after months of learning.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m26-t3-p1">For long-running, continuous work — a product that evolves over months, a brand running campaigns every week — the history of a single conversation isn’t reliable memory. A new session, overflowing context, or a cleared chat: any of these can erase decisions and lessons that took real time to learn.</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Week 1 — decision made</h4>
+<p class="text-neutral-300 text-sm">You and the agent decide, in a long conversation, that campaign X works better with an informal tone.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Week 3 — new session</h4>
+<p class="text-neutral-300 text-sm">New context, different chat. The agent no longer has access to that decision—it lived only in the old conversation history.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Week 3 — mistake repeated</h4>
+<p class="text-neutral-300 text-sm">The agent suggests a formal tone again for the same campaign because it doesn’t know that this has already been tested and rejected.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Result</h4>
+<p class="text-neutral-300 text-sm">Time wasted relearning something that already had an answer—and no one notices until they compare it with what was decided weeks ago.</p>
+</div>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> The compounded cost</h3>
+<p class="text-neutral-300">Every decision that exists only in chat is a decision that will have to be revisited from scratch in the next long session. That doesn’t scale: the longer the project lasts, the more costly it becomes to rebuild context whenever the memory doesn’t survive the end of the conversation.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> chat history is fragile by nature—real project memory needs to live outside the conversation.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">📋 What to put in external memory</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> it’s a project’s operations manual—it doesn’t store every conversation that’s ever happened; it stores only what any new person (or new agent) would need to know to avoid repeating the same mistakes and decisions.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m26-t4-p1">Tip 12 of the guide lists what an external memory for ongoing work should contain—it’s not raw history, but a distillation of what changes the next decision. Each item below is something you can check to see whether it’s already recorded in your project today.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">🎯</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Target audience</h4>
+<p class="text-neutral-400 text-xs">Who the project serves, and what that person already knows or wants.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">🗣️</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Communication tone</h4>
+<p class="text-neutral-400 text-xs">How the project communicates, formally or informally, and why.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">💼</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Offers</h4>
+<p class="text-neutral-400 text-xs">What is currently being sold/offered.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">📈</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Campaigns that worked</h4>
+<p class="text-neutral-400 text-xs">What has already been tested and worked—and what didn’t.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">⚙️</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Technical rules</h4>
+<p class="text-neutral-400 text-xs">Constraints, standards, and integrations that must not be broken.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">🧭</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Strategic decisions</h4>
+<p class="text-neutral-400 text-xs">What has already been decided and doesn’t need to be reopened every time.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">🔁</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Recurring mistakes</h4>
+<p class="text-neutral-400 text-xs">What has failed more than once and how to avoid it happening again.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">🛠️</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Work processes</h4>
+<p class="text-neutral-400 text-xs">How things are done here, step by step.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">✅</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Validated prompts</h4>
+<p class="text-neutral-400 text-xs">What has worked well and can be reused.</p>
+</div>
+<div class="bg-dark-800 border border-dark-600 rounded-xl p-4">
+<div class="text-xl mb-1">📐</div>
+<h4 class="font-semibold text-blue-400 text-sm mb-1">Quality standards</h4>
+<p class="text-neutral-400 text-xs">What separates “acceptable” from “truly ready” in this project.</p>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> good external memory doesn’t store the entire conversation—it stores only what changes the next decision.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🔗 The loop that reads and writes to memory every cycle</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> an experienced professional doesn’t have to relearn the job every Monday—they consult their own notes before making decisions and write down what they learned before they leave. That’s exactly what brings the two tips together.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m26-t5-p1">On its own, the 7-step loop (tip 11) is already better than "reviewing every now and then." But it only becomes a real work system when steps 2 and 7 point to a real place: step 2 reads the external memory (tip 12) before analyzing, and step 7 writes to it after learning something. Without that link, the loop resets the criteria with each cycle — exactly the problem in topic 3.</p>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🔗</span> Where the loop meets memory</h3>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Step 2 — analyze based on the criteria already saved:</strong> 📖 reads the target audience, technical rules, quality standards, and decisions already made.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Step 6 — ask the verifier to try to find an error:</strong> 📖 reads the recurring errors already recorded, so you don't repeat the same mistake.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Step 7 — record the lesson learned:</strong> ✍️ record a new entry (decision/lesson, why it matters, where to apply it, what to avoid, date).</span></li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h4 class="font-semibold text-white mb-3">Combined example—reviewing a product’s onboarding</h4>
+<ol class="space-y-2 text-neutral-300 text-sm list-decimal list-inside">
+<li>Choose a small area: just the onboarding welcome screen.</li>
+<li><span class="text-blue-400">📖 reads</span> in memory: communication tone + quality standard already validated for this screen.</li>
+<li>Suggests: replace a long paragraph with 3 bullets, following the saved tone.</li>
+<li>Implement it—it’s reversible (just undo the commit).</li>
+<li>Run the test: 5 real users complete onboarding; measure the time to the first click.</li>
+<li>A verifier (another agent/person) tries to find a problem — checks whether any bullet cut information that would change the user's decision.</li>
+<li><span class="text-blue-400">✍️ record</span> in memory: “Short bullets reduced time to the first click by 20%—apply that to the rest of onboarding. Date: today.”</li>
+</ol>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> the loop without memory restarts every time; the loop that reads and writes to memory accumulates — each cycle starts smarter than the last.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">⚠️ Common mistakes with these 2 tips — quick checklist</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag a question" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a calendar nobody updates is worse than having no calendar at all—because everyone trusts it, assuming it’s accurate. Out-of-date external memory carries the same risk: it looks like a source of truth, but it lies.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Do</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Keep memory short and distilled — only what changes the next decision.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Update the existing note instead of duplicating new information.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Always define a small area for each loop cycle.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Confirm an actual test before accepting “it improved.”</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Let the verifier be someone or something separate from whoever implemented the work.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Review the memory from time to time to remove what has become obsolete.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Avoid</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Letting memory become a chat history pasted into a file (junk, not memory).</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Duplicating the same decision in three different files that diverge over time.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Run the loop on an area too large to fit in a single cycle.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Applying a change “because it seems better” without running a test.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Letting the same agent that implemented the work validate it.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Never revisit the memory—it ages too.</span></li>
+</ul>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Focus</div><div class="text-neutral-400 text-xs">one small area per cycle</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Criterion</div><div class="text-neutral-400 text-xs">saved, not reinvented</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Verification</div><div class="text-neutral-400 text-xs">someone else tests</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Record</div><div class="text-neutral-400 text-xs">save before the next cycle</div></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> a loop without memory is deaf; memory without a loop is dead—the two tips only work when used together in full.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">A real loop</strong><span class="text-neutral-400"> — focus + criteria + testing + documentation, not vague repetition.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">7 fixed steps</strong><span class="text-neutral-400"> — from choosing to recording, always in the same order.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">External memory</strong><span class="text-neutral-400"> — what survives after the chat ends: audience, tone, offers, rules, decisions, mistakes, processes, prompts, and patterns.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">The link that closes the loop</strong><span class="text-neutral-400"> — step 2 reads the memory, step 7 writes to it.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Cross-reference with track 1</strong><span class="text-neutral-400"> — verification by a subagent (module 1.4) provides official technical support for step 6.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Next module:</h3><p class="text-neutral-300">2.7 — Bonus: the master prompt.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-5.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-7.html">Next Module →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<!-- FOOTER -->
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+<p class="mt-2 text-xs">Learning Path 2 — a practical guide to advanced use of Fable 5 as a work agent (original content, not an official Anthropic quote, except where indicated).</p>
+</div>
+</footer>
+<!-- V1 core functions -->
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){
+      try{
+        var unit = btn.closest('.copy-unit') || btn.closest('.copybox');
+        var pre = unit.querySelector('pre');
+        navigator.clipboard.writeText(pre.textContent);
+        var o = btn.textContent;
+        btn.textContent = 'copiado ✓';
+        setTimeout(function(){ btn.textContent = o; }, 1500);
+      }catch(e){}
+    }
+  </script>
+<!-- learn.js + INEMA.init() -->
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') {
+      window.INEMA.init();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>Bono: el prompt maestro · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-7.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-7.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-7.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen" data-inema-module="2-7" data-inema-track="2"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-7.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-7.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-7.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Ruta 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.7</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.7 · BONO</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🏁 Bonificación: el prompt maestro</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Este es el <strong class="text-blue-400">último módulo de todo el curso</strong> — las 7 partes de la ruta 1 (fundamentos de prompting) y las 7 partes de la ruta 2 (Fable 5 como agente de trabajo) convergen aquí en un único prompt genérico, probado en la práctica, que puedes adaptar a cualquiera de tus proyectos. Cierra con la diferencia que separa a quien usa Fable 5 como chat de quien lo usa como sistema de trabajo.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~50</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">2.1–2.6</div><div class="text-xs text-neutral-400">Requisito previo</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Bono</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.7" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-7" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Recapitulación: los 12 consejos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. El prompt maestro</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Cómo personalizar</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Chat vs. sistema</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Ruta 1 ↔ Ruta 2</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Lista de verificación final</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-10">
+<p class="text-neutral-200"><strong class="text-blue-400">De dónde salió esto:</strong> los módulos 2.1 a 2.6 surgieron de una guía práctica propia del usuario sobre cómo usar Fable 5 como agente de trabajo, no como cita oficial de Anthropic; cada prompt allí es <strong class="text-blue-400">probado en la práctica</strong>, no «verbatim de doc». Este módulo adicional cierra la trilha 2 <strong class="text-blue-400">y todo el curso</strong>: primero, un repaso detallado de los 12 consejos; después, el prompt maestro que los combina todos; y, por último, un mapa de cómo esta ruta práctica se conecta con la base técnica/oficial de la ruta 1.</p>
+</div>
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-7#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">Resumen: los 12 consejos de la ruta 2</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">Imagínalo así:</strong> la ruta 1 te dio la gramática para hablar con Fable 5. La ruta 2 te dio el manual para trabajar con él <em>trabajar</em> con él: elegir la tarea adecuada, dar contexto, controlar la profundidad, verificar de verdad, delegar por función, guardar memoria. Juntos se convierten en una única forma de operar.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m27-t1-p1">Antes del prompt maestro, conviene consolidar los 12 consejos de los módulos 2.1 a 2.6 en una sola lista, para que puedas ver en segundos cuál falta en tu sesión actual. Cada línea incluye entre corchetes el módulo de origen, por si quieres volver a leer el contexto completo.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="La ruta 1, fundamentos de prompting, y la ruta 2, Fable 5 como agente de trabajo, se combinan en un único sistema de trabajo: diagnóstico, decisión, plan y siguiente paso" class="w-full h-auto" role="img" viewbox="0 0 900 210">
+<defs>
+<lineargradient id="m27a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#38bdf8"></stop></lineargradient>
+<filter height="180%" id="m27a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m27a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m27a-grid)" height="210" width="900" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e2018" height="76" rx="14" stroke="#34d399" stroke-width="2" width="220" x="20" y="62"></rect>
+<text fill="#34d399" font-size="17" font-weight="600" text-anchor="middle" x="130" y="94">Ruta 1</text>
+<text fill="#a7f3d0" font-size="11" text-anchor="middle" x="130" y="114">fundamentos de prompting</text>
+<text fill="#a7f3d0" font-size="11" text-anchor="middle" x="130" y="130">7 módulos</text>
+<text fill="#9ca3af" font-size="30" font-weight="600" text-anchor="middle" x="268" y="112">+</text>
+<rect fill="#0e1622" height="76" rx="14" stroke="#60a5fa" stroke-width="2" width="220" x="300" y="62"></rect>
+<text fill="#60a5fa" font-size="17" font-weight="600" text-anchor="middle" x="410" y="94">Ruta 2</text>
+<text fill="#bfdbfe" font-size="11" text-anchor="middle" x="410" y="114">agente de trabajo</text>
+<text fill="#bfdbfe" font-size="11" text-anchor="middle" x="410" y="130">7 módulos</text>
+<text fill="#9ca3af" font-size="30" font-weight="600" text-anchor="middle" x="556" y="112">=</text>
+<g filter="url(#m27a-glow)"><rect fill="#0e1622" height="104" rx="16" stroke="url(#m27a-grad)" stroke-width="2.5" width="290" x="590" y="48"></rect></g>
+<text fill="#93c5fd" font-size="18" font-weight="600" text-anchor="middle" x="735" y="86">Sistema de trabajo</text>
+<text fill="#bfe6ff" font-size="11" text-anchor="middle" x="735" y="108">diagnóstico → decisión →</text>
+<text fill="#bfe6ff" font-size="11" text-anchor="middle" x="735" y="124">plan → siguiente paso</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">La gramática de la ruta 1 (qué decir) más el manual de trabajo de la ruta 2 (cómo operar) forman el mismo sistema de trabajo que el prompt maestro codifica en el tema 2.</p>
+</div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">cheat-sheet-trilha2.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">CHEAT SHEET — Fable 5 como Agente de Trabalho (módulos 2.1–2.6)
+
+[2.1] Use o Fable 5 pra problemas difíceis — arquitetura, risco, plano, auditoria — não pra resumir texto
+[2.1] Explique o motivo do pedido — objetivo, público e resultado esperado, antes da tarefa
+[2.2] Controle a profundidade — baixa/média/alta/máxima conforme a complexidade real
+[2.2] Defina limites antes de deixar o agente agir — diga o que ele pode e não pode fazer
+[2.3] Exija verificação real — evidência de ferramenta, nunca "pronto" sem prova
+[2.3] Use subagentes por especialidade — estratégia, produto, comunicação, tecnologia, cético
+[2.4] Crie memória de projeto — um arquivo por tema, atualize em vez de duplicar
+[2.4] Mande o agente continuar quando já houver informação suficiente — não termine com promessa
+[2.5] Use visão pra revisar interfaces, prints e criativos — não só "deixe mais bonito"
+[2.5] Peça revisão defensiva pra segurança — nunca exploração/ataque
+[2.6] Crie loops com verificação — foco, critério, teste, aprendizado, não só repetição
+[2.6] Use memória externa pra trabalhos longos — não dependa só do histórico do chat</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> 12 consejos, una sola lista — si tu sesión no incluye al menos la mitad, todavía está en modo chat.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-7#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">El prompt maestro completo</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m27-t2-p1">Este no es un prompt sobre una tarea. Es un prompt sobre <strong class="text-blue-400">cómo debe operar Fable 5</strong> en cualquiera de tus tareas — la síntesis de los 12 consejos en un único bloque genérico, probado en la práctica. Pégalo al inicio de una sesión nueva (o fíjalo en un CLAUDE.md/system prompt) y se convierte en la «constitución» de ese proyecto.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="El prompt maestro en el centro coordina cinco subagentes especializados —estrategia, producto, comunicación, tecnología y pensamiento crítico— que convergen en una recomendación única con diagnóstico, decisión, plan y siguiente paso" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m27b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m27b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m27b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m27b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m27b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m27b-grid)" height="260" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#60a5fa" stroke-width="1.8">
+<path d="M220,130 C320,130 340,42 452,42" marker-end="url(#m27b-ah)"></path>
+<path d="M220,130 C320,130 340,86 452,86" marker-end="url(#m27b-ah)"></path>
+<path d="M220,130 L452,130" marker-end="url(#m27b-ah)"></path>
+<path d="M220,130 C320,130 340,174 452,174" marker-end="url(#m27b-ah)"></path>
+<path d="M220,130 C320,130 340,218 452,218" marker-end="url(#m27b-ah)"></path>
+</g>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-width="1.8">
+<path d="M588,42  C700,42 720,130 800,130" marker-end="url(#m27b-ahc)"></path>
+<path d="M588,86  C700,86 720,130 800,130" marker-end="url(#m27b-ahc)"></path>
+<path d="M588,130 L800,130" marker-end="url(#m27b-ahc)"></path>
+<path d="M588,174 C700,174 720,130 800,130" marker-end="url(#m27b-ahc)"></path>
+<path d="M588,218 C700,218 720,130 800,130" marker-end="url(#m27b-ahc)"></path>
+</g>
+<g filter="url(#m27b-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#m27b-grad)" stroke-width="2.5" width="180" x="40" y="98"></rect></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="130" y="126">Prompt maestro</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="130" y="146">diagnóstico → decisión → plan</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="26"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="47">estrategia</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="91">producto</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="114"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="135">comunicación</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="158"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="179">tecnología</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="452" y="202"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="223">escéptico</text></g>
+</g>
+<g filter="url(#m27b-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#m27b-grad)" stroke-width="2.5" width="180" x="800" y="98"></rect></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="890" y="122">Recomendación única</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="890" y="140">con prioridades</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="890" y="154">+ siguiente paso</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">El prompt maestro no pide una respuesta: crea una estructura de cinco perspectivas que converge en una recomendación única, siempre con el siguiente paso concreto.</p>
+</div>
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-neutral-300">Objetivo:</strong> transformar Fable 5 en un agente estratégico y operativo permanente para tu proyecto — que diagnostica, decide, ejecuta, verifica y mejora, en vez de limitarse a responder a solicitudes aisladas.</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-4">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">prompt-mestre.txt — probado en la práctica</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Eres mi agente estratégico y operativo.
+
+Contexto:
+Estoy trabajando en un proyecto que necesita transformar ideas en ejecución práctica, con
+claridad, calidad y resultados reales.
+
+Objetivo:
+Crear un sistema de trabajo que diagnostique problemas, defina prioridades, ejecute
+tareas, verifique resultados y mejore continuamente.
+
+Modo de trabajo:
+1. No me des ideas sueltas.
+2. Piensa como arquitecto de negocio, producto, contenido, tecnología y ejecución.
+3. Usa subagentes: estrategia, producto, comunicación, tecnología y escéptico.
+4. Entrega siempre un diagnóstico, una decisión recomendada, un plan de ejecución y el siguiente
+   paso inmediato.
+5. Si ya tienes suficiente información, actúa. No termines con una promesa.
+6. Cuando hagas afirmaciones, indica qué es evidencia, qué es hipótesis y qué necesita ser
+   probado.
+7. Registra las decisiones importantes en la memoria del proyecto.
+
+Tarea:
+Analiza mi proyecto actual y propón la arquitectura más sencilla para transformar la intención
+en ejecución, práctica continua y resultados medibles.</pre>
+</div>
+<p class="text-sm text-neutral-400 mb-8"><strong class="text-neutral-300">Cómo comprobar:</strong> pega el bloque entero (sin editarlo la primera vez, solo para ver el comportamiento predeterminado) y comprueba que la respuesta incluya las 4 partes prometidas en el punto 4: diagnóstico, decisión recomendada, plan y primer paso siguiente; no un párrafo suelto de ideas. Si falta alguna parte, vuelve a leer el punto 4 de «Modo de trabajo»: es lo que fuerza la estructura.</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atención</h3>
+<p class="text-neutral-300">No ejecutes este prompt sin editar el bloque <strong>Contexto</strong> e <strong>Objetivo</strong> para tu proyecto real; sin eso, la respuesta queda genérica porque el propio prompt es genérico. El tema 3 muestra exactamente qué cambiar.</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-neutral-300">Prueba primero en un proyecto pequeño y conocido, donde ya sabes cuál sería la respuesta correcta. Así tendrás una referencia rápida para saber si el prompt maestro está bien calibrado antes de confiar en él para un proyecto grande y desconocido.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> el prompt maestro no pregunta "qué opinas", sino que arma una estructura de diagnóstico, decisión, plan y paso, y obliga al modelo a completarla cada vez.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-7#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">Cómo personalizarlo para tu proyecto</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m27-t3-p1">El prompt maestro tiene dos partes de naturaleza diferente: una <strong class="text-blue-400">núcleo variable</strong> (contexto, objetivo, roles de los subagentes) que cambia de un proyecto a otro, y una <strong class="text-blue-400">estructura fija</strong> (diagnóstico → decisión → plan → paso), que es exactamente lo que hace que funcione como sistema de trabajo y no como chat. Cambiar la primera parte es obligatorio; modificar la segunda suele empeorar el resultado.</p>
+<div class="space-y-5 mb-8">
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold text-sm">1</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Lee el prompt maestro completo una vez</h4><p class="text-neutral-300 text-sm">Antes de editar cualquier línea, entiende las 7 partes del «Modo de trabajo»: es esta lista la que contiene la disciplina de los 12 consejos.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold text-sm">2</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Reemplaza el bloque Contexto</h4><p class="text-neutral-300 text-sm">Describe tu proyecto real, tu público y lo que el resultado debe permitir hacer — igual que el consejo 2 (explica el motivo) del módulo 2.1.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold text-sm">3</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Reemplaza el bloque Objetivo</h4><p class="text-neutral-300 text-sm">Di en una frase qué debe hacer el sistema de trabajo por ti — no la tarea de hoy, sino el papel permanente del agente en el proyecto.</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold text-sm">4</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Ajusta los roles de los subagentes</h4><p class="text-neutral-300 text-sm">"Estrategia, producto, comunicación, tecnología, escéptico" es genérico a propósito; cámbialo por roles que existan en tu ámbito (por ejemplo: legal, UX, datos, operaciones).</p></div></div>
+<div class="flex items-start space-x-4"><div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold text-sm">5</span></div><div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-white mb-1">Mantén la estructura intacta</h4><p class="text-neutral-300 text-sm">Diagnóstico → decisión → plan → siguiente paso, más los puntos 5, 6 y 7 (actuar con información suficiente, separar evidencia de hipótesis, registrar en la memoria) no cambian — son los que hacen que el prompt funcione.</p></div></div>
+</div>
+<div class="copybox bg-dark-900 border border-dark-600 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-neutral-400 font-mono">ejemplo de adaptación — cambia los fragmentos entre &lt;&gt;</span><button class="text-xs px-2 py-1 rounded bg-dark-600 text-neutral-300 hover:bg-dark-500 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Contexto:
+Estou trabalhando em &lt;nome do projeto/produto&gt; para &lt;seu público-alvo&gt;. O resultado
+final precisa permitir &lt;o objetivo real que o público vai alcançar&gt;.
+
+Objetivo:
+Criar &lt;o que o sistema de trabalho deve fazer por você, em uma frase&gt;.
+
+3. Use subagentes: &lt;papel 1&gt;, &lt;papel 2&gt;, &lt;papel 3&gt;, &lt;papel 4&gt; e cético.</pre>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Error común al personalizar</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Cambiar solo el Objetivo y dejar el Contexto genérico: el modelo sigue sin saber para quién es.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Borrar el punto 5 («actúa si ya tienes información suficiente») pensando que es «demasiada autonomía».</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Mantener los 5 roles genéricos de subagentes en un proyecto técnico donde no tienen sentido.</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">✓ La forma correcta</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Contexto y Objetivo siempre juntos, ambos específicos de tu proyecto.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>La estructura de 7 elementos del "Modo de trabajo" está intacta: es lo que evita respuestas vagas.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Roles de subagente nombrados con el lenguaje real de tu dominio.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> cambia el contexto, el objetivo y los roles de los subagentes; mantén intacta la estructura de diagnóstico → decisión → plan → paso.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-7#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">Chat frente a sistema de trabajo</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m27-t4-p1">Toda la ruta 2 —y este módulo en particular— existe para marcar una diferencia: usar Fable 5 pidiendo <strong class="text-blue-400">respuestas</strong> frente a usar Fable 5 como <strong class="text-blue-400">sistema</strong>. La diferencia no está en la inteligencia del modelo. Está en cuánto contexto, memoria, verificación y ejecución continua construyes a su alrededor.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Modo chat</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Cada pregunta empieza desde cero, sin contexto acumulado.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Una sola opinión, sin verificación ni contrapunto.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Listo" es lo que dice el modelo, no lo que se ha demostrado.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No queda nada registrado; la siguiente sesión repite el mismo error.</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">✓ Sistema de trabajo</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Contexto explícito (el porqué) antes de cada tarea.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Subagentes por rol, consolidados en una recomendación única.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>"Listo" exige evidencia real de una herramienta.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Memoria del proyecto: la lección de hoy se convierte en el punto de partida de mañana.</span></li>
+</ul>
+</div>
+</div>
+<div class="relative rounded-2xl border border-blue-500/40 bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-900 p-8 mb-8 overflow-hidden">
+<span aria-hidden="true" class="absolute -top-2 left-6 text-6xl text-blue-500/30 font-serif select-none">“</span>
+<blockquote class="relative text-neutral-100 text-lg sm:text-xl italic leading-relaxed pl-4">El valor de Fable 5 no está en responder mejor. Está en trabajar mejor. La forma débil de usarlo es pedir respuestas. La forma sólida es crear un sistema con contexto, memoria, subagentes, verificación y ejecución continua. Quien use el modelo solo como chat tendrá mejores respuestas. Quien lo use como sistema de trabajo tendrá una ventaja real.</blockquote>
+<p class="relative text-sm text-blue-300 mt-4 pl-4">— conclusión de la guía práctica que dio origen a la ruta 2 (no es una cita oficial de Anthropic)</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> el chat da mejores respuestas; un sistema de trabajo da una ventaja real — y la diferencia la construyes tú, no el modelo.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-7#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">Cómo se conectan las rutas 1 y 2</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m27-t5-p1">La ruta 2 es práctica: nació de una guía práctica, no de la documentación oficial. Pero casi todos sus consejos tienen un "lado técnico" ya cubierto en la ruta 1, con respaldo directo de la documentación de Anthropic. Si un consejo de la ruta 2 te pareció útil y quieres entender el mecanismo detrás, el mapa de abajo te lleva directamente al módulo indicado.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-2.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.1 → 1.2</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Da el porqué</h4>
+<p class="text-neutral-400 text-sm">El consejo 2 (explica el motivo) es la versión aplicada/de producto del módulo 1.2, más técnica y a nivel de API (categoría <code class="text-neutral-500">reasoning_extraction</code>).</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-6.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.2 → 1.6</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Esfuerzo y profundidad</h4>
+<p class="text-neutral-400 text-sm">El consejo 3 (controla la profundidad) es el equivalente práctico de los niveles oficiales de esfuerzo: low/medium/high/xhigh/max.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-3.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.2 → 1.3</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Límites claros</h4>
+<p class="text-neutral-400 text-sm">El consejo 4 (establece límites antes de actuar) es la misma disciplina de "di qué no hacer" del prompting negativo oficial.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-4.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.3 → 1.4</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Demuestra que terminaste</h4>
+<p class="text-neutral-400 text-sm">El consejo 5 (verificación real) es literalmente la misma exigencia de evidencia del módulo 1.4, solo reformulada en lenguaje de producto.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-7.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.3 → 1.7</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Delegación a subagentes</h4>
+<p class="text-neutral-400 text-sm">El módulo 1.7 enseña <em>como</em> delegar técnicamente; el consejo 6 (subagentes por especialidad) enseña <em>qué roles</em> usar en la práctica.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-7.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.4 → 1.7</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Memoria en archivo</h4>
+<p class="text-neutral-400 text-sm">El consejo 7 (memoria del proyecto) sigue la misma regla de oro del módulo 1.7: una lección por archivo, actualizar en vez de duplicar.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-4.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.4 → 1.4</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Anti-planificación excesiva</h4>
+<p class="text-neutral-400 text-sm">El consejo 8 (continúa cuando ya tienes suficiente información) es la misma lección del módulo 1.4 sobre no terminar con una promesa.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-6.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.5 → 1.6</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Revisión defensiva</h4>
+<p class="text-neutral-400 text-sm">El consejo 10 (pide una revisión defensiva) es la estrategia práctica para evitar activar el rechazo <code class="text-neutral-500">cyber</code> explicada en el módulo 1.6.</p>
+</a>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-colors p-5" href="../trilha1/modulo-1-4.html">
+<div class="flex items-center justify-between mb-2"><span class="text-xs font-mono text-blue-400">2.6 → 1.4</span><span aria-hidden="true" class="text-neutral-500">→</span></div>
+<h4 class="font-semibold text-white mb-1">Verificación por subagente</h4>
+<p class="text-neutral-400 text-sm">El consejo 11 (ciclos con verificación) usa el mismo mecanismo del módulo 1.4: un verificador nuevo, con contexto nuevo, frente a la especificación.</p>
+</a>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📄</span> Respaldo oficial (ruta 1)</h3>
+<p class="text-neutral-300 text-sm mb-2">Sobre la verificación real (2.3 ↔ 1.4): <em>"In Anthropic's testing, this nearly eliminated fabricated status reports even on tasks designed to elicit them."</em></p>
+<p class="text-neutral-300 text-sm">Sobre la memoria del proyecto (2.4 ↔ 1.7): <em>"Guarda una lección por archivo con un resumen de una línea al inicio... actualiza una nota existente en lugar de crear un duplicado; elimina las notas que resulten incorrectas."</em></p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> casi todos los consejos prácticos de la ruta 2 tienen un módulo técnico/oficial correspondiente en la ruta 1 — usa este mapa para profundizar cuando lo necesites.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-7#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">Lista de verificación final de todo el curso</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m27-t6-p1">La cheat sheet final: reúne las 6 técnicas del video + 5 extras del bono de la trilha 1 (módulos 1.2 a 1.7) con los 12 consejos de la trilha 2 (módulos 2.1 a 2.6). Es la referencia más completa del curso: pégala en tu CLAUDE.md y vuelve aquí cada vez que vayas a empezar una sesión larga e importante con Fable 5.</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">cheat-sheet-fable5-completo.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">CHEAT SHEET COMPLETO — Prompting Claude Fable 5 (trilha 1 + trilha 2)
+
+— TRILHA 1 — Prompting Claude Fable 5 (módulos 1.2–1.7) —
+[1.2] Dê o porquê — contexto de intenção antes da tarefa
+[1.2] Não peça pra mostrar o raciocínio (evita a recusa reasoning_extraction)
+[1.3] Negative prompting — diga o que NÃO fazer, sem refactor/limpeza não pedidos
+[1.4] Deixe agir quando já tem informação suficiente; pause só pro que só o humano decide
+[1.4] Prove que terminou — audite cada alegação contra evidência de ferramenta
+[1.5] Diga menos, não mais — lidere com o resultado, corte o que não muda a próxima ação
+[1.6] Calibre o esforço (low/medium/high/xhigh/max) — baixo no Fable 5 ainda rende bem
+[1.6] Trate stop_reason:"refusal" como HTTP 200, não como erro; configure fallback pro Opus
+[1.7] Delegue subtarefas independentes a subagents; prefira comunicação assíncrona
+[1.7] Guarde memória em arquivo — uma lição por arquivo, resumo de 1 linha no topo
+[1.7] send_to_user pra deliverable parcial/update com números — só com instrução explícita
+[1.7] "Continue" resolve o early stopping raro; reforce quando parar vs. quando agir
+[1.7] Refatore skills antigas — comece no topo da dificuldade; verifique com subagent fresco
+
+— TRILHA 2 — Fable 5 como Agente de Trabalho (módulos 2.1–2.6) —
+[2.1] Use o Fable 5 pra problemas difíceis — arquitetura, risco, plano, auditoria
+[2.1] Explique o motivo do pedido — objetivo, público e resultado esperado
+[2.2] Controle a profundidade — baixa/média/alta/máxima conforme a complexidade
+[2.2] Defina limites antes de deixar o agente agir
+[2.3] Exija verificação real — evidência de ferramenta, nunca "pronto" sem prova
+[2.3] Use subagentes por especialidade — estratégia, produto, comunicação, tecnologia, cético
+[2.4] Crie memória de projeto — um arquivo por tema, atualize em vez de duplicar
+[2.4] Mande o agente continuar quando já houver informação suficiente
+[2.5] Use visão pra revisar interfaces, prints e criativos
+[2.5] Peça revisão defensiva pra segurança — nunca exploração/ataque
+[2.6] Crie loops com verificação — foco, critério, teste, aprendizado
+[2.6] Use memória externa pra trabalhos longos — não dependa só do histórico do chat</pre>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-neutral-300">Antes de una sesión larga o de un proyecto nuevo, lee esta lista de principio a fin y marca mentalmente qué líneas ya están en tu prompt/CLAUDE.md. Las que falten son el motivo más probable de que la sesión rinda menos de lo debido.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> 13 técnicas de la ruta 1 + 12 consejos de la ruta 2, una sola lista — la referencia que guardas después de terminar el curso.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumen del Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">12 consejos recapitulados</strong><span class="text-neutral-400"> — cheat sheet denso de los módulos 2.1 a 2.6, listo para consultar rápidamente.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt maestro completo</strong><span class="text-neutral-400"> — probado en la práctica, listo para copiar y adaptar.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Personalización</strong><span class="text-neutral-400"> — qué cambiar (contexto, objetivo, roles) y qué mantener (la estructura).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Chat frente a sistema de trabajo</strong><span class="text-neutral-400"> — la diferencia que cierra todo el curso.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Mapa de la ruta 1 ↔ ruta 2</strong><span class="text-neutral-400"> — dónde profundizar en el aspecto técnico/oficial de cada consejo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Lista de verificación final única</strong><span class="text-neutral-400"> — 25 líneas que combinan las dos rutas, para pegar en el CLAUDE.md.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Esto concluye el curso:</h3>
+<p class="text-neutral-300">Recorriste los 14 módulos de "Prompting Claude Fable 5" — las 7 partes de la ruta 1 (la gramática para hablar con Fable 5) y las 7 partes de la ruta 2 (el manual para trabajar con él). Vuelve a la lista de verificación del tema 6 cada vez que vayas a abrir una sesión larga, y al prompt maestro del tema 2 cada vez que comiences un proyecto nuevo.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../../index.html">🏁 Volver al inicio</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 — 2026 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

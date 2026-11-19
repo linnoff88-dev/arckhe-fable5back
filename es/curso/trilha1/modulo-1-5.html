@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>1.5 Di menos, no más · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<!-- ANTI-FOUC: script bloqueante, SEPARADO, ANTES do Tailwind. Le inema.prefs e aplica
+       .dark + data-theme + variaveis de leitura ANTES do primeiro paint. Default dark no erro. -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k];
+          }
+        } else {
+          var legacy = localStorage.getItem('theme');
+          if (legacy === 'light') p.theme = 'claro';
+          else if (legacy === 'dark') p.theme = 'inema-dark';
+        }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = {
+        'inema-dark': { dark: true,  attr: null,        cs: 'dark'  },
+        'claro':      { dark: false, attr: null,        cs: 'light' },
+        'sepia':      { dark: false, attr: 'sepia',     cs: 'light' },
+        'foco':       { dark: null,  attr: 'foco',      cs: null    },
+        'contraste':  { dark: true,  attr: 'contraste', cs: 'dark'  }
+      };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark');
+      else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr);
+      else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style;
+      var scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system'
+        ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+        : (p.font === 'leitura'
+          ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif'
+          : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = {
+        emerald: [152, 76, 45], blue: [217, 91, 60], purple: [258, 90, 66],
+        amber: [38, 92, 50], teal: [174, 72, 41], rose: [350, 89, 60]
+      };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0] + '');
+      s.setProperty('--accent-s', a[1] + '%');
+      s.setProperty('--accent-l', a[2] + '%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) {
+      try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {}
+    }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<!-- Manifesto do curso (OBRIGATORIO, identico byte-a-byte em toda pagina) -->
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    details.inema-deepen > summary { cursor: pointer; list-style: none; }
+    details.inema-deepen > summary::-webkit-details-marker { display: none; }
+
+    /* Light mode: base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode: emerald (trilha unica) */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5,150,105,0.14); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+
+    /* Light mode: blue (box de distincao) */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode: red (grid + alertas) */
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+
+    /* Light mode: sky (citacao/fonte oficial) */
+    html:not(.dark) .border-sky-500 { border-color: #0369a1; }
+
+    /* Light mode: remove gradientes e cores especiais */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode: nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    /* Dark mode: bordas e linhas divisorias suavizadas */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* SVG: adaptar ao light mode */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Ruta 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>Mi recorrido</span>
+<span aria-hidden="true" class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span>
+</button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors" data-inema-appearance-toggle="[data-inema-appearance]" type="button">
+<span aria-hidden="true">◑</span><span class="hidden sm:inline">Apariencia</span>
+</button>
+<div class="inema-appearance-pop" data-inema-appearance="">
+<div aria-label="Tema" class="inema-segment" role="group">
+<button data-inema-set-theme="inema-dark">Oscuro</button>
+<button data-inema-set-theme="claro">Claro</button>
+<button data-inema-set-theme="sepia">Sepia</button>
+<button data-inema-set-theme="foco">Enfoque</button>
+<button data-inema-set-theme="contraste">Alto contraste</button>
+</div>
+<div aria-label="Fuente" class="inema-segment" role="group">
+<button data-inema-set-font="inter">Inter</button>
+<button data-inema-set-font="system">Sistema</button>
+<button data-inema-set-font="leitura">Lectura</button>
+</div>
+<div aria-label="Tamaño del texto" class="inema-segment" role="group">
+<button data-inema-set-fontscale="100">A</button>
+<button data-inema-set-fontscale="112">A+</button>
+<button data-inema-set-fontscale="125">A++</button>
+</div>
+<div aria-label="Ancho de línea" class="inema-segment" role="group">
+<button data-inema-set-linewidth="60">Estrecho</button>
+<button data-inema-set-linewidth="68">Medio</button>
+<button data-inema-set-linewidth="75">Ancho</button>
+</div>
+<div aria-label="Entre líneas" class="inema-segment" role="group">
+<button data-inema-set-leading="1.45">Compacto</button>
+<button data-inema-set-leading="1.7">Cómodo</button>
+</div>
+<div aria-label="Color de acento" class="inema-accent-grid" role="group">
+<button data-inema-set-accent="emerald" title="Esmeralda"></button>
+<button data-inema-set-accent="blue" title="Azul"></button>
+<button data-inema-set-accent="purple" title="Morado"></button>
+<button data-inema-set-accent="amber" title="Ámbar"></button>
+<button data-inema-set-accent="teal" title="Verde azulado"></button>
+<button data-inema-set-accent="rose" title="Rosa"></button>
+</div>
+</div>
+</div>
+<button aria-label="Cambiar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- BREADCRUMB -->
+<nav aria-label="Migas de pan" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Ruta 1</a>
+<span>/</span>
+<span class="text-emerald-400">Módulo 1.5</span>
+</div>
+</nav>
+<!-- HEADER -->
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="1-5" data-inema-track="1" id="modulo-1-5">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.5</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">✂️ Di menos, no más</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">El seguimiento sólido de instrucciones cambia el cálculo: enumerar cada comportamiento dejó de ser una protección y se convirtió en ruido. Cómo escribir prompts cortos sin perder sustancia, y por qué el mensaje final de una sesión larga necesita un modo diferente al del resto del trabajo.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~35</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.2</div><div class="text-xs text-neutral-400">Requisito previo</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 1.5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-5" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<!-- TOC -->
+<nav aria-label="Índice" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. ¿Más contexto es mejor?</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Seguimiento sólido de instrucciones</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Legible ≠ conciso</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Concisión vs. volver a establecer el contexto</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. No contradice «da el porqué»</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. En la práctica: refactorizar CLAUDE.md</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🔄 ¿Más contexto es mejor? No con Fable 5</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> La ingeniería clásica de prompts se construye como un contrato blindado de abogado: cada cláusula prevé una excepción, "haz siempre X", "nunca hagas Y", "si ocurre Z, entonces W". Eso protegía frente a un modelo que olvidaba reglas a mitad del proceso. Con un modelo que ya sigue instrucciones de sobra, el mismo contrato se convierte en burocracia que nadie lee hasta el final.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t1-p1">La convención que probablemente ya aprendiste dice: cuanto más contexto y más reglas explícitas, mejor el resultado. Eso tenía sentido mientras el <span class="termo" title="Confiabilidad del modelo para seguir las instrucciones exactamente como se dieron, sin desviarse ni olvidarlas en el camino">seguimiento de instrucciones (instruction following)</span> era inconsistente: enumerar cada comportamiento era la única forma de garantizar que el modelo no pasara por alto nada importante.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t1-p2">Con Claude Fable 5 esta premisa cambia. El seguimiento de instrucciones se volvió lo bastante sólido como para que una instrucción breve y bien elegida ya guíe el comportamiento correcto, sin necesidad de enumerar cada regla. Enumerarlo todo dejó de ser una protección y se convirtió en ruido: cada regla adicional compite por la atención con las que realmente importan, infla el prompt e incluso puede llevar el <em>estilo</em> de la respuesta al mismo tono prolijo del propio prompt.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Comparación entre un prompt antiguo que enumera cada regla y genera un resultado ruidoso y lleno de conflictos, y un prompt breve de Fable 5 que llega a un resultado claro con una sola instrucción" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m15a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m15a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m15a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+<marker id="m15a-ah-neutral" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4"><path d="M0,0 L7,4 L0,8 L2,4 Z" fill="#9ca3af"></path></marker>
+<marker id="m15a-ah-emerald" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#m15a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<line opacity="0.5" stroke="#6b7280" stroke-dasharray="9 9" stroke-width="1.5" x1="500" x2="500" y1="20" y2="240"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="250" y="30">ANTES · enumerar las reglas una por una</text>
+<g font-family="Inter,sans-serif" font-size="11.5" font-weight="600">
+<rect fill="#1f2937" height="26" rx="7" stroke="#6b7280" stroke-width="1.6" width="150" x="40" y="50"></rect><text fill="#d1d5db" text-anchor="middle" x="115" y="67">regla 1</text>
+<rect fill="#1f2937" height="26" rx="7" stroke="#6b7280" stroke-width="1.6" width="150" x="40" y="84"></rect><text fill="#d1d5db" text-anchor="middle" x="115" y="101">regla 2</text>
+<rect fill="#1f2937" height="26" rx="7" stroke="#6b7280" stroke-width="1.6" width="150" x="40" y="118"></rect><text fill="#d1d5db" text-anchor="middle" x="115" y="135">regla 3</text>
+<rect fill="#1f2937" height="26" rx="7" stroke="#6b7280" stroke-width="1.6" width="150" x="40" y="152"></rect><text fill="#d1d5db" text-anchor="middle" x="115" y="169">regla 4</text>
+<rect fill="#1f2937" height="26" rx="7" stroke="#6b7280" stroke-width="1.6" width="150" x="40" y="186"></rect><text fill="#d1d5db" text-anchor="middle" x="115" y="203">regla N…</text>
+</g>
+<g fill="none" opacity="0.5" stroke="#9ca3af" stroke-width="1.6">
+<path d="M190,63  C260,63  260,130 320,130" marker-end="url(#m15a-ah-neutral)"></path>
+<path d="M190,97  C260,97  260,130 320,130" marker-end="url(#m15a-ah-neutral)"></path>
+<path d="M190,131 L320,131" marker-end="url(#m15a-ah-neutral)"></path>
+<path d="M190,165 C260,165 260,130 320,130" marker-end="url(#m15a-ah-neutral)"></path>
+<path d="M190,199 C260,199 260,130 320,130" marker-end="url(#m15a-ah-neutral)"></path>
+</g>
+<rect fill="#1f2937" height="64" rx="12" stroke="#6b7280" stroke-width="1.8" width="150" x="322" y="98"></rect>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="397" y="124">resultado</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="397" y="144">ruidoso, disputado</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="750" y="30">AHORA · instrucción breve (Fable 5)</text>
+<g filter="url(#m15a-glow)"><rect fill="#0e2018" height="64" rx="14" stroke="url(#m15a-grad)" stroke-width="2.5" width="180" x="560" y="98"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="650" y="124">instrucción breve</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="650" y="144">1 frase clara</text>
+<path d="M740,130 L860,130" fill="none" marker-end="url(#m15a-ah-emerald)" stroke="#34d399" stroke-width="2"></path>
+<g filter="url(#m15a-glow)"><rect fill="#0e2018" height="64" rx="14" stroke="url(#m15a-grad)" stroke-width="2.5" width="120" x="862" y="98"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="922" y="124">resultado</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="922" y="144">claro</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">Leyenda: a la izquierda, cada regla enumerada compite por la atención y el resultado queda diluido; a la derecha, una sola instrucción breve se entiende con claridad: un buen seguimiento de instrucciones no necesita una lista.</p>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> No lo confundas con recortar información</h3>
+<p class="text-neutral-300">"Di menos, no más" no significa eliminar el contexto que cambia el resultado; significa eliminar la redundancia de reglas que el modelo cumpliría por sí solo. La información sobre la intención sigue siendo tan importante como siempre (el tema 5 explica por qué).</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> los modelos débiles necesitaban una lista; Fable 5 necesita una dirección clara: enumerarlo todo se convirtió en ruido, no en protección.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">🎯 Strong instruction following — el prompt oficial</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> es la diferencia entre capacitar a un pasante nuevo (que necesita un manual paso a paso) y darle una directriz a un sénior (que ya sabe completar los detalles). Fable 5 ya se acerca al perfil de «sénior»: trátalo así.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t2-p1">La documentación oficial "Prompting Claude Fable 5" es clara al respecto: el seguimiento de instrucciones mejoró lo suficiente como para que puedas guiar la mayoría de los comportamientos con una instrucción breve, en vez de enumerar cada comportamiento por su nombre. Es un cambio de estrategia, no solo de estilo de escritura.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">cita oficial · doc "Prompting Claude Fable 5" (sección 6)</span></div>
+<div class="copy-unit border-b border-dark-700">
+<div class="flex items-center justify-between px-4 pt-3 pb-1">
+<span class="text-[11px] font-semibold uppercase tracking-wide text-sky-400">EN (oficial)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="px-4 pb-4 text-sm text-neutral-200 font-mono leading-relaxed">Instruction-following is improved enough that you can steer most behaviors with a brief instruction rather than enumerating each behavior by name.</pre>
+</div>
+<div class="copy-unit">
+<div class="flex items-center justify-between px-4 pt-3 pb-1">
+<span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-400">PT-BR (traducción)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="px-4 pb-4 text-sm text-neutral-200 font-mono leading-relaxed">El seguimiento de instrucciones mejoró lo suficiente como para que puedas guiar la mayoría de los comportamientos con una instrucción breve, en vez de enumerar cada comportamiento por su nombre.</pre>
+</div>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t2-p2">En la práctica: si tu prompt del sistema tiene una lista de 15 viñetas que intenta cubrir todos los comportamientos posibles («haz siempre X», «nunca hagas Y», «en el caso Z, haz W»...), es probable que Fable 5 ya responda bien a una frase que exprese la intención central. Prueba quitando la mitad de la lista antes de considerar agregar otra regla.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Qué HACER</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Escribir 1-2 oraciones que expresen la intención y el resultado esperado.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Confiar en que los comportamientos predeterminados (formato, tono, cuidado con los casos límite evidentes) ya vienen incorporados.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Agregar una regla nueva solo cuando el comportamiento predeterminado falle de verdad en una prueba real.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Qué NO hacer</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Copiar y pegar la misma lista de 20 reglas que usabas para modelos anteriores.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Repetir la misma instrucción de distintas formas "por si acaso".</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Tratar cada excepción hipotética como si tuviera que convertirse en una regla permanente.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> una instrucción breve y bien enfocada sustituye la lista: el modelo ya sigue suficientes instrucciones.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">✂️ Empieza por el resultado — legible ≠ conciso</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> piensa en un titular de periódico. No es corto porque hayan cortado las palabras por la mitad, sino porque alguien decidió cuidadosamente qué es lo más importante contar primero.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t3-p1">La documentación oficial también ofrece la receta para la respuesta final: empieza por el resultado ("lead with the outcome"). La primera frase después de terminar debe responder "qué pasó" o "qué encontraste": lo que el usuario pediría si dijera "solo dame el resumen". Los detalles y el razonamiento vienen después.</p>
+<div class="mb-6">
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-emerald-400">Objetivo:</strong> hacer que el agente empiece cualquier respuesta larga por el resultado y solo después lo justifique, sin comprimir la salida en fragmentos ilegibles.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">cita oficial · doc "Prompting Claude Fable 5" (sección 6)</span></div>
+<div class="copy-unit border-b border-dark-700">
+<div class="flex items-center justify-between px-4 pt-3 pb-1">
+<span class="text-[11px] font-semibold uppercase tracking-wide text-sky-400">EN (oficial)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="px-4 pb-4 text-sm text-neutral-200 font-mono leading-relaxed">Lead with the outcome. Your first sentence after finishing should answer "what happened" or "what did you find": the thing the user would ask for if they said "just give me the TLDR." Supporting detail and reasoning come after. Being readable and being concise are different things, and readability matters more. The way to keep output short is to be selective about what you include (drop details that don't change what the reader would do next), not to compress the writing into fragments, abbreviations...</pre>
+</div>
+<div class="copy-unit">
+<div class="flex items-center justify-between px-4 pt-3 pb-1">
+<span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-400">PT-BR (traducción)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="px-4 pb-4 text-sm text-neutral-200 font-mono leading-relaxed">Empieza por el resultado. Tu primera frase después de terminar debe responder "qué pasó" o "qué encontraste": lo que el usuario pediría si dijera "solo dame el resumen". Los detalles de apoyo y el razonamiento vienen después. Ser legible y ser conciso son cosas distintas, y la legibilidad importa más. La forma de mantener la respuesta breve es seleccionar qué incluir (eliminar detalles que no cambian lo que el lector haría después), no comprimir el texto en fragmentos, abreviaturas…</pre>
+</div>
+</div>
+<p class="text-sm text-neutral-400"><strong class="text-emerald-400">Cómo comprobar:</strong> pega esto al final de tu CLAUDE.md o system prompt y observa la próxima respuesta larga. La primera frase ya debería contar el resultado, sin un «déjame explicar primero lo que hice» antes de llegar a él.</p>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🔍</span> Distinción clave: legible ≠ conciso</h3>
+<ul class="space-y-2 text-neutral-300">
+<li><strong>Legibilidad</strong> — el lector lo entiende a la primera, sin tener que descifrarlo. Eso importa más.</li>
+<li><strong>Brevedad</strong> — menos palabras. Solo importa si no afecta la legibilidad.</li>
+<li>Mantenerlo breve tiene que ver con <strong>selectividad</strong> (lo que dejas afuera), no sobre <strong>compresión</strong> (cómo escribes lo que quedó).</li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Conciso y bien hecho</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Elimina el párrafo que no cambia la próxima acción del lector.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Escribe oraciones completas, aunque sean cortas.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Escribe los nombres de archivos y números con todas sus letras la primera vez que aparezcan.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Concisión mal hecha</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Comprime en fragmentos como "ok, hecho, sig.".</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Abrevia todo hasta convertirlo en un telegrama.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Elimina el resultado principal pensando que «menos siempre es mejor».</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> ser conciso tiene que ver con lo que omites, no con cómo redactas lo que queda.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🔀 Breve entre llamadas a herramientas vs. resumen final (re-grounding)</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un cirujano puede hablar con jerga técnica breve durante la operación, con el equipo que está allí. Pero el informe que entrega a la familia al final debe volver a explicarlo todo desde cero, en un lenguaje claro: quienes lo reciben no estaban en la sala.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t4-p1">Durante el trabajo — entre una llamada a una herramienta y otra — la taquigrafía breve es excelente. Es como «pensar en voz alta»; nadie lo está leyendo en tiempo real, y ser breve allí ahorra tiempo y tokens sin perder claridad de verdad.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Antes y después del resumen final: a la izquierda, jerga interna que se mantiene y confunde a quien no siguió el trabajo; a la derecha, un resumen con el contexto restablecido que el lector entiende a la primera" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m15b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m15b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m15b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m15b-grid)" height="260" width="1000" x="0" y="0"></rect>
+<line opacity="0.5" stroke="#6b7280" stroke-dasharray="9 9" stroke-width="1.5" x1="500" x2="500" y1="20" y2="240"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="250" y="30">ANTES · continuación de la jerga</text>
+<rect fill="#1f2937" height="110" rx="14" stroke="#6b7280" stroke-width="1.8" width="380" x="60" y="55"></rect>
+<text fill="#9ca3af" font-family="ui-monospace,monospace" font-size="12" x="80" y="80">ctx ok · wf done · PR#42 rdy</text>
+<text fill="#9ca3af" font-family="ui-monospace,monospace" font-size="12" x="80" y="102">TODO ok · migración hecha</text>
+<text fill="#9ca3af" font-family="ui-monospace,monospace" font-size="12" x="80" y="124">flag on · caché caliente</text>
+<text fill="#6b7280" font-family="Inter,sans-serif" font-size="10.5" x="80" y="148">(solo tiene sentido para quien siguió el proceso)</text>
+<circle cx="440" cy="200" fill="#1f2937" r="16" stroke="#9ca3af" stroke-width="1.6"></circle>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="440" y="205">?</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="440" y="228">lector perdido</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="750" y="30">AHORA · re-grounding</text>
+<g filter="url(#m15b-glow)"><rect fill="#0e2018" height="110" rx="14" stroke="url(#m15b-grad)" stroke-width="2.5" width="380" x="560" y="55"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="580" y="80">Resultado: X está listo.</text>
+<rect fill="#0f3d2c" height="8" rx="4" width="320" x="580" y="94"></rect>
+<rect fill="#0f3d2c" height="8" rx="4" width="280" x="580" y="110"></rect>
+<rect fill="#0f3d2c" height="8" rx="4" width="300" x="580" y="126"></rect>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="10.5" x="580" y="150">primero el resultado, luego la explicación desde cero</text>
+<circle cx="940" cy="200" fill="#0e1b26" r="16" stroke="#38bdf8" stroke-width="1.8"></circle>
+<text fill="#38bdf8" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="940" y="206">✓</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="940" y="228">el lector entiende</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">Leyenda: la taquigrafía entre tool calls está bien para pensar en voz alta; pero el mensaje final debe volver a dar contexto a quien no vio el proceso: primero el resultado, y cada identificador explicado como si fuera nuevo.</p>
+</div>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Inicias la tarea y te ausentas</h4>
+<p class="text-neutral-300 text-sm">Durante la noche, o en una sesión larga en la que no estás leyendo cada paso del agente.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Entre llamadas a herramientas: taquigrafía concisa</h4>
+<p class="text-neutral-300 text-sm">Buena señal: es el agente pensando en voz alta, y que sea breve ahí no cuesta nada porque nadie lo está leyendo en tiempo real.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Sesión larga, muchas idas y vueltas</h4>
+<p class="text-neutral-300 text-sm">La jerga interna se acumula: nombres de flags, siglas de PR, atajos que solo tienen sentido para quienes siguieron todo el proceso.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+<h4 class="font-semibold text-white mb-1">Mensaje final: cambio de modo</h4>
+<p class="text-neutral-300 text-sm">De "continuación de la línea de razonamiento" a "re-grounding": primero el resultado, y cada identificador (archivo, commit, flag) explicado como si el lector oyera hablar de él por primera vez.</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-emerald-400">Objetivo:</strong> hacer que el agente cambie del «modo telegráfico» al «modo de volver a fundamentar» al cerrar una sesión larga sin supervisión.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">cita oficial · doc "Prompting Claude Fable 5" (resumen final de re-grounding)</span></div>
+<div class="copy-unit border-b border-dark-700">
+<div class="flex items-center justify-between px-4 pt-3 pb-1">
+<span class="text-[11px] font-semibold uppercase tracking-wide text-sky-400">EN (oficial)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="px-4 pb-4 text-sm text-neutral-200 font-mono leading-relaxed">Terse shorthand is fine between tool calls (that's you thinking out loud, and brevity there is good). Your final summary is different: it's for a reader who didn't see any of that. If you've been working for a while without the user watching (overnight, across many tool calls, since they last spoke), your final message is their first look at any of it. Write it as a re-grounding, not a continuation of your working thread: the outcome first, then the one or two things you need from them, each explained as if new. When you mention files, commits, flags, or other identifiers, give each one its own plain-language clause. Open with the outcome: one sentence on what happened or what you found. Then the supporting detail. If you have to choose between short and clear, choose clear.</pre>
+</div>
+<div class="copy-unit">
+<div class="flex items-center justify-between px-4 pt-3 pb-1">
+<span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-400">PT-BR (traducción)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="px-4 pb-4 text-sm text-neutral-200 font-mono leading-relaxed">Está bien ser telegráfico entre llamadas a herramientas: eso es pensar en voz alta, y la brevedad ayuda. El resumen final es diferente: está dirigido a alguien que no vio nada de eso. Si trabajaste durante un tiempo sin que el usuario te observara (de un día para otro, a lo largo de varias llamadas a herramientas, desde la última vez que habló), tu mensaje final es su primer contacto con todo lo ocurrido. Escríbelo como una reorientación, no como una continuación de tu línea de razonamiento: primero el resultado y luego una o dos cosas que necesitas de esa persona, cada una explicada como si fuera nueva. Al mencionar archivos, commits, flags u otros identificadores, dedica a cada uno su propia oración en lenguaje sencillo. Empieza con el resultado: una oración sobre lo que ocurrió o lo que encontraste. Después, los detalles de apoyo. Si tienes que elegir entre brevedad y claridad, elige la claridad.</pre>
+</div>
+</div>
+<p class="text-sm text-neutral-400"><strong class="text-emerald-400">Cómo comprobar:</strong> pega esto en las instrucciones de tu agente (system prompt/skill) y, en la próxima sesión larga y asíncrona, relee el mensaje final por tu cuenta: ¿se puede entender el resultado sin haber visto ninguna llamada a herramientas? Si sí, funcionó.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> perder el hilo mientras nadie ve; volver a fundamentar cuando alguien finalmente lo va a leer.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">⚖️ Esto no contradice «da el porqué» (módulo 1.2)</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un buen briefing de diseño tiene una frase de propósito («esto es para convencer a un inversionista escéptico») y cero páginas de reglas de píxeles. Una intención rica y pocas reglas enumeradas siempre han convivido bien; solo parecían lo mismo porque los prompts antiguos solían acumular ambas cosas.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t5-p1">El módulo 1.2 (explica el porqué) te pide que expliques la intención detrás de la solicitud. Este módulo (1.5) te pide que no enumeres las reglas una por una. A primera vista parece contradictorio —más por un lado, menos por el otro—, pero son dos ejes distintos, no una misma escala.</p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">⚖️</span> Dos ejes independientes</h3>
+<p class="text-neutral-300 mb-4">La intención (el porqué) mide la <strong>calidad</strong> del contexto — qué quieres y por qué lo quieres. La verbosidad (cuántas reglas) mide <strong>volumen</strong> — cuántos elementos enumeras. Puedes tener ambas cosas: una frase densa de intención y ninguna lista de reglas.</p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Eje 1 (intención):</strong> "porque este endpoint lo usan 3 servicios críticos" — 1 frase, mucho valor.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Eje 2 (verbosidad):</strong> "siempre haz X, nunca hagas Y, en el caso Z haz W..." — cuantos más puntos, más ruido.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>"Di menos" apunta hacia abajo en el eje 2. "Explica por qué" apunta hacia arriba en el eje 1. No compiten por el mismo espacio.</span></li>
+</ul>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
+<svg aria-label="Dos ejes independientes: cantidad de reglas enumeradas en el eje horizontal y contexto de intención (el porqué) en el eje vertical. El punto ideal de Fable 5 está en el cuadrante con pocas reglas y mucho contexto; el peor caso es tener muchas reglas sin contexto" class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<lineargradient id="m15c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="220%" id="m15c-glow" width="220%" x="-60%" y="-60%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m15c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#34d399" opacity="0.10" r="1.3"></circle></pattern>
+<marker id="m15c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#9ca3af"></path></marker>
+</defs>
+<rect fill="url(#m15c-grid)" height="280" width="1000" x="0" y="0"></rect>
+<rect fill="#10b981" height="110" opacity="0.08" rx="10" width="410" x="90" y="40"></rect>
+<rect fill="#f87171" height="110" opacity="0.06" rx="10" width="410" x="500" y="150"></rect>
+<line marker-end="url(#m15c-ah)" stroke="#9ca3af" stroke-width="1.8" x1="90" x2="910" y1="260" y2="260"></line>
+<line marker-end="url(#m15c-ah)" stroke="#9ca3af" stroke-width="1.8" x1="90" x2="90" y1="260" y2="30"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="end" x="910" y="278">más reglas enumeradas →</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="start" x="98" y="24">↑ más contexto sobre la intención (el porqué)</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" x="100" y="58">zona ideal</text>
+<g filter="url(#m15c-glow)"><circle cx="220" cy="95" fill="#0e2018" r="14" stroke="url(#m15c-grad)" stroke-width="2.5"></circle></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="245" y="90">Fable 5 ✓</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" x="245" y="108">pocas reglas + bastante porqué</text>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" x="510" y="168">peor caso</text>
+<circle cx="660" cy="215" fill="#1f2937" r="12" stroke="#9ca3af" stroke-width="1.8"></circle>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="682" y="211">checklist ✗</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" x="682" y="229">muchas reglas + sin porqué</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 px-1">Leyenda: «di menos» modifica el eje horizontal (menos reglas enumeradas); «explica el porqué» modifica el eje vertical (más contexto de intención). Son ejes independientes: puedes tener ambos al mismo tiempo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t5-p2">En la práctica, un prompt «ideal» para Fable 5 queda en la esquina superior izquierda del diagrama de arriba: 1-2 frases de intención genuina, sin la lista de reglas que ya cumpliría por sí solo. Si tienes dudas sobre qué recortar, revisa primero el módulo 1.2: la pregunta correcta no es «¿tengo demasiado contexto?», sino «¿este contexto expresa una intención o es una regla redundante?»</p>
+<a class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 mb-6 transition-colors group" href="modulo-1-2.html">
+<span class="text-xs text-neutral-500">Relacionado</span>
+<h4 class="font-semibold group-hover:text-emerald-400 transition-colors">→ Repasa el módulo 1.2 — Da el porqué + no pidas razonamiento</h4>
+</a>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> una intención rica + pocas reglas enumeradas no es una contradicción — es la combinación ideal.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">🛠️ En la práctica: refactorizando CLAUDE.md y skills antiguas</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> CLAUDE.md y las skills escritas para modelos antiguos son como manuales de instrucciones traducidos de un aparato viejo: están llenos de advertencias que ya no se aplican al nuevo modelo, pero siguen ahí, ocupando espacio y compitiendo por la atención.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t6-p1">La documentación oficial ofrece un objetivo concreto para aplicar todo esto: tu <code class="text-emerald-400">CLAUDE.md</code>, system prompts y skills antiguas escritas para modelos anteriores. Si enumeran cada comportamiento, es probable que compitan con el propio criterio de Fable 5 en vez de ayudarlo.</p>
+<div class="bg-dark-800/60 border-l-4 border-sky-500 rounded-r-lg p-5 mb-6">
+<p class="text-xs uppercase tracking-wide text-sky-400 font-semibold mb-2">Fuente oficial · doc «Prompting Claude Fable 5»</p>
+<p class="text-neutral-200 italic mb-3">"Skills developed for prior models are often too prescriptive for Claude Fable 5 and can degrade output quality. Review and consider removing older instructions if default performance is better."</p>
+<p class="text-neutral-300 text-sm"><strong class="text-sky-400">PT-BR:</strong> "Las skills desarrolladas para modelos anteriores suelen ser demasiado prescriptivas para Claude Fable 5 y pueden empeorar la calidad de la respuesta. Revísalas y considera quitar las instrucciones antiguas si el rendimiento predeterminado ya es mejor."</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m15-t6-p2">Esto vale especialmente para las skills y los system prompts heredados de proyectos con modelos más antiguos: vuelve a leerlos con ojo crítico y prueba si quitar la mitad de las reglas cambia el resultado. Si no cambia, esa regla ya no hacía ninguna diferencia: solo inflaba el prompt y competía por la atención con lo que de verdad importa.</p>
+<div class="mb-6">
+<p class="text-sm text-neutral-400 mb-2"><strong class="text-emerald-400">Objetivo:</strong> pedirle al propio Claude Code que audite su CLAUDE.md/system prompt actual e indique qué probablemente sea una enumeración redundante para Fable 5.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">prompt sugerido (no es una cita oficial) · auditar-claude-md.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Releia o CLAUDE.md (ou system prompt) deste projeto &lt;cole o conteúdo ou aponte o arquivo&gt;.
+Aponte quais instruções são regras enumeradas que um modelo com strong instruction-following
+como o Fable 5 provavelmente já seguiria por padrão, e proponha uma versão mais curta que
+mantenha só o que muda o comportamento de fato. Não remova nada relacionado a intenção,
+contexto de negócio ou fronteiras de segurança — só o que é enumeração redundante.</pre>
+</div>
+<p class="text-sm text-neutral-400"><strong class="text-emerald-400">Cómo comprobar:</strong> ejecuta ambas versiones (original y concisa) en la misma tarea real y compara el resultado. Si el comportamiento no cambió, la versión concisa es estrictamente mejor (menos tokens, menos ruido). Si desapareció algo importante, se recortó por error el contexto de intención: devuélvelo al prompt.</p>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atención</h3>
+<p class="text-neutral-300">No borres todo de una vez. Elimina un bloque de reglas a la vez y ejecuta la misma tarea antes y después. Conserva las reglas que existen por un incidente real (seguridad, datos sensibles, integración frágil); el objetivo son las reglas que solo existían «por si acaso».</p>
+</div>
+<details class="inema-deepen bg-dark-800 border border-dark-600 rounded-xl p-5 mb-6">
+<summary class="font-semibold text-emerald-400 flex items-center gap-2">📎 Profundiza (opcional): señales de que una skill es demasiado prescriptiva</summary>
+<ul class="mt-4 space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Lista con más de 10 «siempre/nunca» sin ninguna frase de contexto que explique por qué.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Instrucciones redundantes con el sentido común predeterminado del modelo (formato obvio, tono educado, no inventar hechos).</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Reglas que intentan prevenir un escenario hipotético que nunca ocurrió realmente en el proyecto.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Instrucciones como "muestra tu razonamiento" o "explica paso a paso antes de responder": el módulo 1.3 ya mostró que esto puede activar la categoría de rechazo <code>reasoning_extraction</code> en Fable 5.</span></li>
+</ul>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> vuelve a leer CLAUDE.md y las skills antiguas con el criterio de Fable 5 — si la regla no cambia el resultado, es ruido; elimínala.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Seguimiento sólido de instrucciones</strong><span class="text-neutral-400"> — una instrucción breve reemplaza la lista de reglas enumeradas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Legible ≠ conciso</strong><span class="text-neutral-400"> — empieza por el resultado, sé selectivo, no lo comprimas en fragmentos.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Reanclar en el resumen final</strong><span class="text-neutral-400"> — breve entre llamadas a herramientas, pero el cierre vuelve a contextualizar a quien no vio el proceso.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Intención ≠ verbosidad</strong><span class="text-neutral-400"> — "explica el porqué" y "di menos" son ejes independientes, no contradictorios.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Refactoriza lo antiguo</strong><span class="text-neutral-400"> — CLAUDE.md y las skills demasiado prescriptivas degradan el resultado de Fable 5; audita y simplifica.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">1.6 — Esfuerzo y enrutamiento de seguridad: niveles de esfuerzo (max/xhigh/high/medium/low) y las 4 categorías de rechazo.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-1-4.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-6.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<!-- FOOTER -->
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+<p class="mt-2 text-xs">Fuente oficial: <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank">platform.claude.com — Prompting Claude Fable 5</a></p>
+</div>
+</footer>
+<!-- V1 core functions -->
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){
+      try{
+        var unit = btn.closest('.copy-unit') || btn.closest('.copybox');
+        var pre = unit.querySelector('pre');
+        navigator.clipboard.writeText(pre.textContent);
+        var o = btn.textContent;
+        btn.textContent = 'copiado ✓';
+        setTimeout(function(){ btn.textContent = o; }, 1500);
+      }catch(e){}
+    }
+  </script>
+<!-- learn.js + INEMA.init() -->
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') {
+      window.INEMA.init();
+    }
+  </script>
+</body>
+</html>

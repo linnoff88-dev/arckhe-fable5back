@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>2.3 Verificación real + subagentes especializados · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function(){try{var html=document.documentElement;var DEF={theme:'inema-dark',font:'inter',fontScale:100,lineWidth:68,leading:1.7,accent:'emerald'};function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}var p=clone(DEF);try{var raw=localStorage.getItem('inema.prefs');if(raw){var parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'){for(var k in DEF)if(parsed[k]!=null)p[k]=parsed[k];}}else{var legacy=localStorage.getItem('theme');if(legacy==='light')p.theme='claro';else if(legacy==='dark')p.theme='inema-dark';}}catch(e){p=clone(DEF);}var THEMES={'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'}};var t=THEMES[p.theme]||THEMES['inema-dark'];if(t.dark===true)html.classList.add('dark');else if(t.dark===false)html.classList.remove('dark');if(t.attr)html.setAttribute('data-theme',t.attr);else html.removeAttribute('data-theme');html.style.colorScheme=(t.cs?t.cs:(html.classList.contains('dark')?'dark':'light'));html.setAttribute('data-font',p.font||'inter');html.setAttribute('data-accent',p.accent||'emerald');var s=html.style,scale=(+p.fontScale||100);s.setProperty('--inema-font-scale',(scale/100).toString());s.setProperty('font-size',scale+'%');s.setProperty('--measure',(+p.lineWidth||68)+'ch');s.setProperty('--lh-body',(+p.leading||1.7).toString());}catch(err){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}catch(e){}}})()
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body{font-family:'Inter',sans-serif}
+    .dark body{background-color:#111827}
+    [id^="topico-"],[id^="modulo-"]{scroll-margin-top:5rem}
+    .termo{border-bottom:1px dashed #60a5fa;cursor:help;font-weight:600;color:#93c5fd}
+    html:not(.dark) .termo{color:#1d4ed8;border-color:#2563eb}
+    .copybox pre{white-space:pre-wrap;word-break:break-word}
+    blockquote{margin:0}
+
+    @keyframes wf-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+    @media (prefers-reduced-motion: no-preference){
+      .wf-a{animation:wf-pulse 2.6s ease-in-out infinite}
+    }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body{background-color:#f8fafc}
+    html:not(.dark) .bg-dark-900{background-color:#fff}
+    html:not(.dark) .bg-dark-800{background-color:#f9fafb}
+    html:not(.dark) .bg-dark-700{background-color:#f3f4f6}
+    html:not(.dark) .bg-dark-600{background-color:#e5e7eb}
+    html:not(.dark) .text-neutral-100{color:#111827}
+    html:not(.dark) .text-neutral-300{color:#4b5563}
+    html:not(.dark) .text-neutral-400{color:#6b7280}
+    html:not(.dark) .text-neutral-500{color:#9ca3af}
+    html:not(.dark) .border-dark-600{border-color:#d1d5db}
+    html:not(.dark) .border-dark-700{border-color:#e5e7eb}
+
+    /* Light mode - cores de acento (trilha blue) */
+    html:not(.dark) .text-blue-400{color:#2563eb}
+    html:not(.dark) .bg-blue-500\/20{background-color:rgba(37,99,235,0.12)}
+    html:not(.dark) .bg-blue-500\/10{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .bg-blue-900\/20{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .bg-blue-900\/40{background-color:rgba(37,99,235,0.1)}
+    html:not(.dark) .border-blue-500\/30{border-color:rgba(37,99,235,0.25)}
+    html:not(.dark) .hover\:bg-blue-500\/30:hover{background-color:rgba(37,99,235,0.18)}
+    html:not(.dark) .hover\:bg-blue-500\/10:hover{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .hover\:text-blue-400:hover{color:#2563eb}
+
+    /* Light mode - remove gradientes (fundo uniforme) */
+    html:not(.dark) [class*="bg-gradient-to"]{background-image:none!important}
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary{color:#a16207}
+    html:not(.dark) .bg-primary\/10{background-color:rgba(161,98,7,0.08)}
+    html:not(.dark) .border-primary\/30{border-color:rgba(161,98,7,0.25)}
+    html:not(.dark) .text-sky-400{color:#0369a1}
+    html:not(.dark) .text-yellow-400{color:#a16207}
+    html:not(.dark) .hover\:text-sky-300:hover{color:#0284c7}
+    html:not(.dark) .text-red-400{color:#b91c1c}
+    html:not(.dark) .text-rose-400{color:#9f1239}
+    html:not(.dark) .bg-red-900\/20{background-color:rgba(185,28,28,0.07)}
+    html:not(.dark) .border-red-500\/30{border-color:rgba(185,28,28,0.25)}
+    html:not(.dark) .text-emerald-400{color:#059669}
+    html:not(.dark) .hover\:text-emerald-400:hover{color:#059669}
+    html:not(.dark) .hover\:text-emerald-300:hover{color:#047857}
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover{background-color:rgba(5,150,105,0.08)}
+    html:not(.dark) .border-emerald-500\/30{border-color:rgba(5,150,105,0.25)}
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95{background-color:rgba(255,255,255,0.95)}
+
+    /* Dark mode - bordas e linhas divisorias mais suaves */
+    .dark .border-dark-600{border-color:#374151}
+    .dark .divide-dark-600>:not([hidden])~:not([hidden]){border-color:#374151}
+
+    /* Diagramas: contido no light mode */
+    html:not(.dark) svg[role="img"]{filter:saturate(0.82) brightness(0.96)}
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span>
+<span class="hidden sm:inline">Ruta 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>Mi recorrido</span>
+<span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Migas de pan" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a>
+<span>/</span>
+<span class="text-blue-400">Módulo 2.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔍 Verificación real + subagentes especializados</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Dos disciplinas que fortalecen de verdad a Fable 5 como agente de trabajo: nunca aceptar «listo» sin pruebas y cambiar una única opinión por el consejo de subagentes especializados — cada uno obligado a aportar evidencia, no solo opiniones.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermed.</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. «Listo» no es una prueba</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Prompt de verificación</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Una opinión es un punto ciego</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Prompt del consejo de 5</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Los dos consejos juntos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Errores comunes + lista de verificación</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" data-inema-module="2-3" data-inema-track="2" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🔎 «Listo» es una afirmación, no una prueba</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un contratista llama y dice: «terminé la remodelación». No pagas sin entrar a la obra, ver los acabados y probar el grifo. Con un agente de IA, el instinto es el opuesto: escribe «listo ✅» con tanta confianza que olvidamos pedirle la misma prueba que le pediríamos a una persona.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t1-p1">En <span class="termo" title="Código, automatizaciones (scripts, integraciones), bases de datos, deploys en producción y documentos: cualquier entregable que Fable 5 pueda afirmar que completó">código, automatización, bases de datos, deploy y documentos</span>, Fable 5 puede informar que tuvo éxito incluso cuando algo falló, quedó incompleto o nunca se comprobó realmente. No es mala fe: el modelo está describiendo lo que <strong class="text-blue-400">debería</strong> que haya ocurrido, en vez de lo que realmente sucedió en la herramienta.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t1-p2">El riesgo es mayor precisamente porque Fable 5 sabe sonar seguro: un informe bien escrito que dice «todo está bien» inspira la misma confianza que uno real. Si no se exige evidencia, un error silencioso se convierte en un error acumulado, y el costo de descubrirlo tarde siempre es mayor que el de comprobarlo pronto.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Qué cambia realmente</h3>
+<ul class="space-y-2 text-neutral-300">
+<li><strong>Afirmación</strong> — "terminé", "funciona", "deploy hecho" (texto, sin pruebas adjuntas)</li>
+<li><strong>Evidencia</strong> — prueba ejecutada, archivo modificado, registro, salida de comando, resultado verificable</li>
+<li><strong>Regla práctica</strong> — solo hay «listo» cuando la afirmación viene acompañada de evidencia</li>
+</ul>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Código</div><div class="text-neutral-400 text-xs">¿la prueba realmente pasó?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Automatización</div><div class="text-neutral-400 text-xs">¿se ejecutó y generó un log?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Base de datos/Deploy</div><div class="text-neutral-400 text-xs">¿coincide la salida del comando?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Documentos</div><div class="text-neutral-400 text-xs">¿existe el archivo modificado?</div></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> "listo" sin evidencia es solo un texto optimista: trátalo como una hipótesis, no como un hecho, hasta ver la prueba.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">📋 El prompt de verificación: exige evidencia antes de decir "listo"</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> La idea central</h3>
+<p class="text-neutral-300 mb-4">Este es el antídoto directo al problema del tema 1: en vez de confiar en el tono seguro del informe, el prompt obliga a Fable 5 a hacer 4 cosas específicas, siempre en este orden:</p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Confirmar con evidencia real: prueba, archivo modificado, registro, salida del comando</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Si no lo verificaste, di «no verificado» en lugar de omitirlo o generalizar</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Si falló, muestra el fallo; no lo disfraces de «casi correcto»</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Si te saltaste una etapa, admite que te la saltaste</span></li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t2-p1">Fíjate en que el prompt no pide "sé honesto" —una petición vaga que el modelo ya "cree" estar cumpliendo. Define un <strong class="text-blue-400">procedimiento de auditoría</strong> concreto: toda afirmación de progreso debe contar con un tipo específico de prueba que la respalde o estar etiquetada como no verificada.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Objetivo:</strong> eliminar el «listo» genérico y hacer que Fable 5 reporte solo lo que puede demostrar — admitiendo explícitamente lo que no se comprobó, en lugar de esconderlo debajo de la alfombra.</p></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt probado en la práctica · guía de uso profesional de Fable 5</span></div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de decir que algo está listo, confírmalo con evidencia real: una prueba ejecutada, un archivo
+modificado, un log, la salida de un comando o un resultado verificable.
+
+Si no se verificó, di claramente: «no verificado».
+Si falló, muestra el error.
+Si omitiste un paso, di que lo omitiste.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Cómo comprobar:</strong> pégalo al inicio de la conversación o en el <code>CLAUDE.md</code>/system prompt del proyecto. Pide una tarea con un paso verificable (ejecutar una prueba, aplicar un diff, consultar un log) y lee el informe final: debe citar la evidencia exacta («pasaron 3 de 3 pruebas, salida: ...») en lugar de decir «todo funciona», y debe indicar «no verificado» cuando corresponda, sin dar rodeos.</p></div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-2 overflow-hidden">
+<svg aria-label="Diagrama de flujo: toda afirmación de que algo está listo pasa por la pregunta «¿hay evidencia real de esta sesión?»; si la hay, se marca como verificada; si no, Fable 5 debe decir explícitamente que no se verificó" class="w-full h-auto" role="img" viewbox="0 0 900 260">
+<defs>
+<filter height="180%" id="m23b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="m23b-ok" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23b-no" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fb7185"></path></marker>
+</defs>
+<polygon fill="#0e1622" points="150,50 260,130 150,210 40,130" stroke="#60a5fa" stroke-width="2"></polygon>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="150" y="122">Hay evidencia real</text>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="150" y="140">¿de esta sesión?</text>
+<path d="M260,110 C400,80 480,65 610,55" fill="none" marker-end="url(#m23b-ok)" opacity="0.7" stroke="#60a5fa" stroke-width="1.8"></path>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="430" y="65">sí</text>
+<g filter="url(#m23b-glow)"><rect fill="#0e1622" height="70" rx="14" stroke="#60a5fa" stroke-width="2.5" width="250" x="610" y="20"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="735" y="48">✅ Verificado</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="735" y="68">repórtalo con la evidencia adjunta</text>
+<path d="M260,150 C400,180 480,195 610,205" fill="none" marker-end="url(#m23b-no)" opacity="0.7" stroke="#fb7185" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="430" y="200">no</text>
+<rect fill="#1f2937" height="70" rx="14" stroke="#9ca3af" stroke-width="2" width="250" x="610" y="170"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="735" y="198">⚠️ «No verificado»</text>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="735" y="218">di eso — nunca lo omitas</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 text-center mt-1 mb-6">El rombo es el único filtro que importa: si no hay evidencia real de esta sesión, la respuesta correcta es admitir «no verificado»; nunca «debe estar funcionando».</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-4 sm:p-5 mb-6 overflow-hidden">
+<div class="flex items-center gap-2 mb-3"><span class="text-lg">🔗</span><h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wide">Cruce con la Trilha 1</h3></div>
+<p class="text-neutral-300 text-sm mb-3">Este consejo refleja directamente la técnica <strong class="text-emerald-400">"demuestra que terminaste"</strong> del módulo <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-4.html">1.4 — Déjalo actuar + demuestra que terminó</a>, que cuenta con el respaldo oficial de la documentación de Anthropic. Allí, la propia Anthropic midió el efecto de este tipo de instrucción:</p>
+<blockquote class="border-l-4 border-emerald-500 pl-4 text-neutral-200 text-sm italic">"In Anthropic's testing, this nearly eliminated fabricated status reports even on tasks designed to elicit them."</blockquote>
+<p class="text-neutral-400 text-xs mt-3">Traducción: "En las pruebas de Anthropic, esto casi eliminó los informes de estado inventados, incluso en tareas diseñadas a propósito para inducirlos." → <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-4.html">ver el módulo 1.4 completo</a>.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Qué HACER</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Pedir la evidencia exacta antes de aceptar cualquier «listo»</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Aceptar "no verificado" como respuesta válida: es mejor que el optimismo falso</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Qué EVITAR</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Confiar en «todo funciona» sin número, registro ni salida adjunta</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Dejar pasar el silencio sobre una etapa omitida</span></li>
+</ul>
+</div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🎭 Una sola opinión es un punto ciego</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una empresa que toma una decisión importante escuchando solo al área de ventas se equivoca de una manera distinta a otra que escucha al mismo tiempo a ventas, producto, finanzas y a la persona escéptica del consejo. No es que ventas esté equivocada: es que una sola perspectiva nunca ve el panorama completo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t3-p1">Cuando le pides a Fable 5 un «análisis» genérico, responde a partir de <strong class="text-blue-400">un solo ángulo</strong> — generalmente, lo que sugirió la propia pregunta. Si preguntaste sobre código, se enfoca en el código; rara vez conecta por sí solo con el posicionamiento de mercado, el recorrido del usuario o el riesgo de ejecución, incluso cuando esos ángulos son relevantes para la decisión real.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t3-p2">El problema no es la calidad de la respuesta, sino la <span class="termo" title="Una decisión que parece completa, pero en realidad solo consideró uno de los factores relevantes, porque nadie pidió explícitamente los demás puntos de vista">cobertura</span>. Una decisión de producto, oferta o campaña tiene al menos 4-5 dimensiones que tiran en direcciones diferentes; pedir una única respuesta es pedir que una de esas dimensiones domine a las demás sin avisar.</p>
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-2">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Estrategia</div><div class="text-neutral-400 text-xs">posicionamiento</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Producto</div><div class="text-neutral-400 text-xs">recorrido del usuario</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Comunicación</div><div class="text-neutral-400 text-xs">contenido y mensaje</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Tecnología</div><div class="text-neutral-400 text-xs">viabilidad y riesgo técnico</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-blue-400 font-semibold text-sm mb-1">Escéptico</div><div class="text-neutral-400 text-xs">busca fallas a propósito</div></div>
+</div>
+<p class="text-sm text-neutral-500 text-center mb-6">5 lentes típicas que una sola respuesta suele dejar fuera — el tema 4 lo convierte en un prompt.</p>
+<div class="bg-dark-800/60 border-l-4 border-neutral-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-neutral-200">Observación de quien usa esto todos los días:</strong> pedir "sé más crítico" o "míralo desde otros ángulos" casi nunca funciona: es demasiado vago para que el modelo sepa cuáles son esos ángulos. Nombrar explícitamente los roles (tema siguiente) es lo que realmente obliga a cubrirlos.</p></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> una respuesta solo tiene un punto de vista incorporado: para evaluar de verdad una idea, una oferta o un producto, tienes que nombrar las perspectivas que quieres ver.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🧭 El prompt del consejo: 5 subagentes, 5 perspectivas, 1 recomendación</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t4-p1">En lugar de pedir una sola opinión, este prompt crea un <strong class="text-blue-400">consejo de 5 subagentes</strong>, cada uno con una especialidad fija, y termina pidiendo consolidarlo todo en una única recomendación con prioridades: lo opuesto a 5 informes sueltos sin síntesis.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Objetivo:</strong> evaluar ideas, ofertas, productos, proyectos o campañas desde múltiples perspectivas especializadas al mismo tiempo — sin que ninguna domine a las demás por defecto.</p></div>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt probado en la práctica · guía de uso profesional de Fable 5</span></div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Usa una estructura de subagentes:
+
+Agente 1: analiza la estrategia y el posicionamiento.
+Agente 2: analiza el producto y el recorrido del usuario.
+Agente 3: analiza el contenido y la comunicación.
+Agente 4: analiza la tecnología y la automatización.
+Agente 5: actúa como escéptico y busca fallas.
+
+Después, consolida todo en una sola recomendación, con prioridades.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Cómo comprobar:</strong> usa en <code>&lt;isto voce troca&gt;</code> — cambia el objeto de análisis (idea, oferta, producto, proyecto, campaña) antes de pegarlo. Confirma que la respuesta final incluya 5 bloques claramente separados por agente y termine con una sección de consolidación con prioridades, no con una lista suelta sin jerarquía.</p></div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-4 sm:p-5 mb-6 overflow-hidden">
+<div class="flex items-center gap-2 mb-3"><span class="text-lg">🔗</span><h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wide">Cruce con la Trilha 1</h3></div>
+<p class="text-neutral-300 text-sm mb-3">El módulo <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-7.html">1.7 — Extra: subagents, memoria y send_to_user</a> explica, con respaldo oficial de Anthropic, <strong class="text-emerald-400">cómo delegar</strong> técnicamente a subagents (asíncrono, con contexto propio). Este tema aquí es sobre <strong class="text-blue-400">qué estructura de roles</strong> usar dentro de esta delegación: ambas cosas se complementan.</p>
+<blockquote class="border-l-4 border-emerald-500 pl-4 text-neutral-200 text-sm italic">"Claude Fable 5 dispatches parallel subagents more readily than prior models... prefer asynchronous communication between orchestrator and subagents over blocking until each subagent returns."</blockquote>
+<p class="text-neutral-400 text-xs mt-3">Traducción: "Claude Fable 5 despacha subagents en paralelo con más facilidad que los modelos anteriores... prefiere la comunicación asíncrona entre el orquestador y los subagents en lugar de bloquearse a la espera de la respuesta de cada uno." → <a class="text-emerald-400 hover:text-emerald-300 underline" href="../trilha1/modulo-1-7.html">ver el módulo 1.7 completo</a>.</p>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-2 overflow-hidden">
+<svg aria-label="Una tarea se asigna a 5 subagentes especializados —estrategia, producto, comunicación, tecnología y pensamiento crítico— que trabajan en paralelo y convergen en una sola recomendación con prioridades" class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<lineargradient id="m23a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m23a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m23a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m23a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m23a-grid)" height="280" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="2">
+<path d="M196,140 C300,140 320,38 452,38" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 C300,140 320,89 452,89" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 L452,140" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 C300,140 320,191 452,191" marker-end="url(#m23a-ah)"></path>
+<path d="M196,140 C300,140 320,242 452,242" marker-end="url(#m23a-ah)"></path>
+</g>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="2">
+<path d="M614,38  C720,38 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,89  C720,89 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,140 L800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,191 C720,191 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+<path d="M614,242 C720,242 730,140 800,140" marker-end="url(#m23a-ahc)"></path>
+</g>
+<g filter="url(#m23a-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#m23a-grad)" stroke-width="2.5" width="156" x="40" y="108"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="118" y="134">Decisión</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="118" y="154">por evaluar</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="22"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="43">1. Estrategia</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="73"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="94">2. Producto</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="145">3. Comunicación</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="175"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="196">4. Tecnología</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="162" x="452" y="226"></rect><text fill="#bfe6ff" text-anchor="middle" x="533" y="247">5. Escéptico</text></g>
+</g>
+<g filter="url(#m23a-glow)"><rect fill="#0e1622" height="70" rx="14" stroke="url(#m23a-grad)" stroke-width="2.5" width="170" x="800" y="105"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="885" y="133">Recomendación</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="885" y="152">única + prioridades</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 text-center mt-1 mb-6">5 recuadros cian = los 5 agentes especializados, cada uno analizando en paralelo. El recuadro azul de la derecha, con resplandor, es el punto que cierra el prompt: consolidación en una única recomendación.</p>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🤝 Los dos consejos juntos: el consejo que aporta pruebas, no solo opiniones</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Escenario:</strong> estás decidiendo si lanzas un nuevo plan de precios. Preguntarles solo «¿qué opinan?» a los 5 agentes genera 5 opiniones bien redactadas, pero todavía son <em>suposiciones</em>. Aquí entra el consejo 5: cada agente del consejo debe aportar evidencia, igual que cualquier otra afirmación de que algo está «listo».</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t5-p1">El consejo 6 ofrece la <strong class="text-blue-400">estructura</strong> (5 perspectivas, sin puntos ciegos). El consejo 5 da el <strong class="text-blue-400">rigor</strong> (ninguna perspectiva termina sin pruebas). En conjunto, se convierten en una sola regla: cada agente del consejo debe señalar una evidencia concreta antes de opinar; no "creo que el mercado responde bien", sino el dato que lo respalda.</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Agente de Estrategia</h4>
+<p class="text-sm text-neutral-400 mb-3">Analiza el posicionamiento frente a la competencia.</p>
+<p class="text-neutral-300 text-sm">Evidencia exigida: <strong class="text-blue-400">benchmark de precios/ofertas de 3-5 competidores directos</strong>, no «creo que es caro».</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Agente de Producto</h4>
+<p class="text-sm text-neutral-400 mb-3">Analiza el recorrido del usuario.</p>
+<p class="text-neutral-300 text-sm">Evidencia exigida: <strong class="text-blue-400">dato de churn, NPS o embudo</strong> que señale dónde el nuevo plan ayuda o perjudica.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Agente de Comunicación</h4>
+<p class="text-sm text-neutral-400 mb-3">Analiza el mensaje de valor.</p>
+<p class="text-neutral-300 text-sm">Evidencia exigida: <strong class="text-blue-400">prueba A/B, investigación o historial de campaña</strong> — no «esta frase suena mejor».</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Agente de Tecnología</h4>
+<p class="text-sm text-neutral-400 mb-3">Analiza la viabilidad y la automatización.</p>
+<p class="text-neutral-300 text-sm">Evidencia exigida: <strong class="text-blue-400">estimación del esfuerzo y dependencias reales</strong> del sistema de cobro/billing.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">5</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Agente Escéptico</h4>
+<p class="text-sm text-neutral-400 mb-3">Busca errores a propósito.</p>
+<p class="text-neutral-300 text-sm">Evidencia exigida: <strong class="text-blue-400">caso histórico o escenario de riesgo</strong> dónde salió mal un cambio parecido.</p>
+</div>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🧾</span> La consolidación</h3>
+<p class="text-neutral-300">Solo después de que los 5 agentes aportaron evidencia (no opiniones sueltas), el paso final del prompt —"consolida todo en una recomendación única, con prioridades"— se convierte en una síntesis confiable. Consolidar 5 suposiciones sigue produciendo una suposición bien organizada; consolidar 5 evidencias produce una decisión.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> si un agente del consejo no aporta evidencia, no terminó: es el mismo criterio del consejo 5, ahora aplicado a cada uno de los 5 enfoques.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">⚠️ Errores comunes de estos 2 consejos — y la lista de verificación rápida</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m23-t6-p1">Los dos prompts de este módulo fallan de la misma manera cuando se aplican a medias: se convierten en un teatro de rigor, sin cambiar realmente el resultado. Los errores más comunes:</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Dónde falla esto en la práctica</h3>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Aceptar "todo bien" sin pedir la prueba exacta: vuelve al punto ciego del tema 1</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pedir solo «sé más crítico» en vez de nombrar explícitamente los 5 roles</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Dejar fuera al Agente Escéptico "para no frenar el entusiasmo": sin él, el consejo se convierte en una cámara de eco optimista</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Consolidar sin exigir evidencia de cada agente: 5 opiniones se convierten en 5 conjeturas bien presentadas</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ejecutar los 5 agentes pero saltarse el paso de consolidación: quedan 5 informes sueltos, sin prioridad</span></li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Lista de verificación rápida</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿Toda afirmación de "listo" vino acompañada de una prueba, un log, un diff o una salida de comando?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿Se indica explícitamente "sin verificar" cuando no se pudo comprobar?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿El consejo incluye los 5 roles con nombre, incluido el escéptico?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿Cada agente citó una evidencia, no solo una opinión?</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>¿Hay una consolidación final con prioridades, en vez de 5 informes sueltos?</span></li>
+</ul>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-6">
+<h4 class="font-bold text-blue-400 mb-4">💡 Combo listo para pegar</h4>
+<p class="text-neutral-300 text-sm mb-3">En las próximas sesiones, prueba pegar juntos los dos prompts de este módulo (temas 2 y 4) en la misma solicitud de análisis y observa si el resultado final tiene 5 bloques con evidencia + 1 consolidación, en lugar de texto suelto.</p>
+<p class="text-neutral-400 text-xs">Esto es literalmente el ejemplo del tema 5, aplicado a tu propio proyecto.</p>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> la verificación y el consejo solo funcionan si se aplican completos; a medias, ambos se convierten en una puesta en escena de rigor en vez de rigor de verdad.</p></div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">"Listo" ≠ terminado</strong><span class="text-neutral-400"> — es una afirmación; solo se convierte en un hecho con evidencia real de esta sesión.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt de verificación</strong><span class="text-neutral-400"> — confirma con pruebas, admite "no verificado", muestra el error, admite el paso que omitiste.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Una opinión = un punto ciego</strong><span class="text-neutral-400"> — estrategia, producto, comunicación, tecnología y una perspectiva escéptica rara vez aparecen juntos sin que lo pidas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt del consejo de 5</strong><span class="text-neutral-400"> — 5 subagentes especializados, consolidados en una recomendación única con prioridades.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Los dos juntos</strong><span class="text-neutral-400"> — el consejo solo sirve si cada agente aporta evidencia, no solo opiniones.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.4 — Memoria del proyecto + continuar hasta completar: cómo convertir decisiones en memoria persistente y evitar que Fable 5 se detenga demasiado pronto en tareas largas.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-4.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p class="mb-2">Fuente principal de este módulo: guía práctica para el uso profesional de Fable 5 (consejos 5 y 6). Referencias oficiales citadas: doc <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank">Prompting Claude Fable 5</a> (Anthropic), mediante los módulos <a class="text-sky-400 hover:text-sky-300" href="../trilha1/modulo-1-4.html">1.4</a> e <a class="text-sky-400 hover:text-sky-300" href="../trilha1/modulo-1-7.html">1.7</a> de la Ruta 1.</p>
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){const ti=button.closest('.topic-item');if(!ti)return;const e=ti.querySelector('.topic-explanation');if(e){e.classList.toggle('active');button.setAttribute('aria-expanded',e.classList.contains('active'));}}
+    (function(){const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){try{var scope=btn.closest('.copybox-lang')||btn.closest('.copybox');var pre=scope.querySelector('pre');navigator.clipboard.writeText(pre.textContent);var o=btn.textContent;btn.textContent='copiado ✓';setTimeout(function(){btn.textContent=o;},1500);}catch(e){}}
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&typeof INEMA.init==='function')INEMA.init();});</script>
+</body>
+</html>

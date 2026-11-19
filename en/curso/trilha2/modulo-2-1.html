@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>2.1 Choose the right task + explain why · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37,99,235,0.10); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-sky-500\/20 { background-color: rgba(3,105,161,0.12); }
+    html:not(.dark) .bg-sky-900\/20 { background-color: rgba(3,105,161,0.08); }
+    html:not(.dark) .border-sky-500\/30 { border-color: rgba(3,105,161,0.25); }
+    html:not(.dark) .hover\:bg-sky-500\/30:hover { background-color: rgba(3,105,161,0.18); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen" data-inema-module="2-1" data-inema-track="2"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Learning Path 1</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Learning Path 2</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Toggle theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Home</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Learning Path 2</a><span>/</span>
+<span class="text-blue-400">Module 2.1</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧭 Choose the right task + explain why</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">First module of track 2 — Fable 5 isn’t “a smarter chat.” It’s a <span class="termo" title="Use the model to analyze, decide, execute, and verify — not just answer one-off questions">work agent</span>: too costly (in focus and depth) for a 2-minute task, and spot-on when you explain why that request matters. These 2 tips address exactly that: which task deserves the model, and how to get it right on the first try.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">None</div><div class="text-xs text-neutral-400">Prereq</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 2.1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-1" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Not every task deserves Fable 5</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. The senior agent prompt</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Why the reason changes the answer</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Weak vs. strong</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. The combo in practice</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Common errors + checklist</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">⚖️ Not every task calls for Fable 5</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> hiring a senior architect to tell you what time it is. They may get it right, but you paid an architect’s day rate for a wristwatch task. Using Fable 5 to summarize a paragraph is the same waste — just in focus, depth, and execution time.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t1-p1">Fable 5 was built to maintain context, make chained decisions and sustain reasoning over long runs. That takes focus: when you point this capability at a two-minute task—summarizing a short text, answering a quick factual question—there’s no “extra” capacity being used. You’ve just paid for an advanced model to do a simple model’s work.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t1-p2">The real benefit shows up at the other end of the spectrum: when the task requires keeping the whole picture in mind at once. <strong class="text-blue-400">Review an entire project's architecture</strong>, assess product/technology/business risks, turn a loose idea into an execution plan, analyze long documents, review code/security/UX/databases, organize complex strategies, create diagnostic and tracking systems — all of this calls for sustained depth, not a quick answer.</p>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🧭</span> Practical rule</h3>
+<p class="text-neutral-300">If you could resolve this with a 2-minute scan, it’s not a task for Fable 5. If it requires keeping dozens of variables/files/decisions in mind at once to reach a correct answer, that’s exactly what it’s for.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+<h4 class="font-bold text-red-400 mb-3">✗ Waste</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Summarize a short text</li>
+<li>• Answer a quick factual question</li>
+<li>• Edit a sentence or caption</li>
+<li>• Generate 3 standalone title ideas</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-5">
+<h4 class="font-bold text-blue-400 mb-3">✓ Worth it</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Review an entire project's architecture</li>
+<li>• Assess product/technology/business risks</li>
+<li>• Turn an idea into an execution plan</li>
+<li>• Analyze long documents</li>
+<li>• Review code/security/UX/database</li>
+<li>• Organize complex strategies</li>
+<li>• Create diagnostic and tracking systems</li>
+</ul>
+</div>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Task-complexity ladder: from summarizing text and answering a quick question on the left, where using Fable 5 is wasteful, rising through a decision zone to reviewing architecture and conducting audits and strategy on the right, where Fable 5 is worth it." class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<pattern height="32" id="m21a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="m21a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<lineargradient id="m21a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+</defs>
+<rect fill="url(#m21a-grid)" height="300" width="1000" x="0" y="0"></rect>
+<polyline fill="none" opacity="0.6" points="115,253 300,208 505,163 710,118 895,72" stroke="#4b5563" stroke-dasharray="6 6" stroke-width="1.8"></polyline>
+<line opacity="0.55" stroke="#38bdf8" stroke-dasharray="5 5" stroke-width="1.5" x1="560" x2="560" y1="20" y2="280"></line>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="560" y="14">decision zone</text>
+<rect fill="#26201a" height="46" rx="12" stroke="#9ca3af" stroke-width="2" width="150" x="40" y="230"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="115" y="257">Summarize text</text>
+<rect fill="#26201a" height="46" rx="12" stroke="#9ca3af" stroke-width="2" width="160" x="220" y="185"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="11.5" font-weight="600" text-anchor="middle" x="300" y="212">Quick question</text>
+<rect fill="#1f2937" height="48" rx="12" stroke="#9ca3af" stroke-dasharray="5 4" stroke-width="2" width="170" x="420" y="140"></rect>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="11.5" font-weight="600" text-anchor="middle" x="505" y="163">Simple planning</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="505" y="178">(depends on the case)</text>
+<rect fill="#0e1622" height="52" rx="14" stroke="#60a5fa" stroke-width="2" width="180" x="620" y="95"></rect>
+<text fill="#bfe0ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="710" y="122">Review architecture</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="710" y="138">and risks</text>
+<g filter="url(#m21a-glow)"><rect fill="#0e1622" height="55" rx="16" stroke="url(#m21a-grad)" stroke-width="2.5" width="150" x="820" y="45"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="895" y="70">Auditing &amp;</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="895" y="86">strategy</text>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="150" y="292">✗ waste of Fable 5</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="895" y="20">✓ Fable 5 is worth it here</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> Fable 5 is worth it when the task requires keeping the whole picture in mind—not when it fits in a 2-minute answer.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🎯 The senior agent prompt (copy-run)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the difference between asking "give me some ideas" of an intern and asking for a structured report from a senior consultant. The second format requires diagnosis, a decision, risks, and a plan—not a loose list.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t2-p1">This is a prompt tested in practice, not an official documentation quote—it’s a recommended template for when the task has already passed the filter from the previous topic. It works because it replaces “share some ideas” with a numbered list of deliverables: the model tends to cover exactly the items you numbered, in the order you numbered them.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t2-p2">Notice the order of the 6 items: diagnosis first (what's wrong), then decisions and risks (what to do and what could go wrong), only then the plan and deliverables, ending with what to do <strong class="text-blue-400">now</strong>. This sequence avoids the classic trap of jumping straight to a solution without understanding the problem.</p>
+<div class="bg-sky-900/20 border border-sky-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-sky-400 mb-3">🔬 Copy-run example: senior analysis prompt</h3>
+<p class="text-neutral-300 text-sm mb-3"><strong>Goal:</strong> turn any complex project or situation into a structured senior-agent analysis—diagnosis, decisions, risks, plan, deliverables, and next step—instead of a one-off response.</p>
+<div class="copybox bg-dark-900 border border-sky-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-sky-400 font-mono">senior analysis prompt — copy</span>
+<button class="text-xs px-2 py-1 rounded bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Estou trabalhando em &lt;projeto maior&gt; para &lt;público&gt;. O resultado final precisa
+permitir &lt;objetivo real&gt;.
+
+Analise o projeto inteiro como um agente sênior. Não me dê ideias soltas. Entregue:
+1. diagnóstico do problema central;
+2. decisões estratégicas necessárias;
+3. riscos;
+4. plano de execução em etapas;
+5. entregáveis concretos;
+6. o que deve ser feito agora, nesta ordem.</pre>
+</div>
+<p class="text-neutral-300 text-sm"><strong>How to check:</strong> check whether the response presented all 6 items clearly separated and numbered—not one continuous paragraph mixing everything together. If any item is shallow or missing (e.g., risks disappeared), run it again and point out exactly which number was incomplete.</p>
+</div>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">💡</span> Why numbered structure matters</h3>
+<p class="text-neutral-300">The model tends to mirror the structure you ask for. Ask for “ideas” and you get loose ideas; ask for 6 numbered deliverables and you get 6 numbered deliverables. The list isn’t decoration — it’s the response format contract.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> Ask a senior agent—with numbered deliverables—and you’ll trade loose ideas for an executable plan.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🧠 Why the reason changes the answer</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> asking someone to “make a slide” without saying who will see it, versus saying “it’s for the board, to approve the budget.” The request is the same; the required result is completely different.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t3-p1">The model responds better when it understands the <strong class="text-blue-400">intent</strong> behind the request: what the bigger goal is, who will use the result, what context it fits into, and what the answer needs to enable. Without that, it fills in the gaps with the most generic interpretation possible for that kind of request—which is rarely exactly what you needed.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t3-p2">This isn't a new rule: it's an established prompting practice, tested again here in the specific context of using Fable 5 as a work agent—not a definitive citation from the documentation. Treat it as a solid recommendation validated in practice, not a rule set in stone.</p>
+<div class="bg-sky-900/20 border border-sky-500/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200 text-sm"><strong class="text-sky-400">🔗 Further reading (track 1):</strong> this tip has the same spirit as the <a class="text-sky-400 hover:text-sky-300 underline" href="../trilha1/modulo-1-2.html">module 1.2 — “Give the why”</a>, which is backed by Anthropic’s documentation and covers the more technical, API-level version of the same principle (including the side effect of asking it to “show its reasoning”). Here, the application is more practical, geared toward everyday products and projects.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+<h4 class="font-bold text-red-400 mb-3">✗ Missing context</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Generic, textbook answer</li>
+<li>• Wrong focus (optimizes the wrong thing)</li>
+<li>• Rework to realign afterward</li>
+<li>• Priorities decided "by guesswork"</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-5">
+<h4 class="font-bold text-blue-400 mb-3">✓ With context</h4>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Response aligned with the real objective</li>
+<li>• Less rework to realign</li>
+<li>• Correct priorities from the first response</li>
+<li>• Explicit criteria for "good," not guessed</li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> without a reason, the model guesses the context; with a reason, it makes decisions in your direction.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔁 Weak vs. strong: the same request, different contexts</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> "create an AI learning path" is a shouted order from afar. The strong prompt below is the complete brief—who will use it, for what, and what the learning path needs to deliver in the end.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t4-p1">See the same request in both versions. The difference isn't in the "what" — both ask for a 30-day learning path. The entire difference lies in the reason: who the audience is, what they need to achieve, and how that translates into a 6-part structure instead of a loose list of days.</p>
+<div class="bg-sky-900/20 border border-sky-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-sky-400 mb-3">🔬 Copy-run example: weak vs. strong</h3>
+<p class="text-neutral-300 text-sm mb-3"><strong>Goal:</strong> show how the same request shifts from a “generic list of topics” to a “structured plan with progress criteria” just by adding who the audience is and what they need to achieve.</p>
+<div class="copybox bg-dark-900 border border-sky-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-sky-400 font-mono">weak / strong — copy</span>
+<button class="text-xs px-2 py-1 rounded bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">❌ FRACO:
+Crie uma trilha de IA.
+
+✅ FORTE:
+Estou criando uma trilha para profissionais que querem aprender IA de forma
+prática e aplicar no trabalho. O objetivo é fazer a pessoa praticar todos os
+dias e construir projetos reais.
+
+Com isso em mente, crie uma trilha de 30 dias com:
+1. diagnóstico inicial;
+2. prática diária;
+3. projeto simples por semana;
+4. conteúdo de apoio;
+5. critério de evolução;
+6. resultado final esperado.</pre>
+</div>
+<p class="text-neutral-300 text-sm"><strong>How to check:</strong> run both versions and compare. The weaker one tends to return a generic 30-day list with no progression or criteria for “whether you improved.” The stronger one returns the 6 requested parts, including daily practice and criteria for improvement — because the reason (practice every day, real project) guided the structure. If the stronger version is still vague, reinforce concrete numbers/criteria in the “who” and the “why.”</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> same request, completely different result—the only variable was the reason.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🔗 The combo in practice: the right task + the reason from the start</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> instead of two separate requests (first choosing the right task, then explaining the reason in another message), the two tips become a single opening paragraph—the same message starts with the right complex task AND the context that justifies it.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t5-p1">Tips 1 and 2 aren’t sequential steps — they’re the same opening sentence. You choose a task that really calls for depth (it doesn’t ask for a summary) <strong class="text-blue-400">e</strong> explain the reason/context right there in the first message — not later, as an addendum after the answer has already come back generic.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t5-p2">Realistic example: a solo founder about to hire their first team member needs to restructure the entire project beforehand—including architecture decisions, priorities, and what to delegate. This is a task where Fable 5 is worth it (tip 1), and the reason (“I’ll use this to make a hiring decision in the next 4 weeks”) completely changes what the response needs to prioritize (tip 2).</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Context + reason first</h4>
+<p class="text-sm text-neutral-400 mb-3">Before the request, not after</p>
+<p class="text-neutral-300 text-sm">Who will use the result, what it's for, and what the response needs to enable—in the first sentence.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Choose a task that calls for depth</h4>
+<p class="text-sm text-neutral-400 mb-3">The filter from topic 1</p>
+<p class="text-neutral-300 text-sm">Architecture, risk, execution plan—don’t ask for a summary or a quick answer.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Ask for a structured, numbered deliverable</h4>
+<p class="text-sm text-neutral-400 mb-3">The format from topic 2</p>
+<p class="text-neutral-300 text-sm">Diagnosis, decisions, risks, plan, deliverables, next step — never “loose ideas.”</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Check against the reason</h4>
+<p class="text-sm text-neutral-400 mb-3">After running</p>
+<p class="text-neutral-300 text-sm">Did the response prioritize what you said mattered? If not, reinforce the reason and run it again.</p>
+</div>
+</div>
+</div>
+<div class="bg-sky-900/20 border border-sky-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-sky-400 mb-3">🔬 Copy-run example: combined prompt</h3>
+<p class="text-neutral-300 text-sm mb-3"><strong>Goal:</strong> show the prompt from tip 1 (the right task), now paired with the reason from tip 2 (context), in a single opening message—not in two separate requests.</p>
+<div class="copybox bg-dark-900 border border-sky-500/30 rounded-xl overflow-hidden mb-3">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-sky-400 font-mono">combined prompt — copy</span>
+<button class="text-xs px-2 py-1 rounded bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Estou reestruturando &lt;nome do projeto&gt; antes de trazer a primeira pessoa
+do time. Preciso que esta análise sirva de guia pras próximas 4 semanas de
+decisões — não é curiosidade, é o documento que vou seguir pra contratar e
+priorizar.
+
+Analise o projeto inteiro como um agente sênior, considerando que quem vai
+usar isso sou eu sozinho, tomando decisões de arquitetura, prioridade e
+contratação. Não me dê ideias soltas. Entregue:
+1. diagnóstico do problema central;
+2. decisões estratégicas necessárias;
+3. riscos;
+4. plano de execução em etapas;
+5. entregáveis concretos;
+6. o que deve ser feito agora, nesta ordem.</pre>
+</div>
+<p class="text-neutral-300 text-sm"><strong>How to check:</strong> confirm that the response explicitly references “the next 4 weeks” and “hiring” in its priorities—that proves the reason influenced the focus and order. If it returned 6 generic items without connecting them to the context you provided, the reason wasn't explicit enough.</p>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Equation: a task that merits depth + an explicit reason and context = an answer aligned with the real goal, not a generic one." class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<pattern height="32" id="m21b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="m21b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<lineargradient id="m21b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+</defs>
+<rect fill="url(#m21b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1622" height="90" rx="16" stroke="#60a5fa" stroke-width="2" width="230" x="30" y="80"></rect>
+<text fill="#bfe0ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="145" y="118">Right task</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="145" y="138">(tip 1 — worth it)</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="34" font-weight="600" text-anchor="middle" x="290" y="140">+</text>
+<rect fill="#0e1b26" height="90" rx="16" stroke="#38bdf8" stroke-width="2" width="230" x="330" y="80"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="445" y="118">Reason + context</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="445" y="138">(tip 2 — why)</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="34" font-weight="600" text-anchor="middle" x="590" y="140">=</text>
+<g filter="url(#m21b-glow)"><rect fill="#0e1622" height="130" rx="20" stroke="url(#m21b-grad)" stroke-width="2.5" width="340" x="630" y="60"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="800" y="112">Aligned response</text>
+<text fill="#bfe0ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="800" y="134">to the real goal,</text>
+<text fill="#bfe0ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="800" y="152">not generic</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> the right task + an explicit reason, in the same opening message—not in two separate requests.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">☑️ Common mistakes + quick checklist</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Flag this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the two tips in this module fail the same way in practice — not because they’re complicated, but because it’s easy to fall back into the old habit of "just sending the question" under time pressure.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t6-p1">The most common mistakes aren’t conceptual—they’re habits. You know you should provide context, but you’re in a hurry and send only the task. You know the task is large, but you use the same generic prompt as always. The list below is a quick antidote: review it before you hit send, not after you get a generic answer.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Common mistakes</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Use Fable 5 for a 2-minute summarization task</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ask for “loose ideas” without a delivery structure</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Put the reason at the end of the prompt, like a PS</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Assuming the model “will understand the context” without writing it down</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Repeating the same generic prompt across completely different tasks</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">✓ Right checklist</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Reserve Fable 5 for analysis/architecture/risk/planning</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Ask for a numbered deliverable (diagnosis → decisions → risks → plan → deliverables → next step)</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Reason + audience + what the output enables BEFORE the request</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>State the context explicitly, even if it seems obvious</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Adapt the prompt to the actual task; don't use a generic template</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">✅</span> 30-second checklist before sending</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li>• Does this task require keeping the whole picture in mind (architecture, risk, plan)?</li>
+<li>• Is the reason/context in the first sentence, not at the end?</li>
+<li>• Did I ask for numbered deliverables, not "standalone ideas"?</li>
+<li>• Did I explain who will use the result and what it needs to enable?</li>
+</ul>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> before sending — does this task deserve Fable 5? And is the reason already in the first sentence?</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Choose the right task</strong><span class="text-neutral-400"> — Fable 5 is worth it for analysis/architecture/risk/planning; it’s wasteful for summaries and quick questions.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Explain the reason</strong><span class="text-neutral-400"> — who, for what purpose, and what the output enables, before the request, not after.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">The two tips become a single message</strong><span class="text-neutral-400"> — the right task, already framed with its rationale from the very first sentence.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Senior agent prompt</strong><span class="text-neutral-400"> — a numbered deliverable (diagnosis, decisions, risks, plan, deliverables, next step) turns loose ideas into an actionable plan.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Next module:</h3>
+<p class="text-neutral-300">2.2 — Control depth + set limits: not every task needs maximum reasoning, and a strong agent needs boundaries before acting.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-2.html">Next Module →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+    });
+  </script>
+</body>
+</html>

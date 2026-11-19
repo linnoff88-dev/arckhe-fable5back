@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="fable5" name="inema-course"/>
+<title>1.4 Déjalo actuar + demuestra que terminó · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<script>
+  (function(){try{var html=document.documentElement;var DEF={theme:'inema-dark',font:'inter',fontScale:100,lineWidth:68,leading:1.7,accent:'emerald'};function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}var p=clone(DEF);try{var raw=localStorage.getItem('inema.prefs');if(raw){var parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'){for(var k in DEF)if(parsed[k]!=null)p[k]=parsed[k];}}else{var legacy=localStorage.getItem('theme');if(legacy==='light')p.theme='claro';else if(legacy==='dark')p.theme='inema-dark';}}catch(e){p=clone(DEF);}var THEMES={'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'}};var t=THEMES[p.theme]||THEMES['inema-dark'];if(t.dark===true)html.classList.add('dark');else if(t.dark===false)html.classList.remove('dark');if(t.attr)html.setAttribute('data-theme',t.attr);else html.removeAttribute('data-theme');html.style.colorScheme=(t.cs?t.cs:(html.classList.contains('dark')?'dark':'light'));html.setAttribute('data-font',p.font||'inter');html.setAttribute('data-accent',p.accent||'emerald');var s=html.style,scale=(+p.fontScale||100);s.setProperty('--inema-font-scale',(scale/100).toString());s.setProperty('font-size',scale+'%');s.setProperty('--measure',(+p.lineWidth||68)+'ch');s.setProperty('--lh-body',(+p.leading||1.7).toString());}catch(err){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}catch(e){}}})()
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "fable5",
+  "tracks": [
+    { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
+      { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
+      { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
+    ]},
+    { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
+      { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
+    ]}
+  ]
+}
+  </script>
+<style>
+    body{font-family:'Inter',sans-serif}
+    .dark body{background-color:#111827}
+    [id^="topico-"],[id^="modulo-"]{scroll-margin-top:5rem}
+    .termo{border-bottom:1px dashed #34d399;cursor:help;font-weight:600;color:#6ee7b7}
+    html:not(.dark) .termo{color:#047857;border-color:#059669}
+    .copybox pre{white-space:pre-wrap;word-break:break-word}
+    blockquote{margin:0}
+
+    @keyframes wf-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+    @media (prefers-reduced-motion: no-preference){
+      .wf-a{animation:wf-pulse 2.6s ease-in-out infinite}
+    }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body{background-color:#f8fafc}
+    html:not(.dark) .bg-dark-900{background-color:#fff}
+    html:not(.dark) .bg-dark-800{background-color:#f9fafb}
+    html:not(.dark) .bg-dark-700{background-color:#f3f4f6}
+    html:not(.dark) .bg-dark-600{background-color:#e5e7eb}
+    html:not(.dark) .text-neutral-100{color:#111827}
+    html:not(.dark) .text-neutral-300{color:#4b5563}
+    html:not(.dark) .text-neutral-400{color:#6b7280}
+    html:not(.dark) .text-neutral-500{color:#9ca3af}
+    html:not(.dark) .border-dark-600{border-color:#d1d5db}
+    html:not(.dark) .border-dark-700{border-color:#e5e7eb}
+
+    /* Light mode - cores de acento (trilha emerald) */
+    html:not(.dark) .text-emerald-400{color:#059669}
+    html:not(.dark) .bg-emerald-500\/20{background-color:rgba(5,150,105,0.12)}
+    html:not(.dark) .bg-emerald-500\/10{background-color:rgba(5,150,105,0.08)}
+    html:not(.dark) .bg-emerald-900\/20{background-color:rgba(5,150,105,0.08)}
+    html:not(.dark) .bg-emerald-900\/40{background-color:rgba(5,150,105,0.1)}
+    html:not(.dark) .border-emerald-500\/30{border-color:rgba(5,150,105,0.25)}
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover{background-color:rgba(5,150,105,0.18)}
+    html:not(.dark) .hover\:text-emerald-400:hover{color:#059669}
+
+    /* Light mode - remove gradientes (fundo uniforme) */
+    html:not(.dark) [class*="bg-gradient-to"]{background-image:none!important}
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary{color:#a16207}
+    html:not(.dark) .bg-primary\/10{background-color:rgba(161,98,7,0.08)}
+    html:not(.dark) .border-primary\/30{border-color:rgba(161,98,7,0.25)}
+    html:not(.dark) .text-sky-400{color:#0369a1}
+    html:not(.dark) .text-yellow-400{color:#a16207}
+    html:not(.dark) .hover\:text-sky-300:hover{color:#0284c7}
+    html:not(.dark) .text-red-400{color:#b91c1c}
+    html:not(.dark) .text-rose-400{color:#9f1239}
+    html:not(.dark) .text-blue-400{color:#2563eb}
+    html:not(.dark) .bg-blue-900\/20{background-color:rgba(37,99,235,0.08)}
+    html:not(.dark) .border-blue-500\/30{border-color:rgba(37,99,235,0.25)}html:not(.dark) .bg-blue-500\/20{background-color: rgba(37,99,235,0.12);}html:not(.dark) .bg-blue-500\/10{background-color: rgba(37,99,235,0.08);}html:not(.dark) .hover\:bg-blue-500\/30:hover{background-color: rgba(37,99,235,0.18);}html:not(.dark) .hover\:bg-blue-500\/10:hover{background-color: rgba(37,99,235,0.12);}html:not(.dark) .hover\:text-blue-400:hover{color: #2563eb;}html:not(.dark) .group:hover .group-hover\:text-blue-400{color: #2563eb;}
+    html:not(.dark) .bg-red-900\/20{background-color:rgba(185,28,28,0.07)}
+    html:not(.dark) .border-red-500\/30{border-color:rgba(185,28,28,0.25)}
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95{background-color:rgba(255,255,255,0.95)}
+
+    /* Dark mode - bordas e linhas divisorias mais suaves */
+    .dark .border-dark-600{border-color:#374151}
+    .dark .divide-dark-600>:not([hidden])~:not([hidden]){border-color:#374151}
+
+    /* Diagramas: contido no light mode */
+    html:not(.dark) svg[role="img"]{filter:saturate(0.82) brightness(0.96)}
+  </style>
+<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">📖</span>
+<span class="font-bold text-lg hidden sm:inline">FABLE 5</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html">
+<span class="sm:hidden">T1</span>
+<span class="hidden sm:inline">Ruta 1</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span>
+</a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button">
+<span aria-hidden="true">◷</span><span>Mi recorrido</span>
+<span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Migas de pan" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Ruta 1</a>
+<span>/</span>
+<span class="text-emerald-400">Módulo 1.4</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.4</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🚦 Déjalo actuar + demuestra que terminó</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Fable 5 puede trabajar sin detenerse para pedir aprobación a cada paso y sabe demostrar, con pruebas reales, cuándo terminó de verdad. Son dos disciplinas que se complementan: menos pausas innecesarias durante el proceso y más pruebas concretas al final.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~45</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Intermed.</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 1.4" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-4" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. La planificación excesiva</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Déjalo actuar (prompt oficial)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Modo Plan: cuándo vale la pena</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Confianza ciega</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Demuestra que terminaste (prompt oficial)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Verificación por subagent</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" data-inema-module="1-4" data-inema-track="1" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🧠 El overplanning: cuando el modelo piensa demasiado</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un pasante brillante, cuando tiene más tiempo y autonomía, a veces usa ese tiempo para investigar contexto que nadie pidió, revisar decisiones ya tomadas o «solo confirmar» algo obvio otra vez. El <span class="termo" title="Tendencia de un modelo potente a investigar, planificar o deliberar más de lo que la tarea requiere, gastando tiempo y tokens sin necesidad real">sobreplanificación</span> en Fable 5 es esa misma tendencia — y aparece precisamente porque el modelo es demasiado capaz para «desactivar» el razonamiento pronto.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t1-p1">Claude Fable 5 tiene mucha más capacidad de razonamiento que los modelos anteriores: puede mantener una instrucción durante días, revisar sistemas enteros y cruzar decenas de archivos antes de cambiar una línea. Esa misma capacidad, aplicada a una tarea de <strong class="text-emerald-400">rutinaria</strong>, se convierte en un desperdicio: el modelo investiga más de lo necesario, evalúa alternativas que no importan y tarda en empezar a actuar de verdad.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t1-p2">Esto no es un defecto oculto: es un efecto secundario directo del <span class="termo" title="Nivel de capacidad que el modelo aplica a una tarea: max, xhigh, high (predeterminado), medium o low. Un nivel de esfuerzo alto tiende a deliberar más">effort</span> alto, que es el valor predeterminado. Con un esfuerzo alto, el comportamiento adecuado para un problema difícil se vuelve excesivo en una tarea sencilla, y Fable 5 funciona con esfuerzo alto de forma predeterminada.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📚</span> Cita oficial — doc "Prompting Claude Fable 5"</h3>
+<p class="text-neutral-300 text-sm mb-2">Sobre por qué esto ocurre precisamente en el trabajo rutinario con un nivel de esfuerzo alto:</p>
+<blockquote class="border-l-4 border-blue-500 pl-4 text-neutral-200 text-sm italic">"On routine work at higher effort, Claude Fable 5 can gather context and deliberate beyond what the task needs..."</blockquote>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> cuanto más potente es el modelo, más necesita instrucciones explícitas para saber cuándo dejar de pensar y empezar a actuar.</p></div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Overplanning</div><div class="text-neutral-400 text-xs">investigar/planificar más de lo necesario</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Esfuerzo alto</div><div class="text-neutral-400 text-xs">predeterminado: más deliberación por defecto</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Trabajo rutinario</div><div class="text-neutral-400 text-xs">dónde aparece más la exageración</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Señal, no un bug</div><div class="text-neutral-400 text-xs">corrige con instrucciones, no con enojo</div></div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">🟢 El prompt oficial anti-overplanning: «Déjalo actuar»</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎯</span> La idea central</h3>
+<p class="text-neutral-300 mb-4">El antídoto contra el overplanning no es pedir «sé más rápido» (demasiado vago para que el modelo actúe en consecuencia), sino decir exactamente <strong class="text-emerald-400">cuándo es obligatorio parar</strong>. Todo lo que no cumpla este criterio, Fable 5 debe hacerlo directamente, sin pausas.</p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Acción destructiva o irreversible → detente y pregunta</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Cambio real de alcance → detente y pregunta</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Información que solo tiene el usuario → detente y pregunta</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Cualquier otra cosa → actúa y termina el turno con trabajo, no con una promesa</span></li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t2-p1">Fíjate en lo que el prompt oficial NO hace: no enumera comportamientos ("no preguntes antes de leer un archivo", "no preguntes antes de ejecutar una prueba"...). Da un <strong class="text-emerald-400">criterio</strong> — algo destructivo/irreversible, un cambio real de alcance o un dato que solo sabe el usuario — y deja que el modelo aplique ese criterio en cualquier situación nueva. Es la misma lógica de "explica el porqué" (módulo 1.2), pero hacia adentro: el "porqué" de cuándo detenerse.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Objetivo:</strong> dejar de esperar aprobación para cada microdecisión reversible (leer un archivo, ejecutar una prueba, crear una branch, refactorizar dentro del alcance solicitado) y reservar la pausa solo para cuando sea realmente necesaria.</p></div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">prompt oficial · anti-planificación excesiva · doc "Prompting Claude Fable 5"</span></div>
+<div class="copybox-lang border-b border-dark-600">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">EN (oficial)</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Pause for the user only when the work genuinely requires them: a destructive or
+irreversible action, a real scope change, or input that only they can provide. If you
+hit one of these, ask and end the turn, rather than ending on a promise.</pre>
+</div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR (traducción)</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Pausa y pregunta al usuario solo cuando el trabajo realmente lo requiera: una acción destructiva
+o irreversible, un cambio real de alcance o información que solo él puede
+proporcionar. Si encuentras uno de estos casos, pregunta y termina el turno, en vez de
+terminar con una promesa.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Cómo comprobar:</strong> pega la versión en inglés (la oficial) en el <code>CLAUDE.md</code> o en el system prompt del proyecto. En las próximas sesiones, observa si Fable 5 ejecuta directamente los pasos reversibles (leer, probar, crear una branch) y si SOLO se detiene cuando la acción es realmente destructiva o irreversible, cambia el alcance o depende de algo que solo tú sabes. Si deja de preguntar "¿puedo continuar?" en medio de tareas rutinarias, el prompt está funcionando.</p></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Qué HACER</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Dejar que el modelo termine el turno con un resultado real (archivo modificado, prueba ejecutada)</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Confiar en acciones reversibles (lectura, prueba, rama, lint)</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Reservar la pausa solo para lo destructivo, irreversible, fuera de alcance o que requiera una decisión del usuario</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Qué EVITAR</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pedir confirmación para cada lectura de archivo o ejecución de prueba</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Terminar el turno con una promesa ("voy a hacer X ahora") en lugar de con un resultado</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Tratar todo cambio como si fuera irreversible "por precaución"</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> haz una pausa solo cuando la acción sea destructiva, cambie el alcance o dependa del usuario; lo demás, hazlo.</p></div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Criterio, no lista</div><div class="text-neutral-400 text-xs">se generaliza a situaciones nuevas</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Destructivo/irreversible</div><div class="text-neutral-400 text-xs">único caso claro para pausar</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Terminar con un resultado</div><div class="text-neutral-400 text-xs">nunca en una promesa</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">CLAUDE.md / system prompt</div><div class="text-neutral-400 text-xs">dónde vive este texto</div></div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🗺️ Plan mode: cuándo sigue siendo útil</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> <span class="termo" title="Modo de Claude Code en el que el agente escribe un plan de acción antes de tocar cualquier archivo y espera tu aprobación para ejecutarlo">plan mode</span> es el agente que se detiene a dibujar el mapa antes de avanzar. Tiene sentido en territorio desconocido. Es una pérdida de tiempo cuando el camino ya es obvio, y el tema 2 ya resuelve lo «obvio» sin necesidad de mapa.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t3-p1">El error común es tratar el plan mode como un hábito predeterminado: abrirlo para toda tarea «por si acaso». Esto vuelve a introducir exactamente el problema del tema 1: el modelo delibera antes de actuar, incluso cuando la tarea ya estaba lo suficientemente clara como para simplemente hacerla.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t3-p2">La prueba práctica es sencilla: la tarea es <strong class="text-emerald-400">genuinamente ambigua</strong> (hay varios caminos razonables, no se puede saber cuál elegir sin decidir antes), es <strong class="text-emerald-400">grande</strong> (afecta decenas de archivos, cambia la arquitectura) o puede <strong class="text-emerald-400">cambiar el rumbo del proyecto</strong>? Si sí, el plan mode justifica el costo de la pausa. Si no —como ocurre con la mayoría de las tareas cotidianas—, dejarlo actuar (tema 2) ya es la respuesta correcta.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-2 overflow-hidden">
+<svg aria-label="Diagrama de flujo de decisión: si la tarea es ambigua, grande o cambia el rumbo del proyecto, conviene usar plan mode; de lo contrario, lo correcto es actuar directamente" class="w-full h-auto" role="img" viewbox="0 0 900 260">
+<defs>
+<filter height="180%" id="m14b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="m14b-ok" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m14b-no" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fb7185"></path></marker>
+</defs>
+<polygon fill="#0e2018" points="150,50 260,130 150,210 40,130" stroke="#34d399" stroke-width="2"></polygon>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="150" y="122">Tarea ambigua,</text>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="150" y="140">¿es grande o cambia el rumbo?</text>
+<path d="M260,110 C400,80 480,65 610,55" fill="none" marker-end="url(#m14b-ok)" opacity="0.7" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="430" y="65">sí</text>
+<g filter="url(#m14b-glow)"><rect fill="#0e2018" height="70" rx="14" stroke="#34d399" stroke-width="2.5" width="250" x="610" y="20"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="735" y="48">Plan mode vale la pena</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="735" y="68">traza el plan, pide aprobación</text>
+<path d="M260,150 C400,180 480,195 610,205" fill="none" marker-end="url(#m14b-no)" opacity="0.7" stroke="#fb7185" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="430" y="200">no</text>
+<rect fill="#1f2937" height="70" rx="14" stroke="#9ca3af" stroke-width="2" width="250" x="610" y="170"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="735" y="198">Actúa directamente</text>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="735" y="218">"déjalo actuar" — para la mayoría del trabajo diario</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 text-center mt-1 mb-6">Mira el rombo: es la única prueba que importa. Si la respuesta es "no" —el caso más común—, Fable 5 debe pasar directamente a la acción, sin abrir el plan mode por costumbre.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✅ Vale la pena usar el modo plan</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tarea realmente ambigua: hay más de un camino razonable y hace falta decidir antes de tocar el código</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Cambio grande: decenas de archivos, migración, cambio de arquitectura</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Decisión que es costosa de revertir si resulta equivocada</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">⏸️ Solo estorba</h4>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Corrección puntual de un bug, ajuste de estilo, tarea con un camino obvio</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Cualquier cosa que el tema 2 («deja que actúe») ya cubra por sí solo</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Usar el plan mode «por costumbre», sin comprobar si la tarea realmente lo requiere</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-neutral-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-neutral-200">Observación de quien usa esto todos los días:</strong> no es solo teoría de curso: varios creadores de contenido que prueban agentes de IA como parte de su trabajo cuentan el mismo ajuste: dejaron de abrir el plan mode por costumbre y empezaron a reservarlo solo para tareas realmente grandes o ambiguas. El resto del tiempo (la mayoría de las veces), «deja que actúe» ya es suficiente.</p></div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Plan mode</div><div class="text-neutral-400 text-xs">plan antes de ejecutar</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Prueba rápida</div><div class="text-neutral-400 text-xs">¿es ambiguo, grande o cambia el rumbo?</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Excepción, no regla</div><div class="text-neutral-400 text-xs">la mayoría de las tareas cotidianas no lo necesita</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">El hábito se convierte en costo</div><div class="text-neutral-400 text-xs">usar por defecto vuelve a introducir una planificación excesiva</div></div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🔍 El problema de confiar ciegamente</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> no confías en un colega nuevo solo porque dijo «terminé»; confías después de ver la solicitud de extracción, ejecutar la prueba y revisar el resultado. Con un agente es igual: «terminé» es una afirmación, no un hecho. El hecho es la evidencia que la respalda.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t4-p1">Dejar que el modelo actúe sin detenerse en cada paso (tema 2) solo es seguro si al final hay una prueba real. Sin eso, "déjalo actuar" se convierte en "confía ciegamente"; y entonces el riesgo pasa a ser lo contrario de lo que querías: menos pausas, pero ninguna garantía de que el trabajo reportado sea real.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t4-p2">El informe de «terminé» puede ser correcto, puede ser optimista o puede ser inventado sin intención: el modelo generaliza a partir de lo que «debería» haber ocurrido, no de lo que realmente ocurrió en la herramienta. La única forma de saber la diferencia es auditar la afirmación con evidencia concreta de esta sesión: el resultado de una prueba, un diff, un log.</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Delegar la tarea</h4>
+<p class="text-sm text-neutral-400 mb-3">Tú lo pides, el agente lo ejecuta sin parar (tema 2).</p>
+<p class="text-neutral-300 text-sm">En este punto aún no sabes si el trabajo se hizo bien; solo sabes que se ejecutó.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El agente dice «terminé»</h4>
+<p class="text-sm text-neutral-400 mb-3">Un informe final, en texto, optimista por naturaleza.</p>
+<p class="text-neutral-300 text-sm">Es una afirmación; todavía no demuestra nada.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Sin verificar, ¿ya confiarías?</h4>
+<p class="text-sm text-neutral-400 mb-3">Con un colega humano nuevo, la respuesta sería no.</p>
+<p class="text-neutral-300 text-sm">Con un agente, el instinto es confiar demasiado rápido: justo el punto ciego que este tema aborda.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Confianza real = evidencia comprobada</h4>
+<p class="text-sm text-neutral-400 mb-3">El tema 5 resuelve esto con un prompt oficial.</p>
+<p class="text-neutral-300 text-sm">Solo después de ver que la prueba pasó, que el diff es correcto y que el registro está limpio, la afirmación "terminé" se convierte en un hecho.</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-neutral-300">Antes de aceptar cualquier «terminé», pregunta: «señala la evidencia exacta de esta sesión que lo confirma» (un resultado de prueba, un diff, un log). Si el agente no puede señalar nada concreto, es señal de que el trabajo aún no está verificado, aunque en el texto parezca listo.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">"Terminé" ≠ terminado</div><div class="text-neutral-400 text-xs">es una afirmación, no una prueba</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Evidencia de la sesión</div><div class="text-neutral-400 text-xs">prueba, diff, log — no memoria</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">La confianza se gana</div><div class="text-neutral-400 text-xs">igual que con una persona nueva</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">"Déjalo actuar" necesita esto</div><div class="text-neutral-400 text-xs">si no, se convierte en confianza ciega</div></div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">📋 El prompt oficial de verificación: "Demuestra que terminó"</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t5-p1">Este es el segundo prompt oficial del dúo de este módulo, y cierra el ciclo que abrió el tema 4. En vez de pedir «sé honesto» (algo vago; el modelo ya «cree» que está siendo honesto), el prompt define un <strong class="text-emerald-400">procedimiento de auditoría</strong>: cada afirmación de progreso debe señalar un resultado real de esta sesión antes de reportarse.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Objetivo:</strong> eliminar los informes de estado inventados — hacer que el agente reporte solo lo que puede demostrar con un resultado real de una herramienta y admita explícitamente lo que todavía no se verificó.</p></div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">prompt oficial · prueba basada en evidencias · doc "Prompting Claude Fable 5"</span></div>
+<div class="copybox-lang border-b border-dark-600">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">EN (oficial)</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Before reporting progress, audit each claim against a tool result from this session.
+Only report work you can point to evidence for; if something is not yet verified, say
+so explicitly. Report outcomes faithfully: if tests fail, say so with the output; if a
+step was skipped, say that; when something is done and verified, state it plainly
+without hedging.</pre>
+</div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR (traducción)</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de reportar progresso, audite cada alegação contra um resultado de ferramenta
+desta sessão. Só reporte o trabalho que você consegue apontar evidência; se algo
+ainda não foi verificado, diga isso explicitamente. Reporte os resultados com
+fidelidade: se os testes falharem, diga isso com a saída; se uma etapa foi pulada,
+diga que foi; quando algo estiver pronto e verificado, afirme isso claramente, sem
+hesitar.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Cómo comprobar:</strong> pega la versión en inglés (la oficial) en el <code>CLAUDE.md</code> o en el system prompt, junto con el prompt del tema 2. Pide una tarea con pasos verificables (ejecutar la suite de pruebas, aplicar un diff) y observa el informe final: debe indicar el resultado exacto (p. ej., "5 de 5 pruebas pasaron, salida: ...") en vez de decir "todo funciona" de forma genérica, y debe reconocer explícitamente cualquier parte no verificada, en lugar de omitirla.</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Resultado empírico (Anthropic)</h3>
+<p class="text-neutral-300 text-sm mb-2">La propia Anthropic probó este prompt en tareas diseñadas expresamente para inducir informes fabricados:</p>
+<blockquote class="border-l-4 border-blue-500 pl-4 text-neutral-200 text-sm italic">"In Anthropic's testing, this nearly eliminated fabricated status reports even on tasks designed to elicit them."</blockquote>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-2 overflow-hidden">
+<svg aria-label="Ciclo de verificación: actuar, observar el resultado real de la herramienta, auditar cada afirmación frente a esa evidencia y solo entonces informar; el ciclo vuelve a empezar en cada paso nuevo" class="w-full h-auto" role="img" viewbox="0 0 1000 380">
+<defs>
+<lineargradient id="m14a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m14a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m14a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m14a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m14a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m14a-grid)" height="380" width="1000" x="0" y="0"></rect>
+<path d="M300,75 C450,75 480,75 700,75" fill="none" marker-end="url(#m14a-ah)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<path d="M860,110 C860,180 860,220 860,255" fill="none" marker-end="url(#m14a-ah)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<path d="M700,300 C550,300 480,300 300,300" fill="none" marker-end="url(#m14a-ah)" opacity="0.6" stroke="#34d399" stroke-width="1.8"></path>
+<path class="wf-a" d="M140,255 C140,190 140,150 140,110" fill="none" marker-end="url(#m14a-ahc)" opacity="0.7" stroke="#38bdf8" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<rect fill="#0e2018" height="70" rx="14" stroke="#34d399" stroke-width="2" width="240" x="60" y="40"></rect>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="180" y="68">1. Actuar</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="180" y="90">usa la herramienta sin detenerse a preguntar</text>
+<rect fill="#0e2018" height="70" rx="14" stroke="#34d399" stroke-width="2" width="240" x="700" y="40"></rect>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="820" y="68">2. Resultado de la herramienta</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="820" y="90">salida real: prueba, diff, log, error</text>
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="240" x="700" y="255"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="820" y="283">3. Auditoría</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="820" y="305">¿cada afirmación coincide con el resultado de la herramienta?</text>
+<g filter="url(#m14a-glow)"><rect fill="#0e2018" height="70" rx="14" stroke="url(#m14a-grad)" stroke-width="2.5" width="240" x="60" y="255"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="180" y="283">4. Informe</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="180" y="305">con evidencia; nunca «funcionó» sin pruebas</text>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="12" opacity="0.7" text-anchor="middle" x="500" y="200">el ciclo se reinicia con cada nuevo paso</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 text-center mt-1 mb-6">Sigue la flecha punteada en cian que vuelve de «Informe» a «Actuar»: ese es el ciclo que se repite. Ningún paso salta directamente de «Actuar» a «Informe» sin pasar por la auditoría frente al resultado de la herramienta.</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Auditar cada afirmación</div><div class="text-neutral-400 text-xs">contra un resultado real de herramienta</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Admitir lo que no está verificado</div><div class="text-neutral-400 text-xs">explícitamente, sin omitir</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Informar sin rodeos</div><div class="text-neutral-400 text-xs">un fallo es un fallo, con el output</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Casi eliminó las invenciones</div><div class="text-neutral-400 text-xs">resultado medido por Anthropic</div></div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">🛡️ La verificación por subagent supera la autocrítica</h2>
+</div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda" type="button">
+<span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span>
+</button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> pedirle al mismo agente que escribió el código que también lo revise es como pedirle al autor de un texto que sea su único revisor: ya decidió que está bien y tiende a confirmar sus propias decisiones. Un <span class="termo" title="Una instancia separada del agente, con su propio contexto, que ejecuta una subtarea e informa al orquestador">subagent</span> con <span class="termo" title="Que no carga el historial de la sesión principal: solo ve la especificación y la evidencia, sin el sesgo de quien ya decidió que el trabajo está listo">contexto actualizado</span> no tiene ese sesgo: solo ve la especificación y la evidencia, no la narrativa de quien hizo el trabajo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m14-t6-p1">En tareas largas, revisar el propio trabajo a cada paso es costoso, pero no revisarlo nunca permite que los errores se acumulen hasta el final, cuando corregirlos ya cuesta más. La solución oficial es combinar ambas cosas: un ritmo de verificación definido de antemano y delegado a un subagent independiente.</p>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-2"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Objetivo:</strong> establecer un punto de control de verificación periódica en tareas largas, a cargo de un subagente con contexto fresco en lugar de la autoevaluación del propio agente que construyó la solución.</p></div>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-2">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">prompt oficial · verificación con subagent · doc "Prompting Claude Fable 5"</span></div>
+<div class="copybox-lang border-b border-dark-600">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">EN (oficial)</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Establish a method for checking your own work at an interval of [X] as you build. Run
+this every [X interval], verifying your work with subagents against the specification.</pre>
+</div>
+<div class="copybox-lang">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800/60"><span class="text-[11px] uppercase tracking-wide text-neutral-400 font-semibold">PT-BR (traducción)</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Establece un método para revisar tu propio trabajo a intervalos de [X] mientras
+construyes. Ejecútalo cada [intervalo X] y verifica tu trabajo con
+subagents frente a la especificación.</pre>
+</div>
+</div>
+<div class="bg-dark-800/60 rounded-xl border border-dark-600 p-5 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Cómo comprobar:</strong> reemplaza <code>[X]</code> (en la versión en inglés, la que debe ir en tu prompt) por un intervalo concreto de tu contexto (por ejemplo, "cada 3 archivos modificados" o "cada 20 minutos de trabajo agéntico") y pégala en el system prompt de una tarea larga. Confirma que, en ese intervalo, el agente realmente inicia un subagent verificador independiente —y no solo se reafirma que "todo está bien"— y que ese subagent cita la especificación original al señalar discrepancias.</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📚</span> Por qué gana el verificador externo</h3>
+<p class="text-neutral-300 text-sm mb-2">Cita oficial (doc "Prompting Claude Fable 5"):</p>
+<blockquote class="border-l-4 border-blue-500 pl-4 text-neutral-200 text-sm italic mb-3">"Separate, fresh-context verifier subagents tend to outperform self-critique."</blockquote>
+<p class="text-neutral-300 text-sm">La razón es estructural; no se trata de que el modelo "sea más riguroso": quien escribió la solución lleva en su propio contexto todo el razonamiento que condujo a las decisiones tomadas y tiende a reafirmarlas en vez de cuestionarlas. Un subagent que nunca ha visto ese razonamiento, sino solo la especificación y la evidencia, no hereda ese sesgo de confirmación.</p>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> El riesgo de saltarse este paso</h3>
+<p class="text-neutral-300">Sin un verificador de contexto reciente, dependes solo de la autoevaluación del mismo agente que hizo el trabajo: como poner al zorro a cuidar el gallinero. Combinado con el tema 2 («deja que actúe»), esto puede acumular decisiones erróneas durante muchos pasos antes de que alguien se dé cuenta. El punto de control con un subagent es lo que permite que Fable 5 trabaje durante largos períodos sin supervisión constante.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> define un intervalo de revisión y asígnaselo a un subagent nuevo: por naturaleza, desconfía; el autor original no.</p></div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Intervalo definido</div><div class="text-neutral-400 text-xs">[X] — tiempo o hitos concretos</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Subagent separado</div><div class="text-neutral-400 text-xs">no es autocrítica del mismo agente</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Contexto reciente</div><div class="text-neutral-400 text-xs">sin el sesgo de quien ya tomó una decisión</div></div>
+<div class="bg-dark-800/60 border border-dark-600 rounded-lg p-3 text-center"><div class="text-emerald-400 font-semibold text-sm mb-1">Contra la especificación</div><div class="text-neutral-400 text-xs">criterio objetivo, no opinión</div></div>
+</div>
+<div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button></div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Overplanning</strong><span class="text-neutral-400"> — efecto secundario del nivel de esfuerzo alto en una tarea rutinaria, no un defecto oculto.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">"Déjalo actuar"</strong><span class="text-neutral-400"> — prompt oficial: pausa solo ante acciones destructivas/irreversibles, cambios de alcance o decisiones del usuario.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Plan mode como excepción</strong><span class="text-neutral-400"> — solo cuando la tarea es ambigua, grande o cambia el rumbo; no por costumbre.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">"Demuestra que terminaste"</strong><span class="text-neutral-400"> — prompt oficial que casi eliminó los informes inventados en las pruebas de Anthropic.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Verificación por subagente</strong><span class="text-neutral-400"> — un checkpoint con el contexto fresco supera la autocrítica del mismo agente.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">1.5 — Di menos, no más: por qué las instrucciones concisas guían mejor a Fable 5 que las listas exhaustivas de comportamiento.</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-5.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p class="mb-2">Fuente oficial de este módulo: <a class="text-sky-400 hover:text-sky-300" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank">Prompting Claude Fable 5</a> (Anthropic) — técnicas "Déjalo actuar", "Demuestra que terminaste" y verificación por subagente.</p>
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){const ti=button.closest('.topic-item');if(!ti)return;const e=ti.querySelector('.topic-explanation');if(e){e.classList.toggle('active');button.setAttribute('aria-expanded',e.classList.contains('active'));}}
+    (function(){const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){try{var scope=btn.closest('.copybox-lang')||btn.closest('.copybox');var pre=scope.querySelector('pre');navigator.clipboard.writeText(pre.textContent);var o=btn.textContent;btn.textContent='copiado ✓';setTimeout(function(){btn.textContent=o;},1500);}catch(e){}}
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&typeof INEMA.init==='function')INEMA.init();});</script>
+</body>
+</html>
