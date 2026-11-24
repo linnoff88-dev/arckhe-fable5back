@@ -4,28 +4,28 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="fable5" name="inema-course"/>
-<title>Bônus: subagents, memória e send_to_user · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<meta content="fable5" name="ARCKHÉ-course"/>
+<title>Bônus: subagents, memória e send_to_user · Prompting Claude Fable 5 · ARCKHÉ AI</title>
 <script>
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'ARCKHÉ-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
-        var raw = localStorage.getItem('inema.prefs');
+        var raw = localStorage.getItem('ARCKHÉ.prefs');
         if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
-        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='ARCKHÉ-dark'; }
       } catch (e) { p = clone(DEF); }
-      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
-      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      var THEMES = { 'ARCKHÉ-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['ARCKHÉ-dark'];
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
       html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
       var s = html.style, scale=(+p.fontScale||100);
-      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--ARCKHÉ-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
@@ -36,7 +36,7 @@
   </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../../assets/learn.css" rel="stylesheet"/>
-<script data-inema-manifest="" type="application/json">
+<script data-ARCKHÉ-manifest="" type="application/json">
 {
   "course": "fable5",
   "tracks": [
@@ -120,8 +120,8 @@
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
   </style>
-<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-7.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-7.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-7.html" hreflang="es" rel="alternate"/></head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-1-7.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha1/modulo-1-7.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha1/modulo-1-7.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<link href="https://linnoff88-dev.github.io/ hreflang="pt-BR" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="en" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="ARCKHÉ-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-1-7.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha1/modulo-1-7.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha1/modulo-1-7.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
 <a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Pular para o conteúdo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,14 +129,14 @@
 <div class="flex items-center space-x-4">
 <a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
 <span class="text-neutral-600">|</span>
-<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a>
 </div>
 <div class="flex items-center space-x-1 sm:space-x-2">
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Trilha 1</span></a>
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
 <span class="sm:hidden">T2</span><span class="hidden sm:inline">Trilha 2</span>
 </a>
-<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Minha jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-ARCKHÉ-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Minha jornada</span><span aria-hidden="true" class="ARCKHÉ-journey-badge hidden"></span></button>
 <button aria-label="Alternar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
@@ -164,42 +164,42 @@
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Bônus</div><div class="text-xs text-neutral-400">Tipo</div></div>
 </div>
 <div class="mt-6 max-w-2xl">
-<div aria-label="Progresso do módulo 1.7" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-7" role="progressbar">
+<div aria-label="Progresso do módulo 1.7" aria-valuemax="100" aria-valuemin="0" class="ARCKHÉ-meter flex items-center gap-3" data-ARCKHÉ-meter="modulo:1-7" role="progressbar">
 <span class="text-sm text-neutral-400">Progresso:</span>
-<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
-<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+<span class="ARCKHÉ-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="ARCKHÉ-meter-count text-xs text-neutral-500">0 de 6</span>
 </div>
 </div>
 </div>
 </header>
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
-<nav aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
-<p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<nav aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start" data-ARCKHÉ-toc="">
+<p class="text-sm text-neutral-400 mb-3">Seção <span class="ARCKHÉ-toc-pos">1</span> de <span class="ARCKHÉ-toc-total">6</span></p>
 <ul class="space-y-1 text-sm">
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. Delegação a subagents</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Memória em arquivo</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. A tool send_to_user</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Early stopping raro</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Refatore skills antigas</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Checklist rápido</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. Delegação a subagents</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Memória em arquivo</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. A tool send_to_user</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Early stopping raro</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Refatore skills antigas</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Checklist rápido</a></li>
 </ul>
 </nav>
-<main class="inema-prose min-w-0" id="conteudo">
+<main class="ARCKHÉ-prose min-w-0" id="conteudo">
 <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-6 mb-10">
 <p class="text-neutral-200"><strong class="text-emerald-400">De onde isso veio:</strong> os módulos 1.1 a 1.6 seguiram o vídeo que deu origem ao curso, com backup na doc oficial "Prompting Claude Fable 5". Este módulo é diferente: <strong class="text-emerald-400">não estava no vídeo</strong>. É o resultado de vasculhar a documentação atrás de mais uma pergunta: "o Fable 5 é feito pra sessões longas e autônomas — o que mais dá pra fazer com ele além das 6 técnicas já vistas?" As respostas viraram os 5 tópicos abaixo, fechando com um checklist que junta tudo.</p>
 </div>
 <!-- TOPICO 1 -->
-<section class="mb-16" data-inema-topic="modulo-1-7#topico-1" id="topico-1">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-7#topico-1" id="topico-1">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">Delegação assíncrona a subagents</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">Imagine assim:</strong> você é o gerente de um projeto. Em vez de fazer cada subtarefa sozinho, você distribui pedaços independentes para assistentes — <span class="termo" title="Um subagent é um agente Claude auxiliar, despachado pelo orquestrador (a sessão principal) para tocar uma subtarefa sozinho.">subagents</span> — e continua trabalhando enquanto eles resolvem a parte deles, só intervindo se algum perder o rumo.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t1-p1">Fable 5 foi treinado para trabalhar em horizontes longos e autônomos — e isso muda como ele lida com paralelismo. Ele <strong class="text-emerald-400">despacha subagents com mais frequência que os modelos anteriores</strong>, porque consegue confiar neles com subtarefas maiores sem precisar supervisionar cada passo de perto.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t1-p2">A mudança de comportamento que a Anthropic recomenda é sutil, mas importante: prefira <strong class="text-emerald-400">comunicação assíncrona</strong> entre orquestrador e subagents — dispare e continue — em vez de bloquear esperando cada um retornar. E, quando possível, use subagents de vida longa que mantêm contexto entre subtarefas: isso economiza tempo e custo via cache.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m17-t1-p1">Fable 5 foi treinado para trabalhar em horizontes longos e autônomos — e isso muda como ele lida com paralelismo. Ele <strong class="text-emerald-400">despacha subagents com mais frequência que os modelos anteriores</strong>, porque consegue confiar neles com subtarefas maiores sem precisar supervisionar cada passo de perto.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m17-t1-p2">A mudança de comportamento que a Anthropic recomenda é sutil, mas importante: prefira <strong class="text-emerald-400">comunicação assíncrona</strong> entre orquestrador e subagents — dispare e continue — em vez de bloquear esperando cada um retornar. E, quando possível, use subagents de vida longa que mantêm contexto entre subtarefas: isso economiza tempo e custo via cache.</p>
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
 <svg aria-label="Um orquestrador despacha vários subagents em paralelo; eles trabalham de forma assíncrona e convergem num único resultado, incorporado de volta pelo orquestrador" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
 <defs>
@@ -266,20 +266,20 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> despache subtarefas independentes a subagents e continue — bloquear esperando cada retorno desperdiça exatamente a vantagem que o paralelismo te dá.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 2 -->
-<section class="mb-16" data-inema-topic="modulo-1-7#topico-2" id="topico-2">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-7#topico-2" id="topico-2">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">Sistema de memória em arquivo</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">Imagine assim:</strong> você não fica recontando pro seu sucessor de plantão tudo que aprendeu no dia. Você escreve um bilhete na geladeira. Sistema de memória em arquivo é isso: uma lição, um bilhete, uma vez só — e o próximo turno lê antes de repetir o erro.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t2-p1">Sessões longas e projetos que atravessam vários dias esbarram num limite óbvio: o contexto de uma sessão não sobrevive ao fim dela. A saída recomendada é externalizar o aprendizado em <strong class="text-emerald-400">arquivos de memória</strong> — notas curtas que sessões futuras podem ler antes de agir, em vez de redescobrir a mesma lição do zero.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t2-p2">A regra de ouro é <strong class="text-emerald-400">um arquivo por lição</strong>, com um resumo de uma linha logo no topo — pensado pra ser escaneável antes de ser lido por inteiro. Correções e abordagens confirmadas entram do mesmo jeito, sempre junto do "por quê" — sem o motivo, a nota vira um fato solto que ninguém sabe se ainda vale.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m17-t2-p1">Sessões longas e projetos que atravessam vários dias esbarram num limite óbvio: o contexto de uma sessão não sobrevive ao fim dela. A saída recomendada é externalizar o aprendizado em <strong class="text-emerald-400">arquivos de memória</strong> — notas curtas que sessões futuras podem ler antes de agir, em vez de redescobrir a mesma lição do zero.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m17-t2-p2">A regra de ouro é <strong class="text-emerald-400">um arquivo por lição</strong>, com um resumo de uma linha logo no topo — pensado pra ser escaneável antes de ser lido por inteiro. Correções e abordagens confirmadas entram do mesmo jeito, sempre junto do "por quê" — sem o motivo, a nota vira um fato solto que ninguém sabe se ainda vale.</p>
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
 <svg aria-label="Uma sessão grava uma lição em um arquivo de nota; uma sessão futura lê essa nota antes de agir, e pode atualizá-la ou apagá-la se estiver errada" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
 <defs>
@@ -333,17 +333,17 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> uma lição por arquivo, resumo de uma linha no topo, atualize em vez de duplicar, apague o que ficou errado.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 3 -->
-<section class="mb-16" data-inema-topic="modulo-1-7#topico-3" id="topico-3">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-7#topico-3" id="topico-3">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">A ferramenta send_to_user</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t3-p1"><code class="text-emerald-400">send_to_user</code> é uma <span class="termo" title="Tool client-side: a lógica de exibição roda no seu harness/app, não no servidor do modelo.">tool client-side</span>: quando o modelo a chama, a interface exibe o texto do input <strong class="text-emerald-400">exatamente como foi escrito</strong> — palavra por palavra, nunca resumido ou reescrito por cima — e o turno <strong class="text-emerald-400">não termina</strong>. O modelo continua trabalhando logo depois de chamá-la.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t3-p2">Isso resolve um problema comum em agentes longos: o usuário só vê o resumo final, comprimido, depois de tudo pronto. Com <code class="text-emerald-400">send_to_user</code>, dá pra mandar informação específica no meio do caminho, sem esperar o turno acabar.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m17-t3-p1"><code class="text-emerald-400">send_to_user</code> é uma <span class="termo" title="Tool client-side: a lógica de exibição roda no seu harness/app, não no servidor do modelo.">tool client-side</span>: quando o modelo a chama, a interface exibe o texto do input <strong class="text-emerald-400">exatamente como foi escrito</strong> — palavra por palavra, nunca resumido ou reescrito por cima — e o turno <strong class="text-emerald-400">não termina</strong>. O modelo continua trabalhando logo depois de chamá-la.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m17-t3-p2">Isso resolve um problema comum em agentes longos: o usuário só vê o resumo final, comprimido, depois de tudo pronto. Com <code class="text-emerald-400">send_to_user</code>, dá pra mandar informação específica no meio do caminho, sem esperar o turno acabar.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
 <h4 class="font-bold text-emerald-400 mb-4">✓ Use send_to_user quando</h4>
@@ -374,17 +374,17 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> send_to_user manda o que está pronto agora, sem esperar o turno acabar — mas só se você disser explicitamente quando usá-la.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 4 -->
-<section class="mb-16" data-inema-topic="modulo-1-7#topico-4" id="topico-4">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-7#topico-4" id="topico-4">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">Early stopping raro em sessões longas</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t4-p1">Em sessões longas e autônomas, o Fable 5 pode — ocasionalmente — terminar um turno só com uma <strong class="text-emerald-400">intenção em texto</strong> ("vou rodar os testes de integração agora") sem de fato chamar a ferramenta que faria isso acontecer. É raro, mas em pipelines autônomos sem ninguém olhando, esse turno solto pode passar despercebido.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t4-p2">A boa notícia é que a mitigação é simples: um <strong class="text-emerald-400">"continue"</strong> resolve o problema na hora, de forma interativa. Em pipelines sem humano no loop, reforçar explicitamente no system prompt quando é apropriado <strong class="text-emerald-400">parar</strong> versus quando é apropriado <strong class="text-emerald-400">agir</strong> reduz a chance de isso acontecer de novo.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m17-t4-p1">Em sessões longas e autônomas, o Fable 5 pode — ocasionalmente — terminar um turno só com uma <strong class="text-emerald-400">intenção em texto</strong> ("vou rodar os testes de integração agora") sem de fato chamar a ferramenta que faria isso acontecer. É raro, mas em pipelines autônomos sem ninguém olhando, esse turno solto pode passar despercebido.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m17-t4-p2">A boa notícia é que a mitigação é simples: um <strong class="text-emerald-400">"continue"</strong> resolve o problema na hora, de forma interativa. Em pipelines sem humano no loop, reforçar explicitamente no system prompt quando é apropriado <strong class="text-emerald-400">parar</strong> versus quando é apropriado <strong class="text-emerald-400">agir</strong> reduz a chance de isso acontecer de novo.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
 <h4 class="font-bold text-red-400 mb-3">✗ Sinal fraco (não conta como progresso)</h4>
@@ -405,16 +405,16 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> se o turno terminou só com uma promessa em texto, "continue" resolve na hora; em automação sem humano, reforce explicitamente quando parar vs. quando agir.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 5 -->
-<section class="mb-16" data-inema-topic="modulo-1-7#topico-5" id="topico-5">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-7#topico-5" id="topico-5">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">Refatorar skills e prompts antigos</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t5-p1">Se você migrou skills, CLAUDE.md ou system prompts calibrados para modelos anteriores, vale revisar antes de assumir que "mais instrução é sempre mais seguro". O comportamento default do Fable 5 já é forte o bastante pra que instruções antigas, pensadas pra compensar limitações que ele não tem mais, acabem <strong class="text-emerald-400">atrapalhando</strong> em vez de ajudar.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m17-t5-p1">Se você migrou skills, CLAUDE.md ou system prompts calibrados para modelos anteriores, vale revisar antes de assumir que "mais instrução é sempre mais seguro". O comportamento default do Fable 5 já é forte o bastante pra que instruções antigas, pensadas pra compensar limitações que ele não tem mais, acabem <strong class="text-emerald-400">atrapalhando</strong> em vez de ajudar.</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (oficial) — prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
 <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Skills developed for prior models are often too prescriptive for Claude Fable 5 and can degrade output quality. Review and consider removing older instructions if default performance is better.</pre>
@@ -447,7 +447,7 @@
 <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
 <p class="text-neutral-300">"<em>Start at the top of your difficulty range</em>" (comece no topo da sua faixa de dificuldade) — dê ao Fable 5 tarefas mais difíceis do que você daria a um modelo anterior antes de decidir que ele "não consegue". Calibrar baixo demais é o erro mais comum de quem está migrando.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m17-t5-p2">Em tarefas longas, autoavaliação sozinha tem um ponto cego óbvio: o mesmo contexto que cometeu o erro é quem audita o erro. Por isso vale <strong class="text-emerald-400">estabelecer um intervalo de checagem</strong> e, nesse intervalo, disparar um subagent com contexto novo pra verificar o trabalho contra a especificação — não só reler o que já foi feito.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m17-t5-p2">Em tarefas longas, autoavaliação sozinha tem um ponto cego óbvio: o mesmo contexto que cometeu o erro é quem audita o erro. Por isso vale <strong class="text-emerald-400">estabelecer um intervalo de checagem</strong> e, nesse intervalo, disparar um subagent com contexto novo pra verificar o trabalho contra a especificação — não só reler o que já foi feito.</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-4">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-emerald-400 font-mono">EN (oficial) — prompting-claude-fable-5</span><button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
 <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Establish a method for checking your own work at an interval of [X] as you build. Run this every [X interval], verifying your work with subagents against the specification.</pre>
@@ -467,16 +467,16 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> revise instruções antigas demais, comece no topo da faixa de dificuldade, e verifique tarefas longas com subagent fresco em intervalos fixos.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 6 -->
-<section class="mb-16" data-inema-topic="modulo-1-7#topico-6" id="topico-6">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-7#topico-6" id="topico-6">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">Checklist rápido</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
 </div>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m17-t6-p1">Um cheat sheet denso, pra guardar: junta as 6 técnicas do vídeo (módulos 1.2 a 1.5), esforço e segurança (módulo 1.6) e as 5 deste bônus (módulo 1.7). Cole no seu CLAUDE.md se quiser levar isso pra dentro do dia a dia.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m17-t6-p1">Um cheat sheet denso, pra guardar: junta as 6 técnicas do vídeo (módulos 1.2 a 1.5), esforço e segurança (módulo 1.6) e as 5 deste bônus (módulo 1.7). Cole no seu CLAUDE.md se quiser levar isso pra dentro do dia a dia.</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
 <span class="text-xs text-emerald-400 font-mono">cheat-sheet-fable5.txt</span>
@@ -502,7 +502,7 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> 11 técnicas, 1 cheat sheet — cole no CLAUDE.md e revise antes de começar uma sessão longa com o Fable 5.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- RESUMO -->
@@ -528,16 +528,16 @@
 </main>
 </div>
 </div>
-<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 — 2026 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 — 2026 · <a class="text-sky-400 hover:text-sky-300" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a></p></div></footer>
 <script>
     function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
-    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('ARCKHÉ.prefs')||'{}');p.theme=d?'ARCKHÉ-dark':'claro';localStorage.setItem('ARCKHÉ.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
   </script>
 <script src="../../assets/learn.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.ARCKHÉ && typeof ARCKHÉ.init === 'function') ARCKHÉ.init();
     });
   </script>
 </body>

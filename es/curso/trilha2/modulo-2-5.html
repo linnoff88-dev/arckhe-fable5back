@@ -4,28 +4,28 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="fable5" name="inema-course"/>
-<title>2.5 Visión para interfaces + seguridad defensiva · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<meta content="fable5" name="ARCKHÉ-course"/>
+<title>2.5 Visión para interfaces + seguridad defensiva · Prompting Claude Fable 5 · ARCKHÉ AI</title>
 <script>
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'ARCKHÉ-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
-        var raw = localStorage.getItem('inema.prefs');
+        var raw = localStorage.getItem('ARCKHÉ.prefs');
         if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
-        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='ARCKHÉ-dark'; }
       } catch (e) { p = clone(DEF); }
-      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
-      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      var THEMES = { 'ARCKHÉ-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['ARCKHÉ-dark'];
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
       html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
       var s = html.style, scale=(+p.fontScale||100);
-      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--ARCKHÉ-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
@@ -36,7 +36,7 @@
   </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../../../assets/learn.css" rel="stylesheet"/>
-<script data-inema-manifest="" type="application/json">
+<script data-ARCKHÉ-manifest="" type="application/json">
 {
   "course": "fable5",
   "tracks": [
@@ -109,8 +109,8 @@
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
   </style>
-<link href="https://inematds.github.io/fable5back/curso/trilha2/modulo-2-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha2/modulo-2-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha2/modulo-2-5.html" hreflang="es" rel="alternate"/></head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<link href="https://linnoff88-dev.github.io/ hreflang="pt-BR" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="en" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="ARCKHÉ-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
 <a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,14 +118,14 @@
 <div class="flex items-center space-x-4">
 <a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
 <span class="text-neutral-600">|</span>
-<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a>
 </div>
 <div class="flex items-center space-x-1 sm:space-x-2">
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html">
 <span class="sm:hidden">T1</span><span class="hidden sm:inline">Ruta 1</span>
 </a>
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span></a>
-<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-ARCKHÉ-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="ARCKHÉ-journey-badge hidden"></span></button>
 <button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
@@ -141,7 +141,7 @@
 <span class="text-blue-400">Módulo 2.5</span>
 </div>
 </nav>
-<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-5" data-inema-track="2" id="modulo-2-5">
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-ARCKHÉ-module="2-5" data-ARCKHÉ-track="2" id="modulo-2-5">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.5</span>
 <h1 class="text-3xl sm:text-4xl font-bold mb-4">👁️ Visión para interfaces + seguridad defensiva</h1>
@@ -153,40 +153,40 @@
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
 </div>
 <div class="mt-6 max-w-2xl">
-<div aria-label="Progreso del módulo 2.5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-5" role="progressbar">
+<div aria-label="Progreso del módulo 2.5" aria-valuemax="100" aria-valuemin="0" class="ARCKHÉ-meter flex items-center gap-3" data-ARCKHÉ-meter="modulo:2-5" role="progressbar">
 <span class="text-sm text-neutral-400">Progreso:</span>
-<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
-<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+<span class="ARCKHÉ-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="ARCKHÉ-meter-count text-xs text-neutral-500">0 de 6</span>
 </div>
 </div>
 </div>
 </header>
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
-<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
-<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-ARCKHÉ-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="ARCKHÉ-toc-pos">1</span> de <span class="ARCKHÉ-toc-total">6</span></p>
 <ul class="space-y-1 text-sm">
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Fable 5 ve la pantalla</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. El prompt de auditoría visual</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. El exploit se bloquea, la defensa no</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. El prompt de revisión defensiva</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Los dos consejos juntos</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Errores comunes y lista de verificación</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Fable 5 ve la pantalla</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. El prompt de auditoría visual</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. El exploit se bloquea, la defensa no</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. El prompt de revisión defensiva</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Los dos consejos juntos</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Errores comunes y lista de verificación</a></li>
 </ul>
 </nav>
-<main class="inema-prose min-w-0" id="conteudo">
+<main class="ARCKHÉ-prose min-w-0" id="conteudo">
 <!-- TOPICO 1 -->
-<section class="mb-16" data-inema-topic="modulo-2-5#topico-1" id="topico-1">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-2-5#topico-1" id="topico-1">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">👁️ Fable 5 ve la pantalla, no solo el texto</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> llamas a un diseñador de conversión para que mire tu captura de pantalla y solo le dices: «hazlo más bonito». Va a cambiar el color del botón y se detendrá ahí. Ahora imagina que le dices: «cuéntame adónde va la mirada primero, qué confunde y qué frena la venta»; ese mismo diseñador te devuelve un diagnóstico de verdad. La diferencia no está en la herramienta, sino en el pedido.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t1-p1">Modelos con buena capacidad <span class="termo" title="Habilidad del modelo para recibir e interpretar imágenes (capturas de pantalla, fotos, PDFs, piezas gráficas) junto con el texto, no solo leer descripciones en palabras">visual</span> pueden analizar capturas de pantalla, fotos de interfaces, PDF de propuestas y piezas creativas del mismo modo que analizan texto: identificando jerarquías, puntos de atención, ruido y ausencias. Eso cambia el tipo de tarea que vale la pena delegar: no se trata solo de «generar texto sobre la imagen», sino de <strong class="text-blue-400">evaluar la imagen como lo haría un revisor capacitado</strong>.</p>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t1-p2">El error más común es pedir poco: «hazlo más bonito», «mejora este diseño», «échale un vistazo a esto». Son solicitudes vagas que generan respuestas vagas: el modelo no sabe con qué criterio está evaluando, así que propone ajustes estéticos genéricos (color, espaciado) en vez de enfocarse en lo que realmente importa para tu objetivo: <strong class="text-blue-400">que la persona entienda y actúe</strong>.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t1-p3">El consejo 9 de esta ruta resuelve esto cambiando la solicitud vaga por una guía de auditoría: dónde se detiene la mirada primero, qué confunde, qué genera deseo, qué genera dudas, qué eliminar y qué cambiar para aumentar la conversión. Seis preguntas objetivas: el prompt listo viene en el próximo tema.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t1-p1">Modelos con buena capacidad <span class="termo" title="Habilidad del modelo para recibir e interpretar imágenes (capturas de pantalla, fotos, PDFs, piezas gráficas) junto con el texto, no solo leer descripciones en palabras">visual</span> pueden analizar capturas de pantalla, fotos de interfaces, PDF de propuestas y piezas creativas del mismo modo que analizan texto: identificando jerarquías, puntos de atención, ruido y ausencias. Eso cambia el tipo de tarea que vale la pena delegar: no se trata solo de «generar texto sobre la imagen», sino de <strong class="text-blue-400">evaluar la imagen como lo haría un revisor capacitado</strong>.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t1-p2">El error más común es pedir poco: «hazlo más bonito», «mejora este diseño», «échale un vistazo a esto». Son solicitudes vagas que generan respuestas vagas: el modelo no sabe con qué criterio está evaluando, así que propone ajustes estéticos genéricos (color, espaciado) en vez de enfocarse en lo que realmente importa para tu objetivo: <strong class="text-blue-400">que la persona entienda y actúe</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m25-t1-p3">El consejo 9 de esta ruta resuelve esto cambiando la solicitud vaga por una guía de auditoría: dónde se detiene la mirada primero, qué confunde, qué genera deseo, qué genera dudas, qué eliminar y qué cambiar para aumentar la conversión. Seis preguntas objetivas: el prompt listo viene en el próximo tema.</p>
 <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
 <svg aria-label="Una captura de pantalla pasa por un análisis visual que revisa cuatro puntos de atención —primera impresión, confusión, deseo y duda, prioridad de recorte— y genera un informe de seis puntos" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
 <defs>
@@ -231,19 +231,19 @@
 <p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> Fable 5 lee la pantalla como un revisor capacitado, pero solo te lo muestra si preguntas como preguntaría un revisor capacitado.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 2 -->
-<section class="mb-16" data-inema-topic="modulo-2-5#topico-2" id="topico-2">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-2-5#topico-2" id="topico-2">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔍 El prompt de auditoría visual, listo para copiar</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> este no es un fragmento de la documentación oficial de Anthropic: es una plantilla probada en la práctica, pensada para revisar interfaces, capturas de pantalla y creatividades. Adjunta la imagen y pega el texto de abajo junto con ella.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t2-p1">La idea es simple: en vez de describir lo que quieres con adjetivos ("más limpio", "más moderno"), describes el <strong class="text-blue-400">objetivo de negocio</strong> de la pieza — «hacer que una persona entienda rápidamente el valor de la propuesta» — y pide una lista fija de seis observaciones. Esto funciona para una landing page, una pantalla de app, un PDF de propuesta comercial, una publicación de anuncio o una captura de un dashboard.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t2-p1">La idea es simple: en vez de describir lo que quieres con adjetivos ("más limpio", "más moderno"), describes el <strong class="text-blue-400">objetivo de negocio</strong> de la pieza — «hacer que una persona entienda rápidamente el valor de la propuesta» — y pide una lista fija de seis observaciones. Esto funciona para una landing page, una pantalla de app, un PDF de propuesta comercial, una publicación de anuncio o una captura de un dashboard.</p>
 <div class="mb-3"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">adjuntar una captura de pantalla/imagen y recibir una auditoría estructurada de claridad y conversión, en lugar de un elogio o un ajuste estético aislado.</span></div>
 <div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
@@ -284,21 +284,21 @@ Diga:
 <p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> cambia «hazlo más bonito» por seis preguntas objetivas y convertirás una opinión vaga en una auditoría práctica.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 3 -->
-<section class="mb-16" data-inema-topic="modulo-2-5#topico-3" id="topico-3">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-2-5#topico-3" id="topico-3">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🛡️ Pedir un exploit bloquea la respuesta; pedir una revisión defensiva, no</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> "enséñame a hackear este sistema" y "revisa este código en busca de fallas de seguridad" piden, en el fondo, que se observe el mismo problema, pero uno suena a una solicitud de ataque y el otro a una solicitud de defensa. Fable 5 reacciona de forma muy distinta a cada uno.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t3-p1">Cuando la solicitud se plantea como <strong class="text-red-400">exploración o ataque</strong> — "cómo exploro esta falla", "dame el paso a paso para invadir" — el modelo puede clasificar esto como una solicitud de <span class="termo" title="Categoría de rechazo de seguridad de Fable 5: la solicitud podría facilitar daños cibernéticos, como malware o el desarrollo de exploits">daño cibernético</span> y negarse por completo, incluso cuando tu intención real es proteger el propio sistema.</p>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t3-p2">Cuando el mismo tema se plantea como <strong class="text-blue-400">revisión defensiva</strong> — "busca errores, validaciones faltantes, exposición de datos" — el modelo entiende que el objetivo es proteger, no atacar, y entrega un análisis completo: riesgo, archivo afectado, causa probable, corrección. Es literalmente el mismo tema técnico, con un enfoque diferente en la entrada.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t3-p3">Esto no es un truco para «engañar» al modelo: es el encuadre correcto para quien realmente está cuidando un sistema propio o el de un cliente. El trabajo legítimo de ciberseguridad (pentest autorizado, auditoría, revisión de código) es diferente de pedir una receta de ataque genérica, y la forma en que redactas la solicitud es lo que se lo deja claro al modelo.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t3-p1">Cuando la solicitud se plantea como <strong class="text-red-400">exploración o ataque</strong> — "cómo exploro esta falla", "dame el paso a paso para invadir" — el modelo puede clasificar esto como una solicitud de <span class="termo" title="Categoría de rechazo de seguridad de Fable 5: la solicitud podría facilitar daños cibernéticos, como malware o el desarrollo de exploits">daño cibernético</span> y negarse por completo, incluso cuando tu intención real es proteger el propio sistema.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t3-p2">Cuando el mismo tema se plantea como <strong class="text-blue-400">revisión defensiva</strong> — "busca errores, validaciones faltantes, exposición de datos" — el modelo entiende que el objetivo es proteger, no atacar, y entrega un análisis completo: riesgo, archivo afectado, causa probable, corrección. Es literalmente el mismo tema técnico, con un enfoque diferente en la entrada.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m25-t3-p3">Esto no es un truco para «engañar» al modelo: es el encuadre correcto para quien realmente está cuidando un sistema propio o el de un cliente. El trabajo legítimo de ciberseguridad (pentest autorizado, auditoría, revisión de código) es diferente de pedir una receta de ataque genérica, y la forma en que redactas la solicitud es lo que se lo deja claro al modelo.</p>
 <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
 <svg aria-label="Comparación lado a lado: la solicitud de explorar una falla se bloquea con stop_reason refusal de categoría cyber; la solicitud de revisar de forma defensiva el mismo código se permite y devuelve un diagnóstico y una corrección" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
 <defs>
@@ -342,19 +342,19 @@ Diga:
 <p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> mismo tema, enfoque diferente: el ataque bloquea; la defensa entrega el diagnóstico.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 4 -->
-<section class="mb-16" data-inema-topic="modulo-2-5#topico-4" id="topico-4">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-2-5#topico-4" id="topico-4">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔐 El prompt de revisión defensiva, listo para copiar</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> de nuevo, una plantilla probada en la práctica, no una cita oficial. Pégala junto con el código del servidor que quieres revisar.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t4-p1">El prompt de abajo pide explícitamente una <strong class="text-blue-400">revisión defensiva</strong>: errores, validaciones ausentes, problemas de autorización, exposición accidental de datos, fallas de configuración, riesgos operativos. Y termina con dos negaciones claras — nada de exploits, nada de instrucciones paso a paso para atacar — que refuerzan el enfoque del tema anterior.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t4-p1">El prompt de abajo pide explícitamente una <strong class="text-blue-400">revisión defensiva</strong>: errores, validaciones ausentes, problemas de autorización, exposición accidental de datos, fallas de configuración, riesgos operativos. Y termina con dos negaciones claras — nada de exploits, nada de instrucciones paso a paso para atacar — que refuerzan el enfoque del tema anterior.</p>
 <div class="mb-3"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">revisar código del servidor para detectar riesgos de seguridad reales y recibir el riesgo + archivo + causa + corrección, sin activar un rechazo ni generar material ofensivo.</span></div>
 <div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
@@ -379,19 +379,19 @@ archivo afectado, la causa probable y la corrección defensiva.</pre>
 <p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> pedir una revisión defensiva, con las dos negaciones explícitas, es la forma práctica de obtener un análisis de seguridad real sin encontrarse con un rechazo <code>cyber</code>.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 5 -->
-<section class="mb-16" data-inema-topic="modulo-2-5#topico-5" id="topico-5">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-2-5#topico-5" id="topico-5">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🧭 Los dos consejos juntos: auditoría visual de un panel de administración</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un dashboard interno mezcla ambos mundos — y una interfaz (consejo 9) que puede estar filtrando información sensible en la propia pantalla, y detrás de ella hay código de servidor que decide qué aparece allí (consejo 10). Auditar solo la interfaz o solo el código deja fuera la mitad del riesgo.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m25-t5-p1">Un caso realista: tienes un panel de administración/dashboard interno y quieres saber si está <strong class="text-blue-400">exponiendo datos sensibles en la propia pantalla</strong> — correo electrónico completo de un cliente, token, clave de API, ID interno, campo de depuración olvidado en producción. Esto es al mismo tiempo un problema de <strong>interfaz</strong> (lo que ve el ojo) y un problema de <strong>seguridad</strong> (lo que el servidor decidió enviar al navegador).</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m25-t5-p1">Un caso realista: tienes un panel de administración/dashboard interno y quieres saber si está <strong class="text-blue-400">exponiendo datos sensibles en la propia pantalla</strong> — correo electrónico completo de un cliente, token, clave de API, ID interno, campo de depuración olvidado en producción. Esto es al mismo tiempo un problema de <strong>interfaz</strong> (lo que ve el ojo) y un problema de <strong>seguridad</strong> (lo que el servidor decidió enviar al navegador).</p>
 <div class="space-y-6 mb-6">
 <div class="flex items-start space-x-4">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
@@ -426,24 +426,24 @@ archivo afectado, la causa probable y la corrección defensiva.</pre>
 </div>
 </div>
 </div>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t5-p2">Fíjate en que en ningún momento pediste «cómo explotaría un atacante este panel»: pediste claridad en la interfaz y una revisión defensiva del código. Precisamente esa combinación evita el rechazo y cubre el riesgo de punta a punta: desde la pantalla hasta la línea de código que la alimenta.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m25-t5-p2">Fíjate en que en ningún momento pediste «cómo explotaría un atacante este panel»: pediste claridad en la interfaz y una revisión defensiva del código. Precisamente esa combinación evita el rechazo y cubre el riesgo de punta a punta: desde la pantalla hasta la línea de código que la alimenta.</p>
 <div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
 <p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> la auditoría visual detecta lo que se filtra en pantalla; la revisión defensiva descubre por qué el código permitió que se filtrara — juntos, los dos consejos cubren todo el panel.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 6 -->
-<section class="mb-16" data-inema-topic="modulo-2-5#topico-6" id="topico-6">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-2-5#topico-6" id="topico-6">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">✅ Errores comunes y lista de verificación rápida</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> los dos consejos de esta lección casi siempre fallan por el mismo motivo: la solicitud quedó vaga o fue demasiado ofensiva. Este checklist es el antídoto rápido para ambos casos.</p>
 </div>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m25-t6-p1">Antes de pegar cualquiera de los dos prompts, revisa estos puntos: son los errores que más hacen que el consejo 9 devuelva una opinión vaga o que el consejo 10 provoque un rechazo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m25-t6-p1">Antes de pegar cualquiera de los dos prompts, revisa estos puntos: son los errores que más hacen que el consejo 9 devuelva una opinión vaga o que el consejo 10 provoque un rechazo.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
 <h4 class="font-bold text-red-400 mb-4">✗ Evita</h4>
@@ -470,7 +470,7 @@ archivo afectado, la causa probable y la corrección defensiva.</pre>
 <p class="text-sm text-neutral-300"><strong class="text-blue-400">En una frase:</strong> un objetivo claro + una imagen real (consejo 9) y un encuadre defensivo + dos negaciones (consejo 10) resuelven casi todos los errores comunes de esta lección.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- RESUMO -->
@@ -498,13 +498,13 @@ archivo afectado, la causa probable y la corrección defensiva.</pre>
 </div>
 <footer class="border-t border-dark-600 py-8 mt-16">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+<p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a></p>
 <p class="mt-2 text-xs text-neutral-600">Los consejos 9 y 10 de esta página provienen de una guía práctica del autor (no son una cita oficial de Anthropic). La cita de la categoría de rechazo <code>cyber</code> en el tema 4 y en el documento oficial «refusals-and-fallback» — platform.claude.com/docs/en/build-with-claude/refusals-and-fallback (consulta los detalles técnicos en el módulo 1.6 de la ruta 1).</p>
 </div>
 </footer>
 <script>
     function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
-    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('ARCKHÉ.prefs')||'{}');p.theme=d?'ARCKHÉ-dark':'claro';localStorage.setItem('ARCKHÉ.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
@@ -513,7 +513,7 @@ archivo afectado, la causa probable y la corrección defensiva.</pre>
 <script src="../../../assets/learn.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.ARCKHÉ && typeof ARCKHÉ.init === 'function') ARCKHÉ.init();
     });
   </script>
 </body>

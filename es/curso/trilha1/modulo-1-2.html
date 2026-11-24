@@ -4,28 +4,28 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="fable5" name="inema-course"/>
-<title>1.2 Da el porqué + no pidas razonamiento · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<meta content="fable5" name="ARCKHÉ-course"/>
+<title>1.2 Da el porqué + no pidas razonamiento · Prompting Claude Fable 5 · ARCKHÉ AI</title>
 <script>
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'ARCKHÉ-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
-        var raw = localStorage.getItem('inema.prefs');
+        var raw = localStorage.getItem('ARCKHÉ.prefs');
         if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
-        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='ARCKHÉ-dark'; }
       } catch (e) { p = clone(DEF); }
-      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
-      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      var THEMES = { 'ARCKHÉ-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['ARCKHÉ-dark'];
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
       html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
       var s = html.style, scale=(+p.fontScale||100);
-      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--ARCKHÉ-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
@@ -36,7 +36,7 @@
   </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../../../assets/learn.css" rel="stylesheet"/>
-<script data-inema-manifest="" type="application/json">
+<script data-ARCKHÉ-manifest="" type="application/json">
 {
   "course": "fable5",
   "tracks": [
@@ -111,8 +111,8 @@
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
   </style>
-<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen" data-inema-module="1-2" data-inema-track="1"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<link href="https://linnoff88-dev.github.io/ hreflang="pt-BR" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="en" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen" data-ARCKHÉ-module="1-2" data-ARCKHÉ-track="1"><div class="ARCKHÉ-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
 <a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,14 +120,14 @@
 <div class="flex items-center space-x-4">
 <a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
 <span class="text-neutral-600">|</span>
-<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a>
 </div>
 <div class="flex items-center space-x-1 sm:space-x-2">
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Ruta 1</span></a>
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
 <span class="sm:hidden">T2</span><span class="hidden sm:inline">Ruta 2</span>
 </a>
-<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-ARCKHÉ-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="ARCKHÉ-journey-badge hidden"></span></button>
 <button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
@@ -155,39 +155,39 @@
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
 </div>
 <div class="mt-6 max-w-2xl">
-<div aria-label="Progreso del módulo 1.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-2" role="progressbar">
+<div aria-label="Progreso del módulo 1.2" aria-valuemax="100" aria-valuemin="0" class="ARCKHÉ-meter flex items-center gap-3" data-ARCKHÉ-meter="modulo:1-2" role="progressbar">
 <span class="text-sm text-neutral-400">Progreso:</span>
-<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
-<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+<span class="ARCKHÉ-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="ARCKHÉ-meter-count text-xs text-neutral-500">0 de 6</span>
 </div>
 </div>
 </div>
 </header>
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
-<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
-<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-ARCKHÉ-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="ARCKHÉ-toc-pos">1</span> de <span class="ARCKHÉ-toc-total">6</span></p>
 <ul class="space-y-1 text-sm">
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. El problema de «solo el qué»</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. La fórmula del porqué</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Seguidor de instrucciones sólido</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. El desencadenante oculto</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. reasoning_extraction</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Lee los bloques de pensamiento</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. El problema de «solo el qué»</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. La fórmula del porqué</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Seguidor de instrucciones sólido</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. El desencadenante oculto</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. reasoning_extraction</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Lee los bloques de pensamiento</a></li>
 </ul>
 </nav>
-<main class="inema-prose min-w-0" id="conteudo">
+<main class="ARCKHÉ-prose min-w-0" id="conteudo">
 <!-- TOPICO 1 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-1" id="topico-1">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">❓ El problema: solo el "qué", nunca el "por qué"</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un modelo de lenguaje no lee la mente: predice cuál es el siguiente token más probable según el texto que ya ha visto. Si tu prompt solo dice QUÉ («escribe una función que valide correos electrónicos»), Fable 5 tiene que ADIVINAR para qué sirve, quién lo usará y qué significa «bueno» en este caso. Suele adivinar bien... hasta que no lo hace.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t1-p1">En el fondo, un LLM es una máquina de <span class="termo" title="El mecanismo estadístico central de un LLM: predecir qué fragmento de texto (token) viene a continuación, dado todo lo anterior">predicción del siguiente token</span>. No tiene acceso a lo que tienes en la cabeza; solo al texto del prompt. Un pedido que describe únicamente la tarea («haz X») deja un vacío: por qué importa X, para quién y con qué criterio de calidad. El modelo llena ese vacío con la interpretación estadísticamente más común para ese tipo de pedido, que puede coincidir o no con la tuya.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p2">El costo de esta «suposición» aumenta con la autonomía del modelo. Fable 5 se diseñó para mantener instrucciones en <strong class="text-emerald-400">ejecuciones de horizonte largo</strong>, a veces durante varios días. Si no se especifica la intención real desde el principio, no detecta el error rápido ni pregunta: ejecuta durante horas en la dirección equivocada, aunque parezca plausible, y solo descubres el desvío cuando ya te costó tiempo y tokens.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t1-p1">En el fondo, un LLM es una máquina de <span class="termo" title="El mecanismo estadístico central de un LLM: predecir qué fragmento de texto (token) viene a continuación, dado todo lo anterior">predicción del siguiente token</span>. No tiene acceso a lo que tienes en la cabeza; solo al texto del prompt. Un pedido que describe únicamente la tarea («haz X») deja un vacío: por qué importa X, para quién y con qué criterio de calidad. El modelo llena ese vacío con la interpretación estadísticamente más común para ese tipo de pedido, que puede coincidir o no con la tuya.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t1-p2">El costo de esta «suposición» aumenta con la autonomía del modelo. Fable 5 se diseñó para mantener instrucciones en <strong class="text-emerald-400">ejecuciones de horizonte largo</strong>, a veces durante varios días. Si no se especifica la intención real desde el principio, no detecta el error rápido ni pregunta: ejecuta durante horas en la dirección equivocada, aunque parezca plausible, y solo descubres el desvío cuando ya te costó tiempo y tokens.</p>
 <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
 <h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">💡</span> Concepto principal</h3>
 <p class="text-neutral-300">Predicción de tokens <strong>≠</strong> lectura de mente. El "porqué" no es un adorno cortés en el prompt: es el dato que le falta al modelo para elegir entre varias ejecuciones igualmente válidas del mismo "qué".</p>
@@ -241,20 +241,20 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> sin el porqué, Fable 5 no puede leerte la mente: predice el siguiente token y adivina el contexto que falta.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 2 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-2" id="topico-2">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🧩 La fórmula del porqué, en la práctica</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> en lugar de pedir solo la tarea, entregas el briefing completo — qué está en juego, para quién y qué debe permitir hacer la respuesta. Es la diferencia entre gritar una orden y dar un briefing de verdad.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t2-p1">Esta es una práctica consolidada de ingeniería de prompts en general, no una cita textual de la documentación oficial de Fable 5 (el video de origen ya incluía el argumento, y la investigación no confirmó una frase textual específica para esta técnica). Tómala como una recomendación sólida, no como una «regla oficial inamovible». La fórmula tiene cuatro partes: <strong class="text-emerald-400">tarea mayor</strong> (el proyecto en el que encaja), <strong class="text-emerald-400">quién</strong> (quién depende del resultado), <strong class="text-emerald-400">qué habilita la salida</strong> (la decisión o acción que viene después) y solo entonces <strong class="text-emerald-400">la solicitud</strong> concreto.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p2">Fíjate en el orden: primero va el porqué <strong>antes</strong> del pedido, no como una nota al pie después. Esto importa porque el modelo pondera con más fuerza el contexto que está más cerca (en términos de atención) del pedido final — un «porqué» puesto al final del prompt compite con menos peso frente al pedido en sí.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t2-p1">Esta es una práctica consolidada de ingeniería de prompts en general, no una cita textual de la documentación oficial de Fable 5 (el video de origen ya incluía el argumento, y la investigación no confirmó una frase textual específica para esta técnica). Tómala como una recomendación sólida, no como una «regla oficial inamovible». La fórmula tiene cuatro partes: <strong class="text-emerald-400">tarea mayor</strong> (el proyecto en el que encaja), <strong class="text-emerald-400">quién</strong> (quién depende del resultado), <strong class="text-emerald-400">qué habilita la salida</strong> (la decisión o acción que viene después) y solo entonces <strong class="text-emerald-400">la solicitud</strong> concreto.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t2-p2">Fíjate en el orden: primero va el porqué <strong>antes</strong> del pedido, no como una nota al pie después. Esto importa porque el modelo pondera con más fuerza el contexto que está más cerca (en términos de atención) del pedido final — un «porqué» puesto al final del prompt compite con menos peso frente al pedido en sí.</p>
 <div class="mb-6">
 <p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">Modelo/fórmula que puedes copiar: EN y PT-BR</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
@@ -340,20 +340,20 @@ anexado e liste só o que bloquearia o merge."</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> tarea mayor + quién + qué habilita el resultado + solicitud, en ese orden; el porqué va antes del qué.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 3 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-3" id="topico-3">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📏 Por qué esto pesa aún más en Fable 5</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> es la diferencia entre pedirle un deseo a un genio literal y pedírselo a un amigo que «entiende el espíritu» de lo que pides. Fable 5 es el genio literal, y es extremadamente bueno en eso, lo cual tiene sus dos caras.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t3-p1">Modelos más débiles en <span class="termo" title="Qué tan fielmente el modelo ejecuta exactamente lo que se pidió, sin desviarse ni completar con suposiciones propias">instruction-following</span> suelen «suavizar» las solicitudes ambiguas con el sentido común aprendido durante el entrenamiento; a veces aciertan accidentalmente con tu intención, aunque no esté explícita. Fable 5 sigue exactamente lo que se pidió. La documentación oficial describe la mejora así: <em>"Instruction-following is improved enough that you can steer most behaviors with a brief instruction rather than enumerating each behavior by name."</em> <span class="text-neutral-500 text-xs">(fuente: documentación oficial "Prompting Claude Fable 5" — técnica 6, "di menos, no más", desarrollada en el módulo 1.5; traducción: "el seguimiento de instrucciones mejoró lo suficiente como para que puedas guiar la mayoría de los comportamientos con una instrucción breve, en lugar de enumerar cada comportamiento por su nombre.")</span></p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p2">Esa capacidad se convierte en un riesgo precisamente cuando falta el porqué: sin él, Fable 5 no va a «adivinar bien» por accidente, como a veces lo hace un modelo más débil; va a cumplir literalmente lo que se le pide, aunque eso haga que pierda de vista el objetivo real. Cuanto más capaz es un modelo de seguir instrucciones, más costosa resulta una solicitud mal especificada.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t3-p1">Modelos más débiles en <span class="termo" title="Qué tan fielmente el modelo ejecuta exactamente lo que se pidió, sin desviarse ni completar con suposiciones propias">instruction-following</span> suelen «suavizar» las solicitudes ambiguas con el sentido común aprendido durante el entrenamiento; a veces aciertan accidentalmente con tu intención, aunque no esté explícita. Fable 5 sigue exactamente lo que se pidió. La documentación oficial describe la mejora así: <em>"Instruction-following is improved enough that you can steer most behaviors with a brief instruction rather than enumerating each behavior by name."</em> <span class="text-neutral-500 text-xs">(fuente: documentación oficial "Prompting Claude Fable 5" — técnica 6, "di menos, no más", desarrollada en el módulo 1.5; traducción: "el seguimiento de instrucciones mejoró lo suficiente como para que puedas guiar la mayoría de los comportamientos con una instrucción breve, en lugar de enumerar cada comportamiento por su nombre.")</span></p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t3-p2">Esa capacidad se convierte en un riesgo precisamente cuando falta el porqué: sin él, Fable 5 no va a «adivinar bien» por accidente, como a veces lo hace un modelo más débil; va a cumplir literalmente lo que se le pide, aunque eso haga que pierda de vista el objetivo real. Cuanto más capaz es un modelo de seguir instrucciones, más costosa resulta una solicitud mal especificada.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
 <h4 class="font-bold text-neutral-300 mb-4">→ Seguidor débil de instrucciones</h4>
@@ -376,20 +376,20 @@ anexado e liste só o que bloquearia o merge."</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> cuanto más literal es el seguidor de instrucciones, más caro resulta pedir algo sin explicar el porqué.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 4 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-4" id="topico-4">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">⚠️ El desencadenante oculto: pedir que «muestre el razonamiento»</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> parece inofensivo pedir "explica tu razonamiento"; es el tipo de frase que aparece en cualquier skill antigua de "sé transparente". En Fable 5, puede activar un rechazo de seguridad y cambiar de modelo sin avisar.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t4-p1">Hay una ironía directa con el resto de este módulo: pedirle al modelo <strong>explicar por qué hizo algo dentro del propio texto de respuesta</strong> es la forma equivocada de conseguir transparencia. Los prompts, las skills y las instrucciones del harness que le piden al modelo repetir, transcribir o narrar su razonamiento interno como parte de la respuesta entran en una categoría de seguridad específica, y eso es <strong class="text-emerald-400">específico de Fable 5</strong>, no un comportamiento genérico de cualquier Claude.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p2">Esto suele venir de skills migradas de modelos antiguos, donde "muestra tu razonamiento paso a paso" era una técnica válida de prompting. En Fable 5, el canal adecuado para eso ya existe: los <span class="termo" title="Bloques estructurados que contienen el razonamiento interno del modelo, separados del texto de la respuesta final">thinking blocks</span> — y pedir que esto se duplique en la respuesta en texto es precisamente el detonante del riesgo (ver los apartados 5 y 6).</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t4-p1">Hay una ironía directa con el resto de este módulo: pedirle al modelo <strong>explicar por qué hizo algo dentro del propio texto de respuesta</strong> es la forma equivocada de conseguir transparencia. Los prompts, las skills y las instrucciones del harness que le piden al modelo repetir, transcribir o narrar su razonamiento interno como parte de la respuesta entran en una categoría de seguridad específica, y eso es <strong class="text-emerald-400">específico de Fable 5</strong>, no un comportamiento genérico de cualquier Claude.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t4-p2">Esto suele venir de skills migradas de modelos antiguos, donde "muestra tu razonamiento paso a paso" era una técnica válida de prompting. En Fable 5, el canal adecuado para eso ya existe: los <span class="termo" title="Bloques estructurados que contienen el razonamiento interno del modelo, separados del texto de la respuesta final">thinking blocks</span> — y pedir que esto se duplique en la respuesta en texto es precisamente el detonante del riesgo (ver los apartados 5 y 6).</p>
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
 <h3 class="font-semibold text-red-400 mb-3">⚠️ Atención: frases que parecen inofensivas</h3>
 <p class="text-neutral-300 text-sm">Si una skill, un system prompt o un harness instruye al modelo a «explicar», «transcribir» o «repetir» su propio razonamiento en la respuesta visible para el usuario, puede activar el rechazo de seguridad del siguiente tema, aunque la intención sea solo «ser transparente».</p>
@@ -416,25 +416,25 @@ anexado e liste só o que bloquearia o merge."</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> pedirle a Fable 5 que reproduzca el razonamiento en la respuesta de texto es un disparador de seguridad, no una solicitud neutral.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 5 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-5" id="topico-5">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🚦 reasoning_extraction: el fallback silencioso para Opus 4.8</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> no es un error que aparece con una alarma roja: es un <code>stop_reason: "refusal"</code> dentro de una respuesta HTTP 200 normal. Si no sabes buscarlo, tu app sigue funcionando, solo que silenciosamente con un modelo más barato.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t5-p1">La documentación oficial sobre rechazos y alternativas define cuatro categorías posibles en <code class="text-emerald-400">stop_details.category</code>: <code>cyber</code>, <code>bio</code>, <code>frontier_llm</code> y la que interesa aquí, <span class="termo" title="Categoría de rechazo que se activa cuando la solicitud pide al modelo que reproduzca su razonamiento interno en el texto de la respuesta">reasoning_extraction</span>. Es exactamente el disparador del tema anterior.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t5-p1">La documentación oficial sobre rechazos y alternativas define cuatro categorías posibles en <code class="text-emerald-400">stop_details.category</code>: <code>cyber</code>, <code>bio</code>, <code>frontier_llm</code> y la que interesa aquí, <span class="termo" title="Categoría de rechazo que se activa cuando la solicitud pide al modelo que reproduzca su razonamiento interno en el texto de la respuesta">reasoning_extraction</span>. Es exactamente el disparador del tema anterior.</p>
 <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
 <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Dato oficial — definición de la categoría</h3>
 <p class="text-neutral-300 text-sm mb-2">🇬🇧 EN (oficial, doc "refusals-and-fallback"): <em>"The request asks the model to reproduce its internal reasoning in the response text. To get reasoning in a structured form instead, use adaptive thinking."</em></p>
 <p class="text-neutral-400 text-sm">🇧🇷 PT-BR (traducción): "La solicitud pide al modelo que reproduzca su razonamiento interno en el texto de la respuesta. Para obtener el razonamiento de forma estructurada, usa el adaptive thinking."</p>
 </div>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p2">Cuando esto se activa, ocurre el rechazo <strong>antes de cualquier resultado</strong> y no se cobra. Hay tres formas de configurar un fallback automático para Claude Opus 4.8 cuando esto ocurre: fallback del lado del servidor (Claude API / Claude Platform on AWS, mediante un encabezado beta), middleware del SDK (<code>BetaRefusalFallbackMiddleware</code>) o retry manual con "fallback credit". En los tres casos, si no auditas tus skills/prompts, el fallback se convierte en una fuga silenciosa de calidad y costo: la app "funciona", pero con un modelo distinto del que crees estar usando.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t5-p2">Cuando esto se activa, ocurre el rechazo <strong>antes de cualquier resultado</strong> y no se cobra. Hay tres formas de configurar un fallback automático para Claude Opus 4.8 cuando esto ocurre: fallback del lado del servidor (Claude API / Claude Platform on AWS, mediante un encabezado beta), middleware del SDK (<code>BetaRefusalFallbackMiddleware</code>) o retry manual con "fallback credit". En los tres casos, si no auditas tus skills/prompts, el fallback se convierte en una fuga silenciosa de calidad y costo: la app "funciona", pero con un modelo distinto del que crees estar usando.</p>
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
 <svg aria-label="Flujo de decisión: una solicitud pasa por el clasificador de seguridad; si pide reproducir el razonamiento en el texto, genera refusal reasoning_extraction y activa un fallback automático a Opus 4.8; de lo contrario, continúa normalmente en Fable 5." class="w-full h-auto" role="img" viewbox="0 0 1080 430">
 <defs>
@@ -506,20 +506,20 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> <code>reasoning_extraction</code> es un <code>stop_reason: refusal</code> en HTTP 200 — audita tus skills antes de que se convierta en un fallback silencioso para Opus 4.8.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- TOPICO 6 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-6" id="topico-6">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🔍 La alternativa: lee los thinking blocks, no pidas que «te cuente»</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> en lugar de pedirle al actor que narre lo que pasa detrás de escena en medio de la escena, lees el guion de lo que pasa detrás de escena por separado. El <span class="termo" title="Recurso de la API que hace que el modelo piense en bloques estructurados separados del texto de la respuesta final">adaptive thinking</span> ya separa los dos canales — el trabajo consiste en leer el canal correcto, no en forzar ambos en uno solo.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t6-p1">Si tu aplicación necesita visibilidad real del razonamiento —para depuración, auditoría o registro—, lo correcto no es pedirle al modelo que reescriba el razonamiento dentro del texto que ve el usuario. Es leer los <strong class="text-emerald-400">thinking blocks estructurados</strong> que adaptive thinking ya produce, en un canal separado de la respuesta final. Esto preserva ambas cosas al mismo tiempo: el modelo piensa lo que necesita y tú tienes visibilidad — sin activar el tema 5.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p2">En la práctica, esto es un cambio de <em>dónde</em> la instrucción indica: en vez de "explica tu razonamiento <strong>en la respuesta</strong>", la instrucción (o el código de tu harness) pasa a ser "lee el razonamiento <strong>en el bloque de thinking</strong>". Consulta la documentación oficial de adaptive thinking para ver la configuración exacta de la API.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t6-p1">Si tu aplicación necesita visibilidad real del razonamiento —para depuración, auditoría o registro—, lo correcto no es pedirle al modelo que reescriba el razonamiento dentro del texto que ve el usuario. Es leer los <strong class="text-emerald-400">thinking blocks estructurados</strong> que adaptive thinking ya produce, en un canal separado de la respuesta final. Esto preserva ambas cosas al mismo tiempo: el modelo piensa lo que necesita y tú tienes visibilidad — sin activar el tema 5.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t6-p2">En la práctica, esto es un cambio de <em>dónde</em> la instrucción indica: en vez de "explica tu razonamiento <strong>en la respuesta</strong>", la instrucción (o el código de tu harness) pasa a ser "lee el razonamiento <strong>en el bloque de thinking</strong>". Consulta la documentación oficial de adaptive thinking para ver la configuración exacta de la API.</p>
 <div class="mb-6">
 <p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">Estructura ilustrativa de la respuesta (no es una cita literal de la documentación: solo ilustra dónde va cada canal)</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden">
@@ -550,7 +550,7 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">En una frase:</strong> la visibilidad del razonamiento está en los bloques de pensamiento, no en el texto de la respuesta.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como leído</span></button>
 </div>
 </section>
 <!-- FONTES -->
@@ -587,10 +587,10 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 </main>
 </div>
 </div>
-<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a></p></div></footer>
 <script>
     function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
-    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('ARCKHÉ.prefs')||'{}');p.theme=d?'ARCKHÉ-dark':'claro';localStorage.setItem('ARCKHÉ.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
@@ -599,7 +599,7 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 <script src="../../../assets/learn.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.ARCKHÉ && typeof ARCKHÉ.init === 'function') ARCKHÉ.init();
     });
   </script>
 </body>

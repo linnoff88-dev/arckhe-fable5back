@@ -4,28 +4,28 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="fable5" name="inema-course"/>
-<title>1.2 Dê o porquê + não peça raciocínio · Prompting Claude Fable 5 · INEMA.CLUB</title>
+<meta content="fable5" name="ARCKHÉ-course"/>
+<title>1.2 Dê o porquê + não peça raciocínio · Prompting Claude Fable 5 · ARCKHÉ AI</title>
 <script>
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'ARCKHÉ-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
-        var raw = localStorage.getItem('inema.prefs');
+        var raw = localStorage.getItem('ARCKHÉ.prefs');
         if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
-        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='ARCKHÉ-dark'; }
       } catch (e) { p = clone(DEF); }
-      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
-      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      var THEMES = { 'ARCKHÉ-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['ARCKHÉ-dark'];
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
       html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
       var s = html.style, scale=(+p.fontScale||100);
-      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--ARCKHÉ-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
@@ -36,7 +36,7 @@
   </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../../assets/learn.css" rel="stylesheet"/>
-<script data-inema-manifest="" type="application/json">
+<script data-ARCKHÉ-manifest="" type="application/json">
 {
   "course": "fable5",
   "tracks": [
@@ -111,8 +111,8 @@
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
   </style>
-<link href="https://inematds.github.io/fable5back/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fable5back/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fable5back/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen" data-inema-module="1-2" data-inema-track="1"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha1/modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha1/modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<link href="https://linnoff88-dev.github.io/ hreflang="pt-BR" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="en" rel="alternate"/><link href="https://linnoff88-dev.github.io/ hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen" data-ARCKHÉ-module="1-2" data-ARCKHÉ-track="1"><div class="ARCKHÉ-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha1/modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha1/modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
 <a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Pular para o conteudo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,14 +120,14 @@
 <div class="flex items-center space-x-4">
 <a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">📖</span><span class="font-bold text-lg hidden sm:inline">FABLE 5</span></a>
 <span class="text-neutral-600">|</span>
-<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a>
 </div>
 <div class="flex items-center space-x-1 sm:space-x-2">
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Trilha 1</span></a>
 <a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html">
 <span class="sm:hidden">T2</span><span class="hidden sm:inline">Trilha 2</span>
 </a>
-<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Minha jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-ARCKHÉ-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Minha jornada</span><span aria-hidden="true" class="ARCKHÉ-journey-badge hidden"></span></button>
 <button aria-label="Alternar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
 <svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
@@ -155,39 +155,39 @@
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Pratico</div><div class="text-xs text-neutral-400">Tipo</div></div>
 </div>
 <div class="mt-6 max-w-2xl">
-<div aria-label="Progresso do modulo 1.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-2" role="progressbar">
+<div aria-label="Progresso do modulo 1.2" aria-valuemax="100" aria-valuemin="0" class="ARCKHÉ-meter flex items-center gap-3" data-ARCKHÉ-meter="modulo:1-2" role="progressbar">
 <span class="text-sm text-neutral-400">Progresso:</span>
-<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
-<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+<span class="ARCKHÉ-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="ARCKHÉ-meter-count text-xs text-neutral-500">0 de 6</span>
 </div>
 </div>
 </div>
 </header>
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
-<nav aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
-<p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<nav aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start" data-ARCKHÉ-toc="">
+<p class="text-sm text-neutral-400 mb-3">Seção <span class="ARCKHÉ-toc-pos">1</span> de <span class="ARCKHÉ-toc-total">6</span></p>
 <ul class="space-y-1 text-sm">
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. O problema do só-o-quê</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. A fórmula do porquê</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Instruction-follower forte</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. O gatilho oculto</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. reasoning_extraction</a></li>
-<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Leia os thinking blocks</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. O problema do só-o-quê</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. A fórmula do porquê</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Instruction-follower forte</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. O gatilho oculto</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. reasoning_extraction</a></li>
+<li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Leia os thinking blocks</a></li>
 </ul>
 </nav>
-<main class="inema-prose min-w-0" id="conteudo">
+<main class="ARCKHÉ-prose min-w-0" id="conteudo">
 <!-- TOPICO 1 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-1" id="topico-1">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">❓ O problema: só o "quê", nunca o "porquê"</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um modelo de linguagem não lê mentes — ele prevê qual é o próximo token mais provável dado o texto que já viu. Se o seu prompt só diz o QUÊ ("escreva uma função que valida email"), o Fable 5 tem que ADIVINHAR pra quê serve, quem vai usar aquilo e o que "bom" significa aqui. Ele costuma adivinhar bem... até não adivinhar.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t1-p1">No fundo, um LLM é uma máquina de <span class="termo" title="O mecanismo estatístico central de um LLM: prever qual pedaço de texto (token) vem a seguir, dado tudo que veio antes">previsão do próximo token</span>. Ele não tem acesso ao que está na sua cabeça — só ao texto do prompt. Um pedido que descreve apenas a tarefa ("faça X") deixa um buraco: por que X importa, pra quem, com que critério de qualidade. O modelo preenche esse buraco com a interpretação estatisticamente mais comum para aquele tipo de pedido, que pode ou não ser a sua.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p2">O custo desse "chute" cresce com a autonomia do modelo. O Fable 5 foi construído pra manter instrução em <strong class="text-emerald-400">runs de longo horizonte</strong>, às vezes de múltiplos dias. Se a intenção real não foi dada no início, ele não erra rápido e pergunta — ele executa, por horas, na direção plausível errada, e você só descobre o desvio quando já custou tempo e tokens.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t1-p1">No fundo, um LLM é uma máquina de <span class="termo" title="O mecanismo estatístico central de um LLM: prever qual pedaço de texto (token) vem a seguir, dado tudo que veio antes">previsão do próximo token</span>. Ele não tem acesso ao que está na sua cabeça — só ao texto do prompt. Um pedido que descreve apenas a tarefa ("faça X") deixa um buraco: por que X importa, pra quem, com que critério de qualidade. O modelo preenche esse buraco com a interpretação estatisticamente mais comum para aquele tipo de pedido, que pode ou não ser a sua.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t1-p2">O custo desse "chute" cresce com a autonomia do modelo. O Fable 5 foi construído pra manter instrução em <strong class="text-emerald-400">runs de longo horizonte</strong>, às vezes de múltiplos dias. Se a intenção real não foi dada no início, ele não erra rápido e pergunta — ele executa, por horas, na direção plausível errada, e você só descobre o desvio quando já custou tempo e tokens.</p>
 <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
 <h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">💡</span> Conceito principal</h3>
 <p class="text-neutral-300">Previsão de token <strong>≠</strong> leitura de mente. O "porquê" não é enfeite educado no prompt — é o dado que falta pro modelo escolher entre várias execuções igualmente válidas do mesmo "quê".</p>
@@ -241,20 +241,20 @@
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> sem o porquê, o Fable 5 não lê sua mente — ele prevê o próximo token e adivinha o contexto que falta.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 2 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-2" id="topico-2">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🧩 A fórmula do porquê, na prática</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> em vez de só pedir a tarefa, você entrega o briefing completo — o que está em jogo, pra quem, e o que a resposta precisa habilitar. É a diferença entre gritar uma ordem e passar um briefing de verdade.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t2-p1">Esta é uma prática consolidada de prompt engineering em geral — não uma citação fechada da documentação oficial do Fable 5 (o vídeo-fonte já trazia o argumento, e a pesquisa não confirmou uma frase verbatim específica pra esta técnica). Trate como recomendação sólida, não como "regra oficial gravada em pedra". A fórmula tem quatro partes: <strong class="text-emerald-400">tarefa maior</strong> (o projeto em que isso se encaixa), <strong class="text-emerald-400">quem</strong> (quem depende do resultado), <strong class="text-emerald-400">o que a saída habilita</strong> (a decisão ou ação que vem depois) e só então <strong class="text-emerald-400">o pedido</strong> concreto.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p2">Repare na ordem: o porquê vem <strong>antes</strong> do pedido, não como nota de rodapé depois. Isso importa porque o modelo pondera mais fortemente o contexto que está mais perto (em termos de atenção) do pedido final — um "porquê" jogado no fim do prompt compete com menos peso contra o pedido em si.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t2-p1">Esta é uma prática consolidada de prompt engineering em geral — não uma citação fechada da documentação oficial do Fable 5 (o vídeo-fonte já trazia o argumento, e a pesquisa não confirmou uma frase verbatim específica pra esta técnica). Trate como recomendação sólida, não como "regra oficial gravada em pedra". A fórmula tem quatro partes: <strong class="text-emerald-400">tarefa maior</strong> (o projeto em que isso se encaixa), <strong class="text-emerald-400">quem</strong> (quem depende do resultado), <strong class="text-emerald-400">o que a saída habilita</strong> (a decisão ou ação que vem depois) e só então <strong class="text-emerald-400">o pedido</strong> concreto.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t2-p2">Repare na ordem: o porquê vem <strong>antes</strong> do pedido, não como nota de rodapé depois. Isso importa porque o modelo pondera mais fortemente o contexto que está mais perto (em termos de atenção) do pedido final — um "porquê" jogado no fim do prompt compete com menos peso contra o pedido em si.</p>
 <div class="mb-6">
 <p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">Modelo/fórmula copiável — EN e PT-BR</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-3">
@@ -340,20 +340,20 @@ anexado e liste só o que bloquearia o merge."</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> tarefa maior + quem + o que a saída habilita + pedido — nessa ordem, o porquê vem antes do quê.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 3 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-3" id="topico-3">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📏 Por que isso pesa ainda mais no Fable 5</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> é a diferença entre pedir um desejo pra um gênio literal e pedir pra um amigo que "entende o espírito" do pedido. O Fable 5 é o gênio literal — extremamente bom nisso, o que corta os dois lados da faca.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t3-p1">Modelos mais fracos em <span class="termo" title="Quão fielmente o modelo executa exatamente o que foi pedido, sem desviar nem preencher com suposições próprias">instruction-following</span> costumam "suavizar" pedidos ambíguos com o senso comum aprendido no treino — às vezes acidentalmente acertam a sua intenção mesmo sem ela estar explícita. O Fable 5 segue exatamente o que foi pedido. A doc oficial descreve o ganho como: <em>"Instruction-following is improved enough that you can steer most behaviors with a brief instruction rather than enumerating each behavior by name."</em> <span class="text-neutral-500 text-xs">(fonte: doc oficial "Prompting Claude Fable 5" — técnica 6, "diga menos, não mais", aprofundada no módulo 1.5; tradução: "o instruction-following melhorou o suficiente pra você guiar a maioria dos comportamentos com uma instrução breve, em vez de listar cada comportamento pelo nome.")</span></p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p2">Essa força vira risco exatamente quando falta o porquê: sem ele, o Fable 5 não vai "adivinhar bem" por acidente como um modelo mais fraco às vezes faz — ele cumpre o pedido literal ao pé da letra, mesmo que isso perca o objetivo real por trás dele. Quanto mais forte o instruction-follower, mais caro fica um pedido mal-especificado.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t3-p1">Modelos mais fracos em <span class="termo" title="Quão fielmente o modelo executa exatamente o que foi pedido, sem desviar nem preencher com suposições próprias">instruction-following</span> costumam "suavizar" pedidos ambíguos com o senso comum aprendido no treino — às vezes acidentalmente acertam a sua intenção mesmo sem ela estar explícita. O Fable 5 segue exatamente o que foi pedido. A doc oficial descreve o ganho como: <em>"Instruction-following is improved enough that you can steer most behaviors with a brief instruction rather than enumerating each behavior by name."</em> <span class="text-neutral-500 text-xs">(fonte: doc oficial "Prompting Claude Fable 5" — técnica 6, "diga menos, não mais", aprofundada no módulo 1.5; tradução: "o instruction-following melhorou o suficiente pra você guiar a maioria dos comportamentos com uma instrução breve, em vez de listar cada comportamento pelo nome.")</span></p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t3-p2">Essa força vira risco exatamente quando falta o porquê: sem ele, o Fable 5 não vai "adivinhar bem" por acidente como um modelo mais fraco às vezes faz — ele cumpre o pedido literal ao pé da letra, mesmo que isso perca o objetivo real por trás dele. Quanto mais forte o instruction-follower, mais caro fica um pedido mal-especificado.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
 <h4 class="font-bold text-neutral-300 mb-4">→ Instruction-follower fraco</h4>
@@ -376,20 +376,20 @@ anexado e liste só o que bloquearia o merge."</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> quanto mais literal o instruction-follower, mais caro fica pedir sem o porquê.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 4 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-4" id="topico-4">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">⚠️ O gatilho oculto: pedir pra "mostrar o raciocínio"</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> parece inofensivo pedir "explica seu raciocínio" — é o tipo de frase que qualquer skill antiga de "seja transparente" tem. No Fable 5 ela pode acionar uma recusa de segurança e trocar de modelo sem avisar.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t4-p1">Há uma ironia direta com o resto deste módulo: pedir pro modelo <strong>explicar por que fez algo dentro do próprio texto de resposta</strong> é a forma errada de conseguir transparência. Prompts, skills e instruções de harness que pedem pro modelo ecoar, transcrever ou narrar o raciocínio interno como parte da resposta caem numa categoria de segurança específica — e isso é <strong class="text-emerald-400">específico do Fable 5</strong>, não um comportamento genérico de qualquer Claude.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p2">Isso costuma vir de skills migradas de modelos antigos, onde "mostre seu raciocínio passo a passo" era uma técnica válida de prompting. No Fable 5, o canal certo pra isso já existe — os <span class="termo" title="Blocos estruturados que carregam o raciocínio interno do modelo, separados do texto de resposta final">thinking blocks</span> — e pedir pra duplicar isso na resposta em texto é o próprio gatilho de risco (ver tópico 5 e 6).</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t4-p1">Há uma ironia direta com o resto deste módulo: pedir pro modelo <strong>explicar por que fez algo dentro do próprio texto de resposta</strong> é a forma errada de conseguir transparência. Prompts, skills e instruções de harness que pedem pro modelo ecoar, transcrever ou narrar o raciocínio interno como parte da resposta caem numa categoria de segurança específica — e isso é <strong class="text-emerald-400">específico do Fable 5</strong>, não um comportamento genérico de qualquer Claude.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t4-p2">Isso costuma vir de skills migradas de modelos antigos, onde "mostre seu raciocínio passo a passo" era uma técnica válida de prompting. No Fable 5, o canal certo pra isso já existe — os <span class="termo" title="Blocos estruturados que carregam o raciocínio interno do modelo, separados do texto de resposta final">thinking blocks</span> — e pedir pra duplicar isso na resposta em texto é o próprio gatilho de risco (ver tópico 5 e 6).</p>
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
 <h3 class="font-semibold text-red-400 mb-3">⚠️ Atenção: frases que parecem inofensivas</h3>
 <p class="text-neutral-300 text-sm">Se uma skill, system prompt ou harness instrui o modelo a "explicar", "transcrever" ou "ecoar" o próprio raciocínio dentro da resposta visível ao usuário, ela é candidata a disparar a recusa de segurança do próximo tópico — mesmo que a intenção seja só "seja transparente".</p>
@@ -416,25 +416,25 @@ anexado e liste só o que bloquearia o merge."</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> pedir pro Fable 5 reproduzir o raciocínio na resposta em texto é um gatilho de segurança, não um pedido neutro.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 5 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-5" id="topico-5">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🚦 reasoning_extraction: o fallback silencioso pro Opus 4.8</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> não é um erro que aparece com alarme vermelho — é um <code>stop_reason: "refusal"</code> dentro de uma resposta HTTP 200 normal. Se você não sabe procurar por ele, seu app continua rodando, só que silenciosamente num modelo mais barato.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t5-p1">A documentação oficial de refusals-and-fallback define quatro categorias possíveis em <code class="text-emerald-400">stop_details.category</code>: <code>cyber</code>, <code>bio</code>, <code>frontier_llm</code> e a que interessa aqui, <span class="termo" title="Categoria de recusa acionada quando o pedido pede pro modelo reproduzir o raciocínio interno dentro do texto da resposta">reasoning_extraction</span>. É exatamente o gatilho do tópico anterior.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t5-p1">A documentação oficial de refusals-and-fallback define quatro categorias possíveis em <code class="text-emerald-400">stop_details.category</code>: <code>cyber</code>, <code>bio</code>, <code>frontier_llm</code> e a que interessa aqui, <span class="termo" title="Categoria de recusa acionada quando o pedido pede pro modelo reproduzir o raciocínio interno dentro do texto da resposta">reasoning_extraction</span>. É exatamente o gatilho do tópico anterior.</p>
 <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
 <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Dado oficial — definição da categoria</h3>
 <p class="text-neutral-300 text-sm mb-2">🇬🇧 EN (oficial, doc "refusals-and-fallback"): <em>"The request asks the model to reproduce its internal reasoning in the response text. To get reasoning in a structured form instead, use adaptive thinking."</em></p>
 <p class="text-neutral-400 text-sm">🇧🇷 PT-BR (tradução): "O pedido pede pro modelo reproduzir o raciocínio interno dele no texto da resposta. Pra obter o raciocínio numa forma estruturada, use o adaptive thinking."</p>
 </div>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p2">Quando isso dispara, a recusa acontece <strong>antes de qualquer output</strong> e não é cobrada. Existem três formas de configurar um fallback automático pro Claude Opus 4.8 quando isso acontece: fallback server-side (Claude API / Claude Platform on AWS, via header beta), middleware do SDK (<code>BetaRefusalFallbackMiddleware</code>) ou retry manual com "fallback credit". Nos três casos, se você não audita suas skills/prompts, o fallback vira um vazamento silencioso de qualidade e custo — o app "funciona", só que num modelo diferente do que você pensa estar usando.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t5-p2">Quando isso dispara, a recusa acontece <strong>antes de qualquer output</strong> e não é cobrada. Existem três formas de configurar um fallback automático pro Claude Opus 4.8 quando isso acontece: fallback server-side (Claude API / Claude Platform on AWS, via header beta), middleware do SDK (<code>BetaRefusalFallbackMiddleware</code>) ou retry manual com "fallback credit". Nos três casos, se você não audita suas skills/prompts, o fallback vira um vazamento silencioso de qualidade e custo — o app "funciona", só que num modelo diferente do que você pensa estar usando.</p>
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
 <svg aria-label="Fluxo de decisão: um pedido passa pelo classificador de segurança; se pede pra reproduzir o raciocínio no texto, gera refusal reasoning_extraction e cai em fallback automático para o Opus 4.8; caso contrário, segue normalmente no Fable 5." class="w-full h-auto" role="img" viewbox="0 0 1080 430">
 <defs>
@@ -506,20 +506,20 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> <code>reasoning_extraction</code> é um <code>stop_reason: refusal</code> em HTTP 200 — audite suas skills antes que ele vire um fallback silencioso pro Opus 4.8.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- TOPICO 6 -->
-<section class="mb-16" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<section class="mb-16" data-ARCKHÉ-topic="modulo-1-2#topico-6" id="topico-6">
 <div class="flex items-center justify-between gap-4 mb-6">
 <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🔍 A alternativa: leia os thinking blocks, não peça pra "contar"</h2></div>
-<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-ARCKHÉ-doubt-toggle="" title="Marcar duvida neste topico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho duvida</span></button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
 <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> em vez de pedir pro ator narrar os bastidores no meio da cena, você lê o roteiro de bastidores separadamente. O <span class="termo" title="Recurso da API que faz o modelo pensar em blocos estruturados separados do texto de resposta final">adaptive thinking</span> já separa os dois canais — o trabalho é ler o canal certo, não forçar os dois em um só.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t6-p1">Se a sua aplicação precisa de visibilidade real do raciocínio — pra debug, auditoria ou log — a resposta certa não é pedir pro modelo reescrever o raciocínio dentro do texto que o usuário vê. É ler os <strong class="text-emerald-400">thinking blocks estruturados</strong> que o adaptive thinking já produz, num canal separado da resposta final. Isso preserva as duas coisas ao mesmo tempo: o modelo pensa o quanto precisa, e você tem visibilidade — sem tocar no gatilho do tópico 5.</p>
-<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p2">Na prática, isso é uma mudança de <em>onde</em> a instrução aponta: em vez de "explique seu raciocínio <strong>na resposta</strong>", a instrução (ou o código do seu harness) passa a ser "leia o raciocínio <strong>no bloco de thinking</strong>". Ver a documentação oficial de adaptive thinking pra configuração exata da API.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m1-2-t6-p1">Se a sua aplicação precisa de visibilidade real do raciocínio — pra debug, auditoria ou log — a resposta certa não é pedir pro modelo reescrever o raciocínio dentro do texto que o usuário vê. É ler os <strong class="text-emerald-400">thinking blocks estruturados</strong> que o adaptive thinking já produz, num canal separado da resposta final. Isso preserva as duas coisas ao mesmo tempo: o modelo pensa o quanto precisa, e você tem visibilidade — sem tocar no gatilho do tópico 5.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-ARCKHÉ-block="m1-2-t6-p2">Na prática, isso é uma mudança de <em>onde</em> a instrução aponta: em vez de "explique seu raciocínio <strong>na resposta</strong>", a instrução (ou o código do seu harness) passa a ser "leia o raciocínio <strong>no bloco de thinking</strong>". Ver a documentação oficial de adaptive thinking pra configuração exata da API.</p>
 <div class="mb-6">
 <p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">Estrutura ilustrativa da resposta (não é citação literal da doc — só ilustra onde cada canal mora)</p>
 <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden">
@@ -550,7 +550,7 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> visibilidade do raciocínio mora nos thinking blocks, não no texto da resposta.</p>
 </div>
 <div class="flex justify-start mt-6">
-<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button>
 </div>
 </section>
 <!-- FONTES -->
@@ -587,10 +587,10 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 </main>
 </div>
 </div>
-<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Prompting Claude Fable 5 · <a class="text-sky-400 hover:text-sky-300" href="https://ARCKHÉ AI" target="_blank">ARCKHÉ AI</a></p></div></footer>
 <script>
     function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
-    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('ARCKHÉ.prefs')||'{}');p.theme=d?'ARCKHÉ-dark':'claro';localStorage.setItem('ARCKHÉ.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
@@ -599,7 +599,7 @@ blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 <script src="../../assets/learn.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.ARCKHÉ && typeof ARCKHÉ.init === 'function') ARCKHÉ.init();
     });
   </script>
 </body>
