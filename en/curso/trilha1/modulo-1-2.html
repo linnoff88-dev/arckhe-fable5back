@@ -42,20 +42,20 @@
   "tracks": [
     { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
       { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
-      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-2", "title": "Dê o porquê + nêo peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
       { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
       { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
-      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-5", "title": "Diga menos, nêo mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
       { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
       { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
     ]},
     { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
       { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
       { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
-      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-3", "title": "Verificaçêo real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
       { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
-      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
-      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-5", "title": "Visêo pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificaçêo + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
       { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
     ]}
   ]
@@ -271,7 +271,7 @@ With that: &lt;concrete ask, e.g. "review auth.py and payments.py and list the r
 <span class="text-xs text-emerald-400 font-mono">🇧🇷 Brazilian Portuguese</span>
 <button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
 </div>
-<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Estou trabalhando em &lt;tarefa maior, ex.: "revisão de segurança da API de pagamentos"&gt; para &lt;quem, ex.: "o time de compliance"&gt;.
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Estou trabalhando em &lt;tarefa maior, ex.: "revisêo de segurança da API de pagamentos"&gt; para &lt;quem, ex.: "o time de compliance"&gt;.
 Eles precisam de &lt;o que a saída habilita, ex.: "uma lista priorizada de vulnerabilidades com severidade, pra decidir o que corrigir antes do release"&gt;.
 Com isso: &lt;pedido concreto, ex.: "revise auth.py e payments.py e liste os riscos encontrados"&gt;.</pre>
 </div>
@@ -329,9 +329,9 @@ attached diff and list only what would block the merge."</pre>
 
 ✅ DEPOIS (quê + porquê):
 "Você é um agente que revisa Pull Requests para um time que faz deploy 3x ao dia e
-não tem QA dedicado. O objetivo desta revisão é pegar o que quebraria produção — não
+nêo tem QA dedicado. O objetivo desta revisêo é pegar o que quebraria produçêo — nêo
 estilo. Eles precisam de uma lista curta e priorizada (bugs &gt; segurança &gt; lógica),
-porque revisões longas e cheias de nitpick são ignoradas. Com isso: revise o diff
+porque revisões longas e cheias de nitpick sêo ignoradas. Com isso: revise o diff
 anexado e liste só o que bloquearia o merge."</pre>
 </div>
 <p class="text-neutral-300 text-sm"><strong>How to check:</strong> run both versions against the same diff and compare the output. The “before” version tends to return a long, generic list (including style nitpicks); the “after” version prioritizes what would break production, in the right order. If the “after” output is still generic, the reason wasn’t explicit enough — reinforce it with concrete numbers/criteria.</p>
@@ -492,12 +492,12 @@ from adaptive thinking instead.</pre>
 <span class="text-xs text-blue-400 font-mono">5. don't ask to show the reasoning</span>
 <button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
 </div>
-<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Não instrua o Claude a reproduzir o raciocínio dele na resposta. Prompts, skills ou
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Nêo instrua o Claude a reproduzir o raciocínio dele na resposta. Prompts, skills ou
 instruções de harness que pedem pro modelo ecoar, transcrever ou explicar o raciocínio
 interno como texto de resposta podem disparar a categoria de recusa reasoning_extraction
 no Claude Fable 5, causando fallbacks mais frequentes pro Claude Opus 4.8. Ao migrar,
-audite skills e system prompts existentes em busca de instruções de reflexão ou
-"mostre seu raciocínio". Se sua aplicação precisa de visibilidade do raciocínio, leia os
+audite skills e system prompts existentes em busca de instruções de reflexêo ou
+"mostre seu raciocínio". Se sua aplicaçêo precisa de visibilidade do raciocínio, leia os
 blocos estruturados de thinking do adaptive thinking em vez disso.</pre>
 </div>
 <p class="text-neutral-300 text-sm"><strong>How to check:</strong> grep your skills/system prompts repository for phrases like "explain your reasoning", "show your thinking", "reproduce your reasoning" (and the Portuguese equivalents from topic 4). If you find any, it's a candidate for <code>reasoning_extraction</code> — replace it with the reading on thinking blocks (topic 6) and monitor the fallback rate to Opus 4.8 before and after the fix.</p>

@@ -82,20 +82,20 @@
   "tracks": [
     { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
       { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
-      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-2", "title": "Dê o porquê + nêo peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
       { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
       { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
-      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-5", "title": "Diga menos, nêo mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
       { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
       { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
     ]},
     { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
       { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
       { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
-      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-3", "title": "Verificaçêo real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
       { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
-      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
-      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-5", "title": "Visêo pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificaçêo + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
       { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
     ]}
   ]
@@ -259,7 +259,7 @@
 </div>
 <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">TRILHA 1</span>
 <h1 class="text-3xl sm:text-4xl font-bold mb-4">📖 Prompting Claude Fable 5</h1>
-<p class="text-lg text-neutral-400 max-w-3xl mb-6">Como tirar o máximo do modelo mais forte (e mais caro) da Anthropic. Contexto do relançamento, as 6 técnicas de prompting oficiais, effort levels, roteamento de segurança e os extras que só estão na documentação.</p>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">Como tirar o máximo do modelo mais forte (e mais caro) da Anthropic. Contexto do relançamento, as 6 técnicas de prompting oficiais, effort levels, roteamento de segurança e os extras que só estêo na documentaçêo.</p>
 <!-- Hero SVG futurista: prompt bruto -> 3 blocos de tecnica -> prompt Fable-ready -->
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
 <svg aria-label="Diagrama: um prompt bruto passa por três blocos de técnica da trilha e sai pronto para o Fable 5" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
@@ -273,7 +273,7 @@
 <g filter="url(#t1h-glow)"><rect fill="#0e2018" height="120" rx="16" stroke="url(#t1h-grad)" stroke-width="2.5" width="200" x="40" y="60"></rect></g>
 <rect fill="#0a1a12" height="18" rx="4" width="170" x="55" y="75"></rect><text fill="#34d399" font-family="monospace" font-size="10.5" x="65" y="88">"corrige o bug de X"</text>
 <rect fill="#0a1a12" height="18" rx="4" width="170" x="55" y="100"></rect><text fill="#9fe7c8" font-family="monospace" font-size="10.5" x="65" y="113">sem contexto, sem limite</text>
-<rect fill="#0a1a12" height="18" rx="4" width="170" x="55" y="125"></rect><text fill="#9fe7c8" font-family="monospace" font-size="10.5" x="65" y="138">sem prova de conclusão</text>
+<rect fill="#0a1a12" height="18" rx="4" width="170" x="55" y="125"></rect><text fill="#9fe7c8" font-family="monospace" font-size="10.5" x="65" y="138">sem prova de conclusêo</text>
 <text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="140" y="168">PROMPT BRUTO</text>
 <g fill="none" opacity="0.5" stroke="#34d399" stroke-width="1.8">
 <path d="M240,90 C340,90 380,65 460,65" marker-end="url(#t1h-ah)"></path>
@@ -281,8 +281,8 @@
 <path d="M240,150 C340,150 380,175 460,175" marker-end="url(#t1h-ah)"></path>
 </g>
 <g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
-<g class="wf-a"><rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="460" y="42"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="60">1.1–1.2 Contexto</text><text fill="#9ad6ff" font-size="10" font-weight="400" text-anchor="middle" x="560" y="77">porquê, não raciocínio</text></g>
-<g class="wf-a"><rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="460" y="98"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="116">1.3–1.5 Ação</text><text fill="#9ad6ff" font-size="10" font-weight="400" text-anchor="middle" x="560" y="133">fronteiras, prova, concisão</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="460" y="42"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="60">1.1–1.2 Contexto</text><text fill="#9ad6ff" font-size="10" font-weight="400" text-anchor="middle" x="560" y="77">porquê, nêo raciocínio</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="460" y="98"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="116">1.3–1.5 Açêo</text><text fill="#9ad6ff" font-size="10" font-weight="400" text-anchor="middle" x="560" y="133">fronteiras, prova, concisêo</text></g>
 <g class="wf-a"><rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="460" y="154"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="172">1.6–1.7 Esforço</text><text fill="#9ad6ff" font-size="10" font-weight="400" text-anchor="middle" x="560" y="189">segurança, extras</text></g>
 </g>
 <g fill="none" opacity="0.5" stroke="#34d399" stroke-width="1.8">
@@ -298,7 +298,7 @@
 <div class="grid grid-cols-4 gap-4 mt-2 max-w-2xl">
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">7</div><div class="text-xs text-neutral-400">Módulos</div></div>
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">42</div><div class="text-xs text-neutral-400">Tópicos</div></div>
-<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~4h30</div><div class="text-xs text-neutral-400">Duração</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~4h30</div><div class="text-xs text-neutral-400">Duraçêo</div></div>
 <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Intermed.</div><div class="text-xs text-neutral-400">Nível</div></div>
 </div>
 <div class="mt-6 max-w-2xl">
@@ -318,17 +318,17 @@
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-1">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
 <h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">📰 Fable 5: contexto e janela de oportunidade</h3>
-<p class="text-xs text-neutral-400">A volta depois da suspensão</p>
+<p class="text-xs text-neutral-400">A volta depois da suspensêo</p>
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-2">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
-<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🎯 Dê o porquê + não peça raciocínio</h3>
-<p class="text-xs text-neutral-400">Contexto sim, introspecção não</p>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🎯 Dê o porquê + nêo peça raciocínio</h3>
+<p class="text-xs text-neutral-400">Contexto sim, introspecçêo nêo</p>
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-3">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
 <h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🛑 Negative prompting + fronteiras</h3>
-<p class="text-xs text-neutral-400">Diga o que NÃO fazer</p>
+<p class="text-xs text-neutral-400">Diga o que NêO fazer</p>
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-4">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.4</span><span class="text-xs text-neutral-500">~45 min</span></div>
@@ -337,7 +337,7 @@
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-5">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.5</span><span class="text-xs text-neutral-500">~35 min</span></div>
-<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">✂️ Diga menos, não mais</h3>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">✂️ Diga menos, nêo mais</h3>
 <p class="text-xs text-neutral-400">TLDR primeiro, sempre</p>
 </a>
 <a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-6">
@@ -364,7 +364,7 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-<span class="text-lg">📅</span><div><span class="font-medium">Lançamento e suspensão temporária</span><span class="text-neutral-500 text-sm ml-2">- A cronologia enxuta</span></div>
+<span class="text-lg">📅</span><div><span class="font-medium">Lançamento e suspensêo temporária</span><span class="text-neutral-500 text-sm ml-2">- A cronologia enxuta</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Fable 5 e Mythos 5 lançaram em 9/jun/2026; export controls do governo dos EUA em 12/jun levaram a Anthropic a suspender o acesso pra todos; a volta global aconteceu em 1/jul/2026.</p></div>
@@ -375,12 +375,12 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-<span class="text-lg">🔍</span><div><span class="font-medium">Por que a suspensão aconteceu de verdade</span><span class="text-neutral-500 text-sm ml-2">- Contexto, não drama</span></div>
+<span class="text-lg">🔍</span><div><span class="font-medium">Por que a suspensêo aconteceu de verdade</span><span class="text-neutral-500 text-sm ml-2">- Contexto, nêo drama</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Pesquisadores da Amazon reportaram um jeito de contornar os safeguards do Fable 5. Mas o teste da própria Anthropic mostrou que modelos bem menos capazes — Opus 4.8, GPT-5.5, Kimi K2.7, até Haiku 4.5 e Sonnet 4.6 — geravam a MESMA demonstração de exploit.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Contexto acima de drama — a suspensão foi precaução regulatória, não uma falha exclusiva do Fable 5.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Vulnerabilidade de software; teste comparativo entre modelos; precaução regulatória.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Pesquisadores da Amazon reportaram um jeito de contornar os safeguards do Fable 5. Mas o teste da própria Anthropic mostrou que modelos bem menos capazes — Opus 4.8, GPT-5.5, Kimi K2.7, até Haiku 4.5 e Sonnet 4.6 — geravam a MESMA demonstraçêo de exploit.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Contexto acima de drama — a suspensêo foi precauçêo regulatória, nêo uma falha exclusiva do Fable 5.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Vulnerabilidade de software; teste comparativo entre modelos; precauçêo regulatória.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -397,7 +397,7 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-<span class="text-lg">🔒</span><div><span class="font-medium">Mythos 5 — o irmão restrito</span><span class="text-neutral-500 text-sm ml-2">- Só via Glasswing</span></div>
+<span class="text-lg">🔒</span><div><span class="font-medium">Mythos 5 — o irmêo restrito</span><span class="text-neutral-500 text-sm ml-2">- Só via Glasswing</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Mesmas capacidades do Fable 5, mas sem os safety classifiers — uso restrito só via Project Glasswing, pra cibersegurança defensiva.</p></div>
@@ -413,17 +413,17 @@
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A volta global do Fable 5 é o momento certo pra aprender a prompar um modelo que se comporta diferente do Opus 4.8.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Quem aprende as técnicas certas desde o início evita meses de tentativa e erro.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Janela de adoção; curva de aprendizado; migração de hábitos de prompt.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Janela de adoçêo; curva de aprendizado; migraçêo de hábitos de prompt.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-<span class="text-lg">🗣️</span><div><span class="font-medium">O que os early adopters já disseram</span><span class="text-neutral-500 text-sm ml-2">- Relatos, não fato oficial</span></div>
+<span class="text-lg">🗣️</span><div><span class="font-medium">O que os early adopters já disseram</span><span class="text-neutral-500 text-sm ml-2">- Relatos, nêo fato oficial</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Dan Shipper (Every) deu 91/100 no benchmark interno "Senior Engineer" ao Fable 5, ante 63 do Opus 4.8. Boris Cherny (Anthropic) chamou publicamente de "o melhor modelo que já usei para código, por uma margem larga".</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sinaliza o tamanho do salto de capacidade — mesmo sendo relato de terceiros, não fato oficial da Anthropic.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sinaliza o tamanho do salto de capacidade — mesmo sendo relato de terceiros, nêo fato oficial da Anthropic.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Benchmark "Senior Engineer"; relato de early adopter; "warp drive para coding".</p></div>
 </div></div>
 </div>
@@ -437,19 +437,19 @@
 <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-ARCKHÉ-module="1-2" data-ARCKHÉ-track="1" id="modulo-1-2">
 <div class="p-6 border-b border-dark-600">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
-<h3 class="text-2xl font-bold mb-2">🎯 Dê o porquê + não peça raciocínio</h3>
-<p class="text-neutral-400 text-sm">Contexto de intenção na entrada, e o gatilho oficial de recusa que aparece quando você pede pro modelo mostrar o raciocínio.</p>
+<h3 class="text-2xl font-bold mb-2">🎯 Dê o porquê + nêo peça raciocínio</h3>
+<p class="text-neutral-400 text-sm">Contexto de intençêo na entrada, e o gatilho oficial de recusa que aparece quando você pede pro modelo mostrar o raciocínio.</p>
 </div>
 <div class="divide-y divide-dark-600">
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-<span class="text-lg">💡</span><div><span class="font-medium">Dê o porquê da tarefa</span><span class="text-neutral-500 text-sm ml-2">- Não só o que, o pra quê</span></div>
+<span class="text-lg">💡</span><div><span class="font-medium">Dê o porquê da tarefa</span><span class="text-neutral-500 text-sm ml-2">- Nêo só o que, o pra quê</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Contexto de intenção — dizer PARA QUE serve o que você está pedindo, não só O QUE fazer.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Contexto de intençêo — dizer PARA QUE serve o que você está pedindo, nêo só O QUE fazer.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É prática consolidada de prompt engineering (o vídeo já traz esse argumento) — ajuda o modelo a tomar as micro-decisões certas sozinho.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Intenção da tarefa; contexto de propósito; prática geral, não citação oficial verbatim do doc do Fable 5.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Intençêo da tarefa; contexto de propósito; prática geral, nêo citaçêo oficial verbatim do doc do Fable 5.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -466,11 +466,11 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-<span class="text-lg">📄</span><div><span class="font-medium">O aviso oficial anti-extração</span><span class="text-neutral-500 text-sm ml-2">- Auditar skills antigas</span></div>
+<span class="text-lg">📄</span><div><span class="font-medium">O aviso oficial anti-extraçêo</span><span class="text-neutral-500 text-sm ml-2">- Auditar skills antigas</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A documentação oficial recomenda auditar skills antigas em busca de instruções de "echo/transcribe/explain" do raciocínio interno.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Migrar de Opus pro Fable 5 sem essa auditoria eleva recusas sem motivo aparente pra quem não sabe o gatilho.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A documentaçêo oficial recomenda auditar skills antigas em busca de instruções de "echo/transcribe/explain" do raciocínio interno.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Migrar de Opus pro Fable 5 sem essa auditoria eleva recusas sem motivo aparente pra quem nêo sabe o gatilho.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Harness instructions; structured thinking blocks; auditoria de system prompt.</p></div>
 </div></div>
 </div>
@@ -480,7 +480,7 @@
 <span class="text-lg">🧵</span><div><span class="font-medium">Onde ler o raciocínio estruturado</span><span class="text-neutral-500 text-sm ml-2">- Adaptive thinking</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Se a aplicação precisa de visibilidade do raciocínio, o caminho certo é ler os blocos estruturados de "adaptive thinking" — não pedir isso em texto na resposta.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Se a aplicaçêo precisa de visibilidade do raciocínio, o caminho certo é ler os blocos estruturados de "adaptive thinking" — nêo pedir isso em texto na resposta.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Resolve a necessidade de transparência sem acionar a recusa reasoning_extraction.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Adaptive thinking; blocos estruturados; visibilidade de raciocínio.</p></div>
 </div></div>
@@ -488,12 +488,12 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-<span class="text-lg">🛠️</span><div><span class="font-medium">Contexto de propósito na prática</span><span class="text-neutral-500 text-sm ml-2">- Rascunho vs produção</span></div>
+<span class="text-lg">🛠️</span><div><span class="font-medium">Contexto de propósito na prática</span><span class="text-neutral-500 text-sm ml-2">- Rascunho vs produçêo</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Exemplos de como amarrar o "porquê" num prompt técnico — ex.: "estou revisando pra produção" vs "é só um rascunho".</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Exemplos de como amarrar o "porquê" num prompt técnico — ex.: "estou revisando pra produçêo" vs "é só um rascunho".</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O mesmo pedido técnico gera comportamento bem diferente dependendo do porquê declarado.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt de tarefa; sinalização de contexto; comportamento condicional.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt de tarefa; sinalizaçêo de contexto; comportamento condicional.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -503,8 +503,8 @@
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Instruções antigas que pediam "explique seu passo a passo" eram normais no Opus e quebram no Fable 5.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Encontrar esse padrão evita fallback silencioso pro Opus 4.8 e custo extra sem explicação aparente.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Skills legadas; fallback silencioso; revisão de prompt.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Encontrar esse padrêo evita fallback silencioso pro Opus 4.8 e custo extra sem explicaçêo aparente.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Skills legadas; fallback silencioso; revisêo de prompt.</p></div>
 </div></div>
 </div>
 </div>
@@ -518,16 +518,16 @@
 <div class="p-6 border-b border-dark-600">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
 <h3 class="text-2xl font-bold mb-2">🛑 Negative prompting + fronteiras</h3>
-<p class="text-neutral-400 text-sm">O prompt oficial anti-arrumação e quando o entregável certo é só a avaliação, sem aplicar mudança nenhuma.</p>
+<p class="text-neutral-400 text-sm">O prompt oficial anti-arrumaçêo e quando o entregável certo é só a avaliaçêo, sem aplicar mudança nenhuma.</p>
 </div>
 <div class="divide-y divide-dark-600">
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-<span class="text-lg">🚫</span><div><span class="font-medium">O que é negative prompting</span><span class="text-neutral-500 text-sm ml-2">- Dizer o que NÃO fazer</span></div>
+<span class="text-lg">🚫</span><div><span class="font-medium">O que é negative prompting</span><span class="text-neutral-500 text-sm ml-2">- Dizer o que NêO fazer</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Dizer explicitamente o que o modelo NÃO deve fazer, não só o que deve fazer.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Dizer explicitamente o que o modelo NêO deve fazer, nêo só o que deve fazer.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Em esforço alto, o Fable 5 pode reunir contexto e deliberar além do que a tarefa pede — negative prompting contém isso.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Negative prompting; over-engineering; overplanning.</p></div>
 </div></div>
@@ -535,22 +535,22 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-<span class="text-lg">🧹</span><div><span class="font-medium">O prompt oficial anti-arrumação</span><span class="text-neutral-500 text-sm ml-2">- Citação oficial</span></div>
+<span class="text-lg">🧹</span><div><span class="font-medium">O prompt oficial anti-arrumaçêo</span><span class="text-neutral-500 text-sm ml-2">- Citaçêo oficial</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O texto oficial pede pra não adicionar features/refactors/abstrações além do escopo, não limpar código ao redor de um bug fix e não criar helper pra uma operação única.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É a citação oficial mais direta contra "tidying" (arrumação) não pedido.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Anti-tidying; abstração prematura; validação só nas fronteiras do sistema.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O texto oficial pede pra nêo adicionar features/refactors/abstrações além do escopo, nêo limpar código ao redor de um bug fix e nêo criar helper pra uma operaçêo única.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É a citaçêo oficial mais direta contra "tidying" (arrumaçêo) nêo pedido.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Anti-tidying; abstraçêo prematura; validaçêo só nas fronteiras do sistema.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-<span class="text-lg">🔮</span><div><span class="font-medium">Não planeje para hipóteses futuras</span><span class="text-neutral-500 text-sm ml-2">- Faça o mais simples</span></div>
+<span class="text-lg">🔮</span><div><span class="font-medium">Nêo planeje para hipóteses futuras</span><span class="text-neutral-500 text-sm ml-2">- Faça o mais simples</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O mesmo prompt oficial cobre não desenhar pra requisitos hipotéticos futuros — fazer a coisa mais simples que funciona bem.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fable 5 tende a ser mais completo por padrão; conter isso economiza tokens e revisão.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O mesmo prompt oficial cobre nêo desenhar pra requisitos hipotéticos futuros — fazer a coisa mais simples que funciona bem.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fable 5 tende a ser mais completo por padrêo; conter isso economiza tokens e revisêo.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Simplicidade deliberada; feature flags; shims de compatibilidade retroativa.</p></div>
 </div></div>
 </div>
@@ -560,9 +560,9 @@
 <span class="text-lg">🧭</span><div><span class="font-medium">Fronteiras explícitas</span><span class="text-neutral-500 text-sm ml-2">- Quando só reportar</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Quando o usuário está descrevendo um problema ou pensando alto, o entregável é a avaliação — reportar e parar, não aplicar fix sem pedir.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Evita mudanças de estado do sistema (restart, delete, config) sem que a evidência realmente sustente a ação.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Deliverable = assessment; ação destrutiva/irreversível; confirmação antes de agir.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Quando o usuário está descrevendo um problema ou pensando alto, o entregável é a avaliaçêo — reportar e parar, nêo aplicar fix sem pedir.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Evita mudanças de estado do sistema (restart, delete, config) sem que a evidência realmente sustente a açêo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Deliverable = assessment; açêo destrutiva/irreversível; confirmaçêo antes de agir.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -571,20 +571,20 @@
 <span class="text-lg">📋</span><div><span class="font-medium">Onde colar esse prompt</span><span class="text-neutral-500 text-sm ml-2">- CLAUDE.md ou system prompt</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O bloco de negative prompting funciona bem colado no CLAUDE.md, no system prompt, ou no início da sessão.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Colar uma vez resolve a tendência de "arrumação" em todas as tarefas seguintes daquele projeto.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">CLAUDE.md; system prompt; escopo por sessão/projeto.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O bloco de negative prompting funciona bem colado no CLAUDE.md, no system prompt, ou no início da sessêo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Colar uma vez resolve a tendência de "arrumaçêo" em todas as tarefas seguintes daquele projeto.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">CLAUDE.md; system prompt; escopo por sessêo/projeto.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-<span class="text-lg">✅</span><div><span class="font-medium">Como verificar se funcionou</span><span class="text-neutral-500 text-sm ml-2">- Comparação empírica</span></div>
+<span class="text-lg">✅</span><div><span class="font-medium">Como verificar se funcionou</span><span class="text-neutral-500 text-sm ml-2">- Comparaçêo empírica</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Depois de colar o prompt, observar se tarefas de bug fix passam a vir sem refactor extra nas sessões seguintes.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo de "testei e confirmei", não só "acho que ajudou".</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificação empírica; comparação antes/depois; escopo da mudança entregue.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo de "testei e confirmei", nêo só "acho que ajudou".</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificaçêo empírica; comparaçêo antes/depois; escopo da mudança entregue.</p></div>
 </div></div>
 </div>
 </div>
@@ -598,29 +598,29 @@
 <div class="p-6 border-b border-dark-600">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.4</span><span class="text-xs text-neutral-500">~45 min</span></div>
 <h3 class="text-2xl font-bold mb-2">🏁 Deixe agir + prove que terminou</h3>
-<p class="text-neutral-400 text-sm">Anti-overplanning na entrada e verificação de evidência na saída — os dois prompts oficiais que mais mudam o comportamento agentic.</p>
+<p class="text-neutral-400 text-sm">Anti-overplanning na entrada e verificaçêo de evidência na saída — os dois prompts oficiais que mais mudam o comportamento agentic.</p>
 </div>
 <div class="divide-y divide-dark-600">
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-<span class="text-lg">🚀</span><div><span class="font-medium">Anti-overplanning: quando agir sem perguntar</span><span class="text-neutral-500 text-sm ml-2">- Citação oficial</span></div>
+<span class="text-lg">🚀</span><div><span class="font-medium">Anti-overplanning: quando agir sem perguntar</span><span class="text-neutral-500 text-sm ml-2">- Citaçêo oficial</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial diz pra só pausar pro usuário quando a tarefa realmente exige — ação destrutiva/irreversível, mudança real de escopo, ou input que só ele pode dar.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Elimina o hábito de "perguntar demais" que trava o loop autônomo em tarefas que já tinham informação suficiente.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Anti-overplanning; ação irreversível; fim de turno.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial diz pra só pausar pro usuário quando a tarefa realmente exige — açêo destrutiva/irreversível, mudança real de escopo, ou input que só ele pode dar.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Elimina o hábito de "perguntar demais" que trava o loop autônomo em tarefas que já tinham informaçêo suficiente.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Anti-overplanning; açêo irreversível; fim de turno.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-<span class="text-lg">🎬</span><div><span class="font-medium">Terminar a pergunta, não a promessa</span><span class="text-neutral-500 text-sm ml-2">- Fim de turno correto</span></div>
+<span class="text-lg">🎬</span><div><span class="font-medium">Terminar a pergunta, nêo a promessa</span><span class="text-neutral-500 text-sm ml-2">- Fim de turno correto</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Se bater um dos casos que exige o usuário, o certo é perguntar e encerrar o turno ali — nunca terminar "prometendo" fazer depois.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Elimina o "early stopping" de intenção sem ação — raro, mas relatado em sessões longas.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fim de turno; promessa vs ação; early stopping raro.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Elimina o "early stopping" de intençêo sem açêo — raro, mas relatado em sessões longas.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fim de turno; promessa vs açêo; early stopping raro.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -629,7 +629,7 @@
 <span class="text-lg">🔬</span><div><span class="font-medium">Prove que terminou — o prompt oficial</span><span class="text-neutral-500 text-sm ml-2">- Resultado empírico</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Antes de reportar progresso, auditar cada afirmação contra um resultado de ferramenta da própria sessão; só reportar o que dá pra apontar evidência.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Antes de reportar progresso, auditar cada afirmaçêo contra um resultado de ferramenta da própria sessêo; só reportar o que dá pra apontar evidência.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">No teste da Anthropic, isso quase eliminou relatos de status fabricados, até em tarefas desenhadas pra induzir isso.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Evidência de tool result; relato fiel; ausência de hedging.</p></div>
 </div></div>
@@ -642,18 +642,18 @@
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Se um teste falha, reportar com o output; se um passo foi pulado, dizer isso; quando algo está pronto e verificado, afirmar sem rodeio.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É o oposto do "relatório de status bonito" que o prompt tenta erradicar.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Falha reportada com output; passo pulado; afirmação sem hedging.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Falha reportada com output; passo pulado; afirmaçêo sem hedging.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-<span class="text-lg">🕵️</span><div><span class="font-medium">Verificação por subagent (assíncrona)</span><span class="text-neutral-500 text-sm ml-2">- Contexto fresco vence</span></div>
+<span class="text-lg">🕵️</span><div><span class="font-medium">Verificaçêo por subagent (assíncrona)</span><span class="text-neutral-500 text-sm ml-2">- Contexto fresco vence</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Em tarefas longas, um subagent verificador com contexto fresco confere o trabalho contra a especificação em intervalos definidos.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Em tarefas longas, um subagent verificador com contexto fresco confere o trabalho contra a especificaçêo em intervalos definidos.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Verificadores fresh-context tendem a superar a auto-crítica do mesmo agente que fez o trabalho.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificador fresh-context; intervalo de checagem; especificação como referência.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificador fresh-context; intervalo de checagem; especificaçêo como referência.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -663,8 +663,8 @@
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Comparar relatórios de progresso antes e depois de colar os dois prompts (agir + provar) em tarefas de vários passos.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo prático — não basta colar o prompt, tem que confirmar a mudança real de comportamento.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Comparação antes/depois; tarefa multi-passo; confirmação de comportamento.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo prático — nêo basta colar o prompt, tem que confirmar a mudança real de comportamento.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Comparaçêo antes/depois; tarefa multi-passo; confirmaçêo de comportamento.</p></div>
 </div></div>
 </div>
 </div>
@@ -677,19 +677,19 @@
 <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-ARCKHÉ-module="1-5" data-ARCKHÉ-track="1" id="modulo-1-5">
 <div class="p-6 border-b border-dark-600">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.5</span><span class="text-xs text-neutral-500">~35 min</span></div>
-<h3 class="text-2xl font-bold mb-2">✂️ Diga menos, não mais</h3>
+<h3 class="text-2xl font-bold mb-2">✂️ Diga menos, nêo mais</h3>
 <p class="text-neutral-400 text-sm">Instruction-following melhorou o bastante pra você guiar com 1 frase — e como estruturar a resposta final sem virar telegrama.</p>
 </div>
 <div class="divide-y divide-dark-600">
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-<span class="text-lg">📈</span><div><span class="font-medium">Instruction-following melhorou — o que muda pra você</span><span class="text-neutral-500 text-sm ml-2">- Menos regra, mais intenção</span></div>
+<span class="text-lg">📈</span><div><span class="font-medium">Instruction-following melhorou — o que muda pra você</span><span class="text-neutral-500 text-sm ml-2">- Menos regra, mais intençêo</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O Fable 5 segue instrução o bastante bem pra você guiar comportamento com uma frase curta, em vez de listar cada regra pelo nome.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts e system prompts gigantes viram peso morto — o modelo já entende a intenção com bem menos texto.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Instruction-following; instrução breve; enumeração desnecessária.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O Fable 5 segue instruçêo o bastante bem pra você guiar comportamento com uma frase curta, em vez de listar cada regra pelo nome.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts e system prompts gigantes viram peso morto — o modelo já entende a intençêo com bem menos texto.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Instruction-following; instruçêo breve; enumeraçêo desnecessária.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -699,29 +699,29 @@
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A primeira frase da resposta deve responder "o que aconteceu" ou "o que você encontrou" — o TLDR que o usuário pediria; detalhe e raciocínio vêm depois.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É a citação oficial mais direta sobre como estruturar a resposta final pro leitor.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É a citaçêo oficial mais direta sobre como estruturar a resposta final pro leitor.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Outcome-first; TLDR; detalhe de suporte depois do resultado.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-<span class="text-lg">📏</span><div><span class="font-medium">Legível ≠ conciso</span><span class="text-neutral-500 text-sm ml-2">- Não vire telegrama</span></div>
+<span class="text-lg">📏</span><div><span class="font-medium">Legível ≠ conciso</span><span class="text-neutral-500 text-sm ml-2">- Nêo vire telegrama</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial distingue ser legível de ser conciso: cortar detalhe que não muda a próxima ação do leitor, não comprimir a escrita em fragmentos ou abreviação.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Economizar token virando telegrama piora a leitura; economizar por seleção de conteúdo não.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Legibilidade; seleção de conteúdo; fragmentação de texto.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial distingue ser legível de ser conciso: cortar detalhe que nêo muda a próxima açêo do leitor, nêo comprimir a escrita em fragmentos ou abreviaçêo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Economizar token virando telegrama piora a leitura; economizar por seleçêo de conteúdo nêo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Legibilidade; seleçêo de conteúdo; fragmentaçêo de texto.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-<span class="text-lg">🔄</span><div><span class="font-medium">O resumo de "re-grounding"</span><span class="text-neutral-500 text-sm ml-2">- Depois de sessão longa</span></div>
+<span class="text-lg">🔄</span><div><span class="font-medium">O resumo de "re-grounding"</span><span class="text-neutral-500 text-sm ml-2">- Depois de sessêo longa</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Depois de trabalhar muito tempo sem o usuário observando, o resumo final deve ser uma re-fundamentação — abre pelo resultado e explica cada identificador (arquivo, commit, flag) como se fosse novo.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É o prompt oficial que evita o usuário se perder ao voltar de uma sessão longa e autônoma.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Depois de trabalhar muito tempo sem o usuário observando, o resumo final deve ser uma re-fundamentaçêo — abre pelo resultado e explica cada identificador (arquivo, commit, flag) como se fosse novo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É o prompt oficial que evita o usuário se perder ao voltar de uma sessêo longa e autônoma.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Re-grounding; taquigrafia entre tool calls; clareza acima de brevidade.</p></div>
 </div></div>
 </div>
@@ -731,20 +731,20 @@
 <span class="text-lg">💭</span><div><span class="font-medium">Taquigrafia entre chamadas de ferramenta</span><span class="text-neutral-500 text-sm ml-2">- Isso é diferente do resumo</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Pensar em voz alta de forma abreviada entre tool calls é normal — diferente do resumo final, que precisa ser completo pro leitor que não viu nada daquilo.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Evita achar que "ser telegráfico o tempo todo" é o comportamento correto em toda a interação.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Pensar em voz alta de forma abreviada entre tool calls é normal — diferente do resumo final, que precisa ser completo pro leitor que nêo viu nada daquilo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Evita achar que "ser telegráfico o tempo todo" é o comportamento correto em toda a interaçêo.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pensamento intermediário; resumo final; audiência do leitor.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-<span class="text-lg">⚖️</span><div><span class="font-medium">Como calibrar concisão sem perder clareza</span><span class="text-neutral-500 text-sm ml-2">- Teste A/B pessoal</span></div>
+<span class="text-lg">⚖️</span><div><span class="font-medium">Como calibrar concisêo sem perder clareza</span><span class="text-neutral-500 text-sm ml-2">- Teste A/B pessoal</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Testar o mesmo pedido com e sem o prompt de "diga menos" e comparar se a resposta ficou mais direta sem virar fragmento incompreensível.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo — "diga menos" não é sinônimo de "diga menos claro".</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Clareza acima de brevidade; comparação de resposta; calibração pessoal.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo — "diga menos" nêo é sinônimo de "diga menos claro".</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Clareza acima de brevidade; comparaçêo de resposta; calibraçêo pessoal.</p></div>
 </div></div>
 </div>
 </div>
@@ -768,17 +768,17 @@
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">max, xhigh, high (default), medium e low — cada um com caso de uso oficial, de "raciocínio mais profundo" até "tarefas simples, ex. subagents".</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escolher o nível certo economiza tokens sem perder qualidade onde ela não é necessária.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escolher o nível certo economiza tokens sem perder qualidade onde ela nêo é necessária.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">output_config.effort; max/xhigh/high/medium/low; comportamento vs orçamento de token.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-<span class="text-lg">📡</span><div><span class="font-medium">Esforço é sinal de comportamento, não teto rígido</span><span class="text-neutral-500 text-sm ml-2">- Citação oficial</span></div>
+<span class="text-lg">📡</span><div><span class="font-medium">Esforço é sinal de comportamento, nêo teto rígido</span><span class="text-neutral-500 text-sm ml-2">- Citaçêo oficial</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Citação oficial: em níveis de esforço mais baixos, o Claude ainda pensa em problemas suficientemente difíceis, só que pensa menos do que pensaria num nível mais alto pro mesmo problema.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Citaçêo oficial: em níveis de esforço mais baixos, o Claude ainda pensa em problemas suficientemente difíceis, só que pensa menos do que pensaria num nível mais alto pro mesmo problema.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Derruba o mito de que esforço baixo significa sempre respostas fracas.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Sinal comportamental; orçamento de token; problema suficientemente difícil.</p></div>
 </div></div>
@@ -786,21 +786,21 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-<span class="text-lg">💪</span><div><span class="font-medium">Esforço baixo não é "fraco"</span><span class="text-neutral-500 text-sm ml-2">- Recomendação prática</span></div>
+<span class="text-lg">💪</span><div><span class="font-medium">Esforço baixo nêo é "fraco"</span><span class="text-neutral-500 text-sm ml-2">- Recomendaçêo prática</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A recomendação prática da doc: níveis baixos no Fable 5 ainda performam bem — não assuma que "esforço baixo = fraco" só porque era assim ao migrar de Opus.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A recomendaçêo prática da doc: níveis baixos no Fable 5 ainda performam bem — nêo assuma que "esforço baixo = fraco" só porque era assim ao migrar de Opus.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Evita setar "high"/"max" em tudo por hábito antigo, gastando o dobro do preço à toa.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Migração de hábito; custo vs desempenho; subagents rodando em low.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Migraçêo de hábito; custo vs desempenho; subagents rodando em low.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-<span class="text-lg">🚦</span><div><span class="font-medium">stop_reason: "refusal" — o que é de verdade</span><span class="text-neutral-500 text-sm ml-2">- Não é um erro</span></div>
+<span class="text-lg">🚦</span><div><span class="font-medium">stop_reason: "refusal" — o que é de verdade</span><span class="text-neutral-500 text-sm ml-2">- Nêo é um erro</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Não é "roteamento" com nome de produto — é um HTTP 200 com stop_reason: "refusal" e uma categoria em stop_details.category.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Nêo é "roteamento" com nome de produto — é um HTTP 200 com stop_reason: "refusal" e uma categoria em stop_details.category.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tratar como erro genérico (retry cego) é o jeito errado de lidar; tratar como resposta válida com metadado é o certo.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">HTTP 200; stop_reason; stop_details.category.</p></div>
 </div></div>
@@ -822,8 +822,8 @@
 <span class="text-lg">💸</span><div><span class="font-medium">Billing e fallback pro Opus</span><span class="text-neutral-500 text-sm ml-2">- 3 formas de configurar</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Recusa antes de qualquer output não é cobrada; recusa no meio do stream cobra o input e o output já emitido. Fallback pro Opus 4.8 tem 3 formas: server-side, middleware do SDK (BetaRefusalFallbackMiddleware) ou retry manual com "fallback credit".</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Decidir a estratégia de fallback evita interrupção de produto quando uma recusa acontece em produção.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Recusa antes de qualquer output nêo é cobrada; recusa no meio do stream cobra o input e o output já emitido. Fallback pro Opus 4.8 tem 3 formas: server-side, middleware do SDK (BetaRefusalFallbackMiddleware) ou retry manual com "fallback credit".</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Decidir a estratégia de fallback evita interrupçêo de produto quando uma recusa acontece em produçêo.</p></div>
 <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Billing de recusa; BetaRefusalFallbackMiddleware; fallback credit.</p></div>
 </div></div>
 </div>
@@ -838,18 +838,18 @@
 <div class="p-6 border-b border-dark-600">
 <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.7</span><span class="text-xs text-neutral-500">~35 min</span></div>
 <h3 class="text-2xl font-bold mb-2">🧩 Bônus: subagents, memória e send_to_user</h3>
-<p class="text-neutral-400 text-sm">Truques extras que só estão na documentação oficial, não no vídeo original — delegação, memória persistente e updates parciais.</p>
+<p class="text-neutral-400 text-sm">Truques extras que só estêo na documentaçêo oficial, nêo no vídeo original — delegaçêo, memória persistente e updates parciais.</p>
 </div>
 <div class="divide-y divide-dark-600">
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-<span class="text-lg">🤝</span><div><span class="font-medium">Delegação a subagents (mais fácil no Fable 5)</span><span class="text-neutral-500 text-sm ml-2">- Paralelismo real</span></div>
+<span class="text-lg">🤝</span><div><span class="font-medium">Delegaçêo a subagents (mais fácil no Fable 5)</span><span class="text-neutral-500 text-sm ml-2">- Paralelismo real</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O Fable 5 despacha subagents paralelos mais prontamente que modelos anteriores; o prompt oficial recomenda delegar subtarefas independentes e continuar trabalhando enquanto rodam.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Comunicação assíncrona entre orquestrador e subagent troca "esperar bloqueado" por paralelismo real.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Subagents paralelos; comunicação assíncrona; intervenção se um subagent desviar.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Comunicaçêo assíncrona entre orquestrador e subagent troca "esperar bloqueado" por paralelismo real.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Subagents paralelos; comunicaçêo assíncrona; intervençêo se um subagent desviar.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -866,12 +866,12 @@
 <div class="topic-item">
 <button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
 <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-<span class="text-lg">🗃️</span><div><span class="font-medium">Sistema de memória — 1 lição por arquivo</span><span class="text-neutral-500 text-sm ml-2">- Citação oficial</span></div>
+<span class="text-lg">🗃️</span><div><span class="font-medium">Sistema de memória — 1 liçêo por arquivo</span><span class="text-neutral-500 text-sm ml-2">- Citaçêo oficial</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial recomenda guardar 1 lição por arquivo, com resumo de 1 linha no topo, registrando correções e acertos confirmados — e por que importaram.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Memória desorganizada vira ruído; 1 lição por arquivo mantém tudo buscável e atualizável.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">1 lição por arquivo; atualizar nota existente; apagar nota que der errado.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial recomenda guardar 1 liçêo por arquivo, com resumo de 1 linha no topo, registrando correções e acertos confirmados — e por que importaram.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Memória desorganizada vira ruído; 1 liçêo por arquivo mantém tudo buscável e atualizável.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">1 liçêo por arquivo; atualizar nota existente; apagar nota que der errado.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -882,7 +882,7 @@
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
 <div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt oficial de bootstrap pede pra refletir sobre sessões anteriores, usar subagents pra identificar temas e lições centrais, e guardar num destino específico, referenciado no futuro.</p></div>
 <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Começa o sistema de memória com sinal real em vez de nota vazia.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Bootstrap; subagents de identificação; referência futura ao destino de memória.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Bootstrap; subagents de identificaçêo; referência futura ao destino de memória.</p></div>
 </div></div>
 </div>
 <div class="topic-item">
@@ -902,9 +902,9 @@
 <span class="text-lg">🧰</span><div><span class="font-medium">Refatorar skills antigas pro Fable 5</span><span class="text-neutral-500 text-sm ml-2">- Tirar prompt velho do caminho</span></div>
 </button>
 <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Skills feitas pra modelos anteriores costumam ser prescritivas demais e degradam a qualidade do Fable 5; a recomendação é revisar e considerar remover instrução antiga se o desempenho padrão já é melhor.</p></div>
-<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo do curso — migrar não é só aprender técnica nova, é também tirar prompt velho do caminho.</p></div>
-<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prescrição excessiva; desempenho padrão; revisão de skill.</p></div>
+<div><span class="text-emerald-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Skills feitas pra modelos anteriores costumam ser prescritivas demais e degradam a qualidade do Fable 5; a recomendaçêo é revisar e considerar remover instruçêo antiga se o desempenho padrêo já é melhor.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha o ciclo do curso — migrar nêo é só aprender técnica nova, é também tirar prompt velho do caminho.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prescriçêo excessiva; desempenho padrêo; revisêo de skill.</p></div>
 </div></div>
 </div>
 </div>
@@ -918,10 +918,10 @@
 </div>
 </main>
 <div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-1" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.1</span><span class="font-semibold">Fable 5: contexto e janela de oportunidade</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-1.html"></iframe></div></div>
-<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">Dê o porquê + não peça raciocínio</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">Dê o porquê + nêo peça raciocínio</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-2.html"></iframe></div></div>
 <div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-3" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.3</span><span class="font-semibold">Negative prompting + fronteiras</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-3.html"></iframe></div></div>
 <div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-4" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.4</span><span class="font-semibold">Deixe agir + prove que terminou</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-4.html"></iframe></div></div>
-<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.5</span><span class="font-semibold">Diga menos, não mais</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.5</span><span class="font-semibold">Diga menos, nêo mais</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-5.html"></iframe></div></div>
 <div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-6" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.6</span><span class="font-semibold">Esforço e roteamento de segurança</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-6.html"></iframe></div></div>
 <div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-7" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.7</span><span class="font-semibold">Bônus: subagents, memória e send_to_user</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-7.html"></iframe></div></div>
 <footer class="border-t border-dark-600 py-8 mt-16">

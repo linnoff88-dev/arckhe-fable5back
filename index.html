@@ -82,20 +82,20 @@
   "tracks": [
     { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
       { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
-      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-2", "title": "Dê o porquê + nêo peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
       { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
       { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
-      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-5", "title": "Diga menos, nêo mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
       { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
       { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
     ]},
     { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
       { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
       { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
-      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-3", "title": "Verificaçêo real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
       { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
-      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
-      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-5", "title": "Visêo pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificaçêo + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
       { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
     ]}
   ]
@@ -260,7 +260,7 @@
 <span class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4 border border-primary/30">CURSO · PROMPT ENGINEERING</span>
 <h1 class="text-4xl sm:text-5xl font-bold mb-4">Prompting Claude Fable 5</h1>
 <p class="text-lg text-neutral-300 max-w-3xl mx-auto mb-2">Como tirar o máximo do modelo mais forte (e mais caro) da Anthropic.</p>
-<p class="text-neutral-400 max-w-3xl mx-auto mb-8">7 módulos práticos com as técnicas de prompting mais úteis pro Fable 5 — extraídas de uma aula em vídeo e verificadas linha a linha contra a documentação oficial da Anthropic. Sem inventar número ou capacidade que a doc não confirma.</p>
+<p class="text-neutral-400 max-w-3xl mx-auto mb-8">7 módulos práticos com as técnicas de prompting mais úteis pro Fable 5 — extraídas de uma aula em vídeo e verificadas linha a linha contra a documentaçêo oficial da Anthropic. Sem inventar número ou capacidade que a doc nêo confirma.</p>
 <!-- Hero SVG futurista (fan-out): prompt comum -> 6 tecnicas -> Fable 5 no auge -->
 <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden max-w-4xl mx-auto">
 <svg aria-label="Um prompt comum passa por seis técnicas de prompting do Fable 5 e converge num resultado: menos tokens perdidos e mais acerto de primeira" class="w-full h-auto" role="img" viewbox="0 0 1000 300">
@@ -294,8 +294,8 @@
 <g font-family="Inter,sans-serif" font-size="12" font-weight="600">
 <g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="14"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="35">Contexto + porquê</text></g>
 <g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="81">Negative prompting</text></g>
-<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="106"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="127">Ação decisiva</text></g>
-<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="152"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="173">Prova de conclusão</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="106"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="127">Açêo decisiva</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="152"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="173">Prova de conclusêo</text></g>
 <g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="198"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="219">Diga menos</text></g>
 <g class="wf-a"><rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="460" y="244"></rect><text fill="#bfe6ff" text-anchor="middle" x="550" y="265">Esforço + segurança</text></g>
 </g>
@@ -329,8 +329,8 @@
 <!-- O QUE E -->
 <section class="mb-16">
 <h2 class="text-2xl font-bold mb-4">O que é este curso</h2>
-<p class="text-neutral-300 mb-4 leading-relaxed max-w-3xl">Claude Fable 5 é o modelo mais forte — e mais caro — do catálogo atual da Anthropic. Voltou a ficar disponível globalmente em 1 de julho de 2026, depois de uma suspensão temporária ligada a export controls do governo dos EUA. Este curso ensina a <strong class="text-emerald-400">prompar bem esse modelo especificamente</strong>, não a usar Claude em geral.</p>
-<p class="text-neutral-400 mb-8 max-w-3xl">O conteúdo cruza uma aula em vídeo com 6 técnicas práticas contra a documentação oficial da Anthropic, citando o texto oficial sempre que existe uma citação verificável — e marcando claramente quando algo é prática geral de prompt engineering, não uma citação literal do doc do Fable 5.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed max-w-3xl">Claude Fable 5 é o modelo mais forte — e mais caro — do catálogo atual da Anthropic. Voltou a ficar disponível globalmente em 1 de julho de 2026, depois de uma suspensêo temporária ligada a export controls do governo dos EUA. Este curso ensina a <strong class="text-emerald-400">prompar bem esse modelo especificamente</strong>, nêo a usar Claude em geral.</p>
+<p class="text-neutral-400 mb-8 max-w-3xl">O conteúdo cruza uma aula em vídeo com 6 técnicas práticas contra a documentaçêo oficial da Anthropic, citando o texto oficial sempre que existe uma citaçêo verificável — e marcando claramente quando algo é prática geral de prompt engineering, nêo uma citaçêo literal do doc do Fable 5.</p>
 <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-8">
 <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">💰</span> Pricing oficial (platform.claude.com/docs/pricing)</h3>
 <div class="overflow-x-auto">
@@ -371,48 +371,48 @@
 </tbody>
 </table>
 </div>
-<p class="text-xs text-neutral-500 mt-4">Fable 5 custa exatamente o dobro do Opus 4.8 (input e output) — o mais caro do catálogo. Batch API (50% off) reduz Fable 5 pra $5/$25 por MTok. Contexto: janela de 1M tokens por padrão, sem "prêmio" de preço por contexto longo.</p>
+<p class="text-xs text-neutral-500 mt-4">Fable 5 custa exatamente o dobro do Opus 4.8 (input e output) — o mais caro do catálogo. Batch API (50% off) reduz Fable 5 pra $5/$25 por MTok. Contexto: janela de 1M tokens por padrêo, sem "prêmio" de preço por contexto longo.</p>
 </div>
 <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-8">
 <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🗓️</span> Contexto rápido: por que este curso agora</h3>
-<p class="text-neutral-300 text-sm leading-relaxed">Fable 5 e Mythos 5 lançaram em 9 de junho de 2026. Em 12 de junho, o governo dos EUA aplicou export controls aos dois modelos e, como não dava pra verificar nacionalidade em tempo real, a Anthropic suspendeu o acesso pra TODOS os usuários. O motivo real: pesquisadores da Amazon reportaram um jeito de contornar os safeguards do Fable 5 — mas o teste da própria Anthropic confirmou que modelos bem menos capazes (Opus 4.8, GPT-5.5, Kimi K2.7, e até Haiku 4.5, Sonnet 4.6 e Opus 4.6/4.7) conseguiam produzir a mesma demonstração de exploit. Não era uma capacidade exclusiva do Fable 5 — a suspensão foi precaução regulatória. Em 1 de julho de 2026 (hoje), os dois modelos voltam globalmente.</p>
+<p class="text-neutral-300 text-sm leading-relaxed">Fable 5 e Mythos 5 lançaram em 9 de junho de 2026. Em 12 de junho, o governo dos EUA aplicou export controls aos dois modelos e, como nêo dava pra verificar nacionalidade em tempo real, a Anthropic suspendeu o acesso pra TODOS os usuários. O motivo real: pesquisadores da Amazon reportaram um jeito de contornar os safeguards do Fable 5 — mas o teste da própria Anthropic confirmou que modelos bem menos capazes (Opus 4.8, GPT-5.5, Kimi K2.7, e até Haiku 4.5, Sonnet 4.6 e Opus 4.6/4.7) conseguiam produzir a mesma demonstraçêo de exploit. Nêo era uma capacidade exclusiva do Fable 5 — a suspensêo foi precauçêo regulatória. Em 1 de julho de 2026 (hoje), os dois modelos voltam globalmente.</p>
 </div>
 <h3 class="text-lg font-semibold mb-4">Capacidades destacadas oficialmente (vs. Opus 4.8)</h3>
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-3">
 <div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🕐</div><div class="text-xs text-neutral-400">Autonomia de longo horizonte</div></div>
 <div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🎯</div><div class="text-xs text-neutral-400">Acerto de primeira em sistemas complexos</div></div>
-<div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">👁️</div><div class="text-xs text-neutral-400">Visão: lê imagem técnica densa</div></div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">👁️</div><div class="text-xs text-neutral-400">Visêo: lê imagem técnica densa</div></div>
 <div class="bg-dark-800 rounded-lg p-4 border border-dark-600 text-center"><div class="text-2xl mb-1">🐛</div><div class="text-xs text-neutral-400">Recall de bug maior que Opus 4.8</div></div>
 </div>
-<p class="text-xs text-neutral-500 max-w-3xl">Fonte: doc oficial "Introducing Claude Fable 5", comparando com Opus 4.8. Relatos de early adopters (não oficiais): Dan Shipper/Every deu 91/100 no benchmark "Senior Engineer" (ante 63 do Opus 4.8); Boris Cherny (Anthropic) chamou publicamente de "o melhor modelo que já usei para código, por uma margem larga".</p>
+<p class="text-xs text-neutral-500 max-w-3xl">Fonte: doc oficial "Introducing Claude Fable 5", comparando com Opus 4.8. Relatos de early adopters (nêo oficiais): Dan Shipper/Every deu 91/100 no benchmark "Senior Engineer" (ante 63 do Opus 4.8); Boris Cherny (Anthropic) chamou publicamente de "o melhor modelo que já usei para código, por uma margem larga".</p>
 </section>
 <!-- COMO EU DECIDO QUAL MODELO USAR -->
 <section class="mb-16">
 <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 max-w-3xl mx-auto">
 <h3 class="text-lg font-semibold text-primary mb-3 flex items-center justify-center"><span class="mr-2">💡</span> Como eu decido qual modelo usar</h3>
-<p class="text-neutral-300 text-sm leading-relaxed text-center">Isso corresponde à forma como eu gerencio o processo no dia a dia. Uso o <strong class="text-neutral-100">Opus</strong> para a etapa de arquitetura, o <strong class="text-neutral-100">Sonnet</strong> quando a tarefa está bem definida, e o <strong class="text-neutral-100">Fable</strong> quando a tarefa é complexa e precisa de um ciclo de investigação próprio. O recurso de chamada do <strong class="text-primary">OpusPlan</strong> é subestimado: a maioria das pessoas nunca o utiliza explicitamente e depois se pergunta por que o Opus não faz a transição automaticamente.</p>
+<p class="text-neutral-300 text-sm leading-relaxed text-center">Isso corresponde à forma como eu gerencio o processo no dia a dia. Uso o <strong class="text-neutral-100">Opus</strong> para a etapa de arquitetura, o <strong class="text-neutral-100">Sonnet</strong> quando a tarefa está bem definida, e o <strong class="text-neutral-100">Fable</strong> quando a tarefa é complexa e precisa de um ciclo de investigaçêo próprio. O recurso de chamada do <strong class="text-primary">OpusPlan</strong> é subestimado: a maioria das pessoas nunca o utiliza explicitamente e depois se pergunta por que o Opus nêo faz a transiçêo automaticamente.</p>
 </div>
 </section>
 <!-- COMO FUNCIONA -->
 <section class="mb-16">
 <h2 class="text-2xl font-bold mb-4">Como funciona o curso</h2>
-<p class="text-neutral-300 mb-6 max-w-3xl">2 trilhas, 14 módulos, 84 tópicos. Trilha 1: as 6 técnicas de uma aula em vídeo, cada uma cruzada com a documentação oficial da Anthropic, mais um módulo bônus com truques extras que só estão na doc. Trilha 2: 12 dicas práticas pra usar o Fable 5 como agente de trabalho — tarefa certa, profundidade, limites, verificação, subagentes, memória e loops — mais um módulo bônus com o prompt mestre.</p>
+<p class="text-neutral-300 mb-6 max-w-3xl">2 trilhas, 14 módulos, 84 tópicos. Trilha 1: as 6 técnicas de uma aula em vídeo, cada uma cruzada com a documentaçêo oficial da Anthropic, mais um módulo bônus com truques extras que só estêo na doc. Trilha 2: 12 dicas práticas pra usar o Fable 5 como agente de trabalho — tarefa certa, profundidade, limites, verificaçêo, subagentes, memória e loops — mais um módulo bônus com o prompt mestre.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
 <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
 <h4 class="font-bold text-emerald-400 mb-4">✓ O que este curso cobre</h4>
 <ul class="space-y-3 text-neutral-300 text-sm">
-<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>As 6 técnicas de prompting da aula, cada uma cruzada com citação oficial quando existe</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>As 6 técnicas de prompting da aula, cada uma cruzada com citaçêo oficial quando existe</span></li>
 <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Effort levels (max / xhigh / high / medium / low) e quando usar cada um</span></li>
 <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>As 4 categorias de recusa de segurança e as formas de configurar fallback pro Opus 4.8</span></li>
 <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Extras oficiais: subagents, sistema de memória e a tool send_to_user</span></li>
 </ul>
 </div>
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-<h4 class="font-bold text-red-400 mb-4">✗ O que este curso NÃO é</h4>
+<h4 class="font-bold text-red-400 mb-4">✗ O que este curso NêO é</h4>
 <ul class="space-y-3 text-neutral-300 text-sm">
-<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Não é sobre a polêmica geopolítica do export control — isso é contexto de 1 parágrafo, não o assunto central</span></li>
-<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Não é um curso genérico de "como usar Claude" — é específico de prompting pro Fable 5</span></li>
-<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Não inventa número ou capacidade além do que a Anthropic documentou</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Nêo é sobre a polêmica geopolítica do export control — isso é contexto de 1 parágrafo, nêo o assunto central</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Nêo é um curso genérico de "como usar Claude" — é específico de prompting pro Fable 5</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Nêo inventa número ou capacidade além do que a Anthropic documentou</span></li>
 </ul>
 </div>
 </div>
@@ -425,7 +425,7 @@
 <span class="text-xs text-neutral-500 px-2 py-0.5 rounded bg-dark-700">Intermediário</span>
 </div>
 <h2 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">📖 Prompting Claude Fable 5</h2>
-<p class="text-neutral-400 mb-6 max-w-2xl">Contexto, técnicas de prompting oficiais, effort levels, roteamento de segurança e os extras da documentação — tudo pra tirar o máximo do modelo mais forte da Anthropic.</p>
+<p class="text-neutral-400 mb-6 max-w-2xl">Contexto, técnicas de prompting oficiais, effort levels, roteamento de segurança e os extras da documentaçêo — tudo pra tirar o máximo do modelo mais forte da Anthropic.</p>
 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-1.html">
 <span class="text-emerald-400 font-mono text-sm font-bold">1.1</span>
@@ -433,7 +433,7 @@
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-2.html">
 <span class="text-emerald-400 font-mono text-sm font-bold">1.2</span>
-<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Dê o porquê + não peça raciocínio</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Dê o porquê + nêo peça raciocínio</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-3.html">
 <span class="text-emerald-400 font-mono text-sm font-bold">1.3</span>
@@ -445,7 +445,7 @@
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-5.html">
 <span class="text-emerald-400 font-mono text-sm font-bold">1.5</span>
-<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Diga menos, não mais</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-emerald-400 transition-colors">Diga menos, nêo mais</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all group/mod" href="curso/trilha1/modulo-1-6.html">
 <span class="text-emerald-400 font-mono text-sm font-bold">1.6</span>
@@ -459,7 +459,7 @@
 <div class="flex flex-wrap items-center gap-6 mb-4">
 <div class="text-center"><span class="block text-lg font-bold text-emerald-400">7</span><span class="text-xs text-neutral-500">módulos</span></div>
 <div class="text-center"><span class="block text-lg font-bold text-emerald-400">42</span><span class="text-xs text-neutral-500">tópicos</span></div>
-<div class="text-center"><span class="block text-lg font-bold text-emerald-400">~4h30</span><span class="text-xs text-neutral-500">duração</span></div>
+<div class="text-center"><span class="block text-lg font-bold text-emerald-400">~4h30</span><span class="text-xs text-neutral-500">duraçêo</span></div>
 </div>
 <a class="inline-flex items-center justify-start gap-2 px-5 py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold hover:bg-emerald-500/20 transition-colors text-sm" href="curso/trilha1/index.html">Começar Trilha 1 <span class="group-hover:translate-x-1 transition-transform">→</span></a>
 </div>
@@ -472,7 +472,7 @@
 <span class="text-xs text-neutral-500 px-2 py-0.5 rounded bg-dark-700">Intermediário</span>
 </div>
 <h2 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🧠 Fable 5 como Agente de Trabalho</h2>
-<p class="text-neutral-400 mb-6 max-w-2xl">Da resposta pontual ao sistema de trabalho: 12 dicas práticas pra usar o Fable 5 como agente sênior — tarefa certa, profundidade, limites, verificação, subagentes, memória e loops — mais um módulo bônus com o prompt mestre.</p>
+<p class="text-neutral-400 mb-6 max-w-2xl">Da resposta pontual ao sistema de trabalho: 12 dicas práticas pra usar o Fable 5 como agente sênior — tarefa certa, profundidade, limites, verificaçêo, subagentes, memória e loops — mais um módulo bônus com o prompt mestre.</p>
 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-1.html">
 <span class="text-blue-400 font-mono text-sm font-bold">2.1</span>
@@ -484,7 +484,7 @@
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-3.html">
 <span class="text-blue-400 font-mono text-sm font-bold">2.3</span>
-<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Verificação real + subagentes especializados</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Verificaçêo real + subagentes especializados</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-4.html">
 <span class="text-blue-400 font-mono text-sm font-bold">2.4</span>
@@ -492,11 +492,11 @@
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-5.html">
 <span class="text-blue-400 font-mono text-sm font-bold">2.5</span>
-<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Visão pra interfaces + segurança defensiva</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Visêo pra interfaces + segurança defensiva</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod" href="curso/trilha2/modulo-2-6.html">
 <span class="text-blue-400 font-mono text-sm font-bold">2.6</span>
-<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Loops com verificação + memória externa</span>
+<span class="text-sm text-neutral-300 group-hover/mod:text-blue-400 transition-colors">Loops com verificaçêo + memória externa</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-blue-500/30 hover:bg-blue-500/10 transition-all group/mod sm:col-span-2 lg:col-span-1" href="curso/trilha2/modulo-2-7.html">
 <span class="text-blue-400 font-mono text-sm font-bold">2.7</span>
@@ -506,7 +506,7 @@
 <div class="flex flex-wrap items-center gap-6 mb-4">
 <div class="text-center"><span class="block text-lg font-bold text-blue-400">7</span><span class="text-xs text-neutral-500">módulos</span></div>
 <div class="text-center"><span class="block text-lg font-bold text-blue-400">42</span><span class="text-xs text-neutral-500">tópicos</span></div>
-<div class="text-center"><span class="block text-lg font-bold text-blue-400">~4h</span><span class="text-xs text-neutral-500">duração</span></div>
+<div class="text-center"><span class="block text-lg font-bold text-blue-400">~4h</span><span class="text-xs text-neutral-500">duraçêo</span></div>
 </div>
 <a class="inline-flex items-center justify-start gap-2 px-5 py-2.5 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 font-semibold hover:bg-blue-500/20 transition-colors text-sm" href="curso/trilha2/index.html">Começar Trilha 2 <span class="group-hover:translate-x-1 transition-transform">→</span></a>
 </div>

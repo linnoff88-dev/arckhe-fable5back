@@ -31,20 +31,20 @@
   "tracks": [
     { "n": "1", "title": "Prompting Claude Fable 5", "modules": [
       { "id": "1-1", "title": "Fable 5: contexto e janela de oportunidade", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
-      { "id": "1-2", "title": "Dê o porquê + não peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-2", "title": "Dê o porquê + nêo peça raciocínio", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
       { "id": "1-3", "title": "Negative prompting + fronteiras", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
       { "id": "1-4", "title": "Deixe agir + prove que terminou", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
-      { "id": "1-5", "title": "Diga menos, não mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-5", "title": "Diga menos, nêo mais", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
       { "id": "1-6", "title": "Esforço e roteamento de segurança", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" },
       { "id": "1-7", "title": "Bônus: subagents, memória e send_to_user", "topics": 6, "href": "curso/trilha1/modulo-1-7.html" }
     ]},
     { "n": "2", "title": "Fable 5 como Agente de Trabalho", "modules": [
       { "id": "2-1", "title": "Escolha a tarefa certa + explique o motivo", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
       { "id": "2-2", "title": "Controle a profundidade + defina limites", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
-      { "id": "2-3", "title": "Verificação real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-3", "title": "Verificaçêo real + subagentes especializados", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
       { "id": "2-4", "title": "Memória de projeto + continuar até concluir", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
-      { "id": "2-5", "title": "Visão pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
-      { "id": "2-6", "title": "Loops com verificação + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
+      { "id": "2-5", "title": "Visêo pra interfaces + segurança defensiva", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Loops com verificaçêo + memória externa", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" },
       { "id": "2-7", "title": "Bônus: o prompt mestre", "topics": 6, "href": "curso/trilha2/modulo-2-7.html" }
     ]}
   ]
@@ -119,7 +119,7 @@
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-ARCKHÉ-module="2-2" data-ARCKHÉ-track="2" id="modulo-2-2">
 <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
 <nav aria-label="Índice" class="hidden lg:block sticky top-24 self-start" data-ARCKHÉ-toc="">
-<p class="text-sm text-neutral-400 mb-3">Seção <span class="ARCKHÉ-toc-pos">1</span> de <span class="ARCKHÉ-toc-total">6</span></p>
+<p class="text-sm text-neutral-400 mb-3">Seçêo <span class="ARCKHÉ-toc-pos">1</span> de <span class="ARCKHÉ-toc-total">6</span></p>
 <ul class="space-y-1 text-sm">
 <li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Nem toda tarefa pede o máximo</a></li>
 <li><a class="ARCKHÉ-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. O prompt: profundidade sob medida</a></li>
@@ -142,9 +142,9 @@
 </button>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-<p class="text-neutral-200"><strong class="text-primary">🧠 Pense assim:</strong> <span class="termo" title="Quanto raciocínio o agente dedica antes de responder ou agir">profundidade de análise</span> não é um "modo turbo" que você liga sempre pra garantir qualidade. É um controle que você calibra pela complexidade real da tarefa — usar o máximo numa coisa simples desperdiça tempo e tokens sem ganho nenhum; usar o mínimo numa decisão que custa caro é o outro erro, igualmente comum.</p>
+<p class="text-neutral-200"><strong class="text-primary">🧠 Pense assim:</strong> <span class="termo" title="Quanto raciocínio o agente dedica antes de responder ou agir">profundidade de análise</span> nêo é um "modo turbo" que você liga sempre pra garantir qualidade. É um controle que você calibra pela complexidade real da tarefa — usar o máximo numa coisa simples desperdiça tempo e tokens sem ganho nenhum; usar o mínimo numa decisêo que custa caro é o outro erro, igualmente comum.</p>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t1-p1">O guia prático de uso do Fable 5 como agente de trabalho resume isso numa régua de quatro degraus. Cada degrau não é uma configuração técnica — é uma instrução que você mesmo escreve no prompt, dizendo ao agente o quanto vale a pena ele deliberar antes de te entregar a resposta.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t1-p1">O guia prático de uso do Fable 5 como agente de trabalho resume isso numa régua de quatro degraus. Cada degrau nêo é uma configuraçêo técnica — é uma instruçêo que você mesmo escreve no prompt, dizendo ao agente o quanto vale a pena ele deliberar antes de te entregar a resposta.</p>
 <p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t1-p2">A régua funciona melhor quando você pergunta antes de escrever o prompt: "se essa resposta sair errada, o que eu perco?" Quanto maior a resposta a essa pergunta, mais alto o degrau que você deveria pedir.</p>
 <div class="rounded-xl border border-dark-600 overflow-x-auto mb-6">
 <table class="w-full text-sm">
@@ -164,22 +164,22 @@
 <tr>
 <td class="px-4 py-3 font-mono font-semibold text-neutral-100">Média</td>
 <td class="px-4 py-3 text-neutral-300">Organizar ou comparar opções</td>
-<td class="px-4 py-3 text-neutral-400">Planejamento simples, comparação, revisão de conteúdo</td>
+<td class="px-4 py-3 text-neutral-400">Planejamento simples, comparaçêo, revisêo de conteúdo</td>
 </tr>
 <tr class="bg-blue-500/10">
 <td class="px-4 py-3 font-mono font-semibold text-blue-400">Alta</td>
-<td class="px-4 py-3 text-neutral-200">Decisão que custa caro se sair errada</td>
-<td class="px-4 py-3 text-neutral-300">Estratégia, arquitetura, auditoria, decisão de produto, revisão técnica</td>
+<td class="px-4 py-3 text-neutral-200">Decisêo que custa caro se sair errada</td>
+<td class="px-4 py-3 text-neutral-300">Estratégia, arquitetura, auditoria, decisêo de produto, revisêo técnica</td>
 </tr>
 <tr>
 <td class="px-4 py-3 font-mono font-semibold text-neutral-100">Máxima</td>
 <td class="px-4 py-3 text-neutral-300">Erro caro ou irreversível</td>
-<td class="px-4 py-3 text-neutral-400">Problemas críticos, migração, segurança, negócios complexos, análise de risco</td>
+<td class="px-4 py-3 text-neutral-400">Problemas críticos, migraçêo, segurança, negócios complexos, análise de risco</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p class="text-xs text-neutral-500 mb-6">Fonte: guia prático do usuário sobre uso do Fable 5 como agente de trabalho — prompt testado na prática, não citação oficial da Anthropic.</p>
+<p class="text-xs text-neutral-500 mb-6">Fonte: guia prático do usuário sobre uso do Fable 5 como agente de trabalho — prompt testado na prática, nêo citaçêo oficial da Anthropic.</p>
 <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
 <svg aria-label="Escada de 4 níveis de profundidade de análise do Fable 5 — baixa, média, alta e máxima — subindo em tempo de raciocínio e custo, com o nível máxima destacado como o que exige mais critério de uso" class="w-full h-auto" role="img" viewbox="0 0 1000 360">
 <defs>
@@ -195,16 +195,16 @@
 <path d="M280,222 L520,162" fill="none" opacity="0.4" stroke="#60a5fa" stroke-dasharray="6 6" stroke-width="1.8"></path>
 <path d="M520,162 L760,104" fill="none" opacity="0.4" stroke="#60a5fa" stroke-dasharray="6 6" stroke-width="1.8"></path>
 <g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="40" y="230"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="130" y="264">baixa</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="130" y="304">resumo, legenda, texto rápido</text></g>
-<g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="280" y="170"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="370" y="204">média</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="370" y="244">planejamento, comparação</text></g>
+<g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="280" y="170"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="370" y="204">média</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="370" y="244">planejamento, comparaçêo</text></g>
 <g><rect fill="#0e1622" height="56" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="520" y="110"></rect><text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="610" y="144">alta</text><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="610" y="184">estratégia, arquitetura, auditoria</text></g>
 <g filter="url(#m22lvl-glow)"><rect fill="#0e1622" height="64" rx="12" stroke="url(#m22lvl-grad)" stroke-width="2.5" width="190" x="760" y="44"></rect></g>
 <text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="855" y="34">USE COM CRITÉRIO</text>
 <text fill="#93c5fd" font-family="monospace" font-size="16" font-weight="600" text-anchor="middle" x="855" y="82">máxima</text>
-<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="855" y="126">migração, segurança, risco</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="855" y="126">migraçêo, segurança, risco</text>
 </svg>
 </div>
 <p class="text-xs text-neutral-500 -mt-6 mb-6">A escada dos 4 níveis: cada degrau sobe em tempo de raciocínio (linha ciano tracejada) — <code>máxima</code> ganha destaque porque é o degrau que você deveria reservar pra quando o erro realmente custa caro.</p>
-<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> 4 níveis (baixa→máxima) calibrados pela pergunta "se sair errado, o que eu perco?" — não pelo hábito de sempre pedir o máximo.</p></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> 4 níveis (baixa→máxima) calibrados pela pergunta "se sair errado, o que eu perco?" — nêo pelo hábito de sempre pedir o máximo.</p></div>
 <div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button></div>
 </section>
 <!-- TOPICO 2 -->
@@ -218,21 +218,21 @@
 <span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span>
 </button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t2-p1">Em vez de confiar que o agente vai adivinhar o nível certo sozinho, você diz explicitamente onde concentrar o raciocínio pesado — e onde não vale a pena. Isso evita o sintoma mais comum de deixar tudo em "alta o tempo todo": soluções mais complicadas do que a tarefa pedia.</p>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t2-p2">O prompt abaixo faz exatamente isso — separa a parte que merece profundidade (a decisão estratégica) da parte que não merece (a implementação em si, que deve ficar simples).</p>
-<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">evitar solução overengineered pedindo raciocínio profundo só onde ele realmente importa.</span></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t2-p1">Em vez de confiar que o agente vai adivinhar o nível certo sozinho, você diz explicitamente onde concentrar o raciocínio pesado — e onde nêo vale a pena. Isso evita o sintoma mais comum de deixar tudo em "alta o tempo todo": soluções mais complicadas do que a tarefa pedia.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t2-p2">O prompt abaixo faz exatamente isso — separa a parte que merece profundidade (a decisêo estratégica) da parte que nêo merece (a implementaçêo em si, que deve ficar simples).</p>
+<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">evitar soluçêo overengineered pedindo raciocínio profundo só onde ele realmente importa.</span></div>
 <div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt: profundidade calibrada</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
-<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Use análise profunda apenas na parte estratégica. Não complique a
-solução. Não crie abstrações desnecessárias. Entregue a solução mais
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Use análise profunda apenas na parte estratégica. Nêo complique a
+soluçêo. Nêo crie abstrações desnecessárias. Entregue a soluçêo mais
 simples que resolve bem o problema.
 
 &lt;isto você troca — cole junto o pedido real da tarefa&gt;</pre>
 </div>
-<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">Como verificar:</span> <span class="text-neutral-300 text-sm">rode o mesmo pedido duas vezes — uma com essa instrução, outra sem. A versão com a instrução deve vir mais direta, com menos camadas/abstrações que você não pediu, e ainda assim acertar a decisão estratégica por trás do pedido.</span></div>
+<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">Como verificar:</span> <span class="text-neutral-300 text-sm">rode o mesmo pedido duas vezes — uma com essa instruçêo, outra sem. A versêo com a instruçêo deve vir mais direta, com menos camadas/abstrações que você nêo pediu, e ainda assim acertar a decisêo estratégica por trás do pedido.</span></div>
 <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5 mb-6">
 <h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🔗</span> Cruzamento com a Trilha 1</h3>
-<p class="text-neutral-300 text-sm">Essa calibração aplicada de profundidade ecoa uma técnica com respaldo oficial da Anthropic: o Fable 5 expõe cinco níveis de esforço configuráveis por chamada (<code>low</code>/<code>medium</code>/<code>high</code>/<code>xhigh</code>/<code>max</code>) via <code>output_config.effort</code>. Se você trabalha direto com a API, o Módulo 1.6 mostra o equivalente técnico desta mesma ideia — inclusive com a régua oficial de quando usar cada nível.</p>
+<p class="text-neutral-300 text-sm">Essa calibraçêo aplicada de profundidade ecoa uma técnica com respaldo oficial da Anthropic: o Fable 5 expõe cinco níveis de esforço configuráveis por chamada (<code>low</code>/<code>medium</code>/<code>high</code>/<code>xhigh</code>/<code>max</code>) via <code>output_config.effort</code>. Se você trabalha direto com a API, o Módulo 1.6 mostra o equivalente técnico desta mesma ideia — inclusive com a régua oficial de quando usar cada nível.</p>
 <a class="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-emerald-400 hover:text-emerald-300" href="../trilha1/modulo-1-6.html">Ver Módulo 1.6 — Esforço e roteamento de segurança →</a>
 </div>
 <div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> diga onde o raciocínio profundo é necessário — o resto, peça simples.</p></div>
@@ -249,18 +249,18 @@ simples que resolve bem o problema.
 <span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span>
 </button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t3-p1">Um modelo forte não é cauteloso por padrão — ele é <em>capaz</em> por padrão. Isso significa que, diante de um pedido ambíguo, o Fable 5 tende a preencher a lacuna sozinho: se você pediu pra "resolver o problema", ele pode decidir sozinho o que conta como resolver, e agir.</p>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t3-p2">Isso é ótimo quando você quer que ele continue até o fim de uma tarefa clara. É perigoso quando a tarefa tem ambiguidade sobre <em>o que ele pode tocar</em> — arquivos, serviços, configuração, dados de produção.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t3-p1">Um modelo forte nêo é cauteloso por padrêo — ele é <em>capaz</em> por padrêo. Isso significa que, diante de um pedido ambíguo, o Fable 5 tende a preencher a lacuna sozinho: se você pediu pra "resolver o problema", ele pode decidir sozinho o que conta como resolver, e agir.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t3-p2">Isso é ótimo quando você quer que ele continue até o fim de uma tarefa clara. É perigoso quando a tarefa tem ambiguidade sobre <em>o que ele pode tocar</em> — arquivos, serviços, configuraçêo, dados de produçêo.</p>
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
 <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Cenário comum</h3>
-<p class="text-neutral-300">Você pede: <em>"analise e resolva o problema de performance do serviço"</em>. Sem fronteira explícita, um agente capaz pode interpretar "resolver" como licença pra reiniciar o serviço em produção, alterar configuração ou fazer deploy — tudo isso sem te perguntar antes, porque tecnicamente cumpriu o que você pediu.</p>
+<p class="text-neutral-300">Você pede: <em>"analise e resolva o problema de performance do serviço"</em>. Sem fronteira explícita, um agente capaz pode interpretar "resolver" como licença pra reiniciar o serviço em produçêo, alterar configuraçêo ou fazer deploy — tudo isso sem te perguntar antes, porque tecnicamente cumpriu o que você pediu.</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
 <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
 <ul class="space-y-3 text-neutral-300 text-sm">
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Dizer explicitamente o que ele <strong>não</strong> pode tocar antes de pedir análise ou execução.</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Separar a fase de diagnóstico da fase de ação em tarefas sensíveis.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Dizer explicitamente o que ele <strong>nêo</strong> pode tocar antes de pedir análise ou execuçêo.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Separar a fase de diagnóstico da fase de açêo em tarefas sensíveis.</span></li>
 <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tratar "resolva isso" como um pedido incompleto até você definir os limites.</span></li>
 </ul>
 </div>
@@ -269,11 +269,11 @@ simples que resolve bem o problema.
 <ul class="space-y-3 text-neutral-300 text-sm">
 <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pedir "resolve isso" ou "cuide disso" sem dizer o que fica fora dos limites.</span></li>
 <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Assumir que o agente vai perguntar antes de agir — em geral, ele age.</span></li>
-<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Confundir "modelo forte" com "modelo cauteloso" — são coisas diferentes.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Confundir "modelo forte" com "modelo cauteloso" — sêo coisas diferentes.</span></li>
 </ul>
 </div>
 </div>
-<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> quanto mais capaz o modelo, mais explícita precisa ser a fronteira antes de pedir análise técnica ou execução.</p></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> quanto mais capaz o modelo, mais explícita precisa ser a fronteira antes de pedir análise técnica ou execuçêo.</p></div>
 <div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button></div>
 </section>
 <!-- TOPICO 4 -->
@@ -287,12 +287,12 @@ simples que resolve bem o problema.
 <span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span>
 </button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t4-p1">A forma mais confiável de travar a fronteira do tópico anterior é colocar o agente num <span class="termo" title="Fase em que o agente só observa e relata, sem alterar nada no sistema">modo só-diagnóstico</span> explícito: ele pode olhar, medir e concluir — mas não pode alterar nada até você aprovar.</p>
-<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">travar o agente em modo de avaliação antes de qualquer ação real no sistema.</span></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t4-p1">A forma mais confiável de travar a fronteira do tópico anterior é colocar o agente num <span class="termo" title="Fase em que o agente só observa e relata, sem alterar nada no sistema">modo só-diagnóstico</span> explícito: ele pode olhar, medir e concluir — mas nêo pode alterar nada até você aprovar.</p>
+<div class="mb-2"><span class="text-blue-400 font-semibold text-sm">Objetivo:</span> <span class="text-neutral-300 text-sm">travar o agente em modo de avaliaçêo antes de qualquer açêo real no sistema.</span></div>
 <div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt: análise segura</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
-<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Primeiro apenas avalie. Não altere arquivos, não reinicie serviços,
-não crie branch, não edite configuração e não rode comandos
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Primeiro apenas avalie. Nêo altere arquivos, nêo reinicie serviços,
+nêo crie branch, nêo edite configuraçêo e nêo rode comandos
 destrutivos.
 
 Entregue um diagnóstico com evidências. Depois diga exatamente quais
@@ -300,9 +300,9 @@ mudanças recomenda e por quê.
 
 &lt;isto você troca — descreva o sistema ou problema a investigar&gt;</pre>
 </div>
-<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">Como verificar:</span> <span class="text-neutral-300 text-sm">confira que nenhum arquivo foi alterado, nenhum serviço reiniciado e nenhum comando destrutivo rodou — e que a resposta termina com um diagnóstico + recomendações separadas, ainda pendentes da sua aprovação numa rodada seguinte.</span></div>
+<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">Como verificar:</span> <span class="text-neutral-300 text-sm">confira que nenhum arquivo foi alterado, nenhum serviço reiniciado e nenhum comando destrutivo rodou — e que a resposta termina com um diagnóstico + recomendações separadas, ainda pendentes da sua aprovaçêo numa rodada seguinte.</span></div>
 <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-8 overflow-hidden">
-<svg aria-label="Fluxo mostrando o pedido passando por um portão de avaliação: o caminho de diagnóstico com evidências é sempre permitido, enquanto o caminho de execução direta em arquivos, serviços e configurações fica bloqueado até aprovação explícita do usuário" class="w-full h-auto" role="img" viewbox="0 0 1020 280">
+<svg aria-label="Fluxo mostrando o pedido passando por um portêo de avaliaçêo: o caminho de diagnóstico com evidências é sempre permitido, enquanto o caminho de execuçêo direta em arquivos, serviços e configurações fica bloqueado até aprovaçêo explícita do usuário" class="w-full h-auto" role="img" viewbox="0 0 1020 280">
 <defs>
 <lineargradient id="m22gate-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
 <filter height="180%" id="m22gate-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
@@ -317,28 +317,28 @@ mudanças recomenda e por quê.
 <text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="100" y="154">agente</text>
 <path d="M180,140 L212,140" fill="none" marker-end="url(#m22gate-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="1.8"></path>
 <g filter="url(#m22gate-glow)" transform="rotate(45 280 140)"><rect fill="#0e1622" height="100" rx="14" stroke="url(#m22gate-grad)" stroke-width="2.5" width="100" x="230" y="90"></rect></g>
-<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="280" y="136">Portão</text>
-<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="280" y="151">só avaliação</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="280" y="136">Portêo</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="280" y="151">só avaliaçêo</text>
 <path d="M350,120 C400,120 400,55 460,55" fill="none" marker-end="url(#m22gate-ah)" opacity="0.65" stroke="#38bdf8" stroke-width="1.8"></path>
 <text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="80">sempre permitido</text>
 <rect fill="#0e1b26" height="50" rx="12" stroke="#38bdf8" stroke-width="2" width="270" x="460" y="30"></rect>
 <text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="595" y="60">diagnóstico + evidências</text>
 <path d="M350,160 C400,160 400,215 460,215" fill="none" marker-end="url(#m22gate-ahr)" opacity="0.65" stroke="#f87171" stroke-width="1.8"></path>
-<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="205">bloqueado por padrão</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="410" y="205">bloqueado por padrêo</text>
 <rect fill="#2a0f16" height="50" rx="12" stroke="#f87171" stroke-width="2" width="300" x="460" y="190"></rect>
 <text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="610" y="220">🔒 arquivos · serviços · configs</text>
 <path d="M590,80 C660,80 660,150 660,188" fill="none" marker-end="url(#m22gate-ahc)" opacity="0.6" stroke="#38bdf8" stroke-dasharray="6 6" stroke-width="1.8"></path>
-<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="785" y="128">aprovação explícita</text>
-<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="610" y="260">🔓 libera só depois da sua aprovação</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="785" y="128">aprovaçêo explícita</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="610" y="260">🔓 libera só depois da sua aprovaçêo</text>
 </svg>
 </div>
-<p class="text-xs text-neutral-500 -mt-6 mb-6">O portão separa os dois caminhos: diagnóstico (ciano) é sempre permitido; execução real (vermelho) fica travada até você aprovar explicitamente as mudanças recomendadas.</p>
+<p class="text-xs text-neutral-500 -mt-6 mb-6">O portêo separa os dois caminhos: diagnóstico (ciano) é sempre permitido; execuçêo real (vermelho) fica travada até você aprovar explicitamente as mudanças recomendadas.</p>
 <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5 mb-6">
 <h3 class="text-base font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🔗</span> Cruzamento com a Trilha 1</h3>
-<p class="text-neutral-300 text-sm">Definir limites antes de deixar o agente agir é literalmente a técnica de <strong>fronteiras (negative prompting + boundaries)</strong> que a Trilha 1 documenta com respaldo oficial da Anthropic — dizer explicitamente o que o modelo <em>não</em> deve fazer, em vez de confiar só na descrição do que ele deve fazer.</p>
+<p class="text-neutral-300 text-sm">Definir limites antes de deixar o agente agir é literalmente a técnica de <strong>fronteiras (negative prompting + boundaries)</strong> que a Trilha 1 documenta com respaldo oficial da Anthropic — dizer explicitamente o que o modelo <em>nêo</em> deve fazer, em vez de confiar só na descriçêo do que ele deve fazer.</p>
 <a class="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-emerald-400 hover:text-emerald-300" href="../trilha1/modulo-1-3.html">Ver Módulo 1.3 — Negative prompting + fronteiras →</a>
 </div>
-<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> "avalie primeiro, execute depois" transforma iniciativa demais em diagnóstico útil — sem risco de ação indesejada.</p></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> "avalie primeiro, execute depois" transforma iniciativa demais em diagnóstico útil — sem risco de açêo indesejada.</p></div>
 <div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button></div>
 </section>
 <!-- TOPICO 5 -->
@@ -352,21 +352,21 @@ mudanças recomenda e por quê.
 <span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span>
 </button>
 </div>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t5-p1">As duas dicas deste módulo não competem entre si — elas se somam. O exemplo mais claro é uma auditoria de segurança: você quer <strong class="text-blue-400">profundidade alta</strong> (é uma decisão que custa caro se sair errada) <strong>e</strong> quer o agente <strong class="text-blue-400">travado em modo só-diagnóstico</strong> (porque não é a hora de mexer em nada ainda).</p>
-<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t5-p2">Na prática, isso vira um fluxo de 5 passos que você repete pra qualquer tarefa sensível — não só auditoria de segurança.</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t5-p1">As duas dicas deste módulo nêo competem entre si — elas se somam. O exemplo mais claro é uma auditoria de segurança: você quer <strong class="text-blue-400">profundidade alta</strong> (é uma decisêo que custa caro se sair errada) <strong>e</strong> quer o agente <strong class="text-blue-400">travado em modo só-diagnóstico</strong> (porque nêo é a hora de mexer em nada ainda).</p>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-ARCKHÉ-block="m22-t5-p2">Na prática, isso vira um fluxo de 5 passos que você repete pra qualquer tarefa sensível — nêo só auditoria de segurança.</p>
 <div class="space-y-6 mb-6">
 <div class="flex items-start space-x-4">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
 <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
 <h4 class="font-semibold text-white mb-2">Defina a tarefa e o motivo da profundidade alta</h4>
-<p class="text-neutral-300 text-sm">Diga o que está em jogo — por que essa tarefa merece o degrau "alta" e não "média".</p>
+<p class="text-neutral-300 text-sm">Diga o que está em jogo — por que essa tarefa merece o degrau "alta" e nêo "média".</p>
 </div>
 </div>
 <div class="flex items-start space-x-4">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
 <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
 <h4 class="font-semibold text-white mb-2">Declare a fronteira: só diagnóstico nesta rodada</h4>
-<p class="text-neutral-300 text-sm">Liste explicitamente o que não pode ser tocado — arquivos, serviços, configuração, comandos destrutivos.</p>
+<p class="text-neutral-300 text-sm">Liste explicitamente o que nêo pode ser tocado — arquivos, serviços, configuraçêo, comandos destrutivos.</p>
 </div>
 </div>
 <div class="flex items-start space-x-4">
@@ -387,7 +387,7 @@ mudanças recomenda e por quê.
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">5</span></div>
 <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
 <h4 class="font-semibold text-white mb-2">Aprove as mudanças numa rodada separada</h4>
-<p class="text-neutral-300 text-sm">Só agora o agente executa — e só o que você aprovou, não o que ele achou melhor.</p>
+<p class="text-neutral-300 text-sm">Só agora o agente executa — e só o que você aprovou, nêo o que ele achou melhor.</p>
 </div>
 </div>
 </div>
@@ -395,18 +395,18 @@ mudanças recomenda e por quê.
 <div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-3">
 <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600"><span class="text-xs text-blue-400 font-mono">prompt: auditoria travada</span><button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button></div>
 <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Faça uma auditoria de segurança completa &lt;isto você troca — do
-sistema/projeto&gt;. Use análise profunda — é uma decisão que custa
+sistema/projeto&gt;. Use análise profunda — é uma decisêo que custa
 caro se sair errada.
 
-Mas, nesta rodada, apenas avalie: não altere arquivos, não reinicie
-serviços, não edite configuração e não rode comandos destrutivos.
+Mas, nesta rodada, apenas avalie: nêo altere arquivos, nêo reinicie
+serviços, nêo edite configuraçêo e nêo rode comandos destrutivos.
 
 Entregue um diagnóstico com evidências, ranqueado por risco. Depois
 diga exatamente quais mudanças recomenda e por quê — vou aprovar
 cada uma antes de você agir.</pre>
 </div>
-<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">Como verificar:</span> <span class="text-neutral-300 text-sm">a resposta deve trazer achados com evidência real (arquivo, linha, log ou output — não afirmação genérica), ranqueados por risco, e nenhuma alteração de fato no sistema. Se algo foi alterado sem sua aprovação, o prompt falhou em travar o limite.</span></div>
-<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> profundidade alta decide <em>quão fundo</em> o agente pensa; o modo só-diagnóstico decide <em>o que</em> ele pode fazer com o que pensou — as duas juntas dão a auditoria mais segura.</p></div>
+<div class="mb-6"><span class="text-blue-400 font-semibold text-sm">Como verificar:</span> <span class="text-neutral-300 text-sm">a resposta deve trazer achados com evidência real (arquivo, linha, log ou output — nêo afirmaçêo genérica), ranqueados por risco, e nenhuma alteraçêo de fato no sistema. Se algo foi alterado sem sua aprovaçêo, o prompt falhou em travar o limite.</span></div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> profundidade alta decide <em>quêo fundo</em> o agente pensa; o modo só-diagnóstico decide <em>o que</em> ele pode fazer com o que pensou — as duas juntas dêo a auditoria mais segura.</p></div>
 <div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button></div>
 </section>
 <!-- TOPICO 6 -->
@@ -426,9 +426,9 @@ cada uma antes de você agir.</pre>
 <h4 class="font-bold text-emerald-400 mb-4">✓ Checklist antes de mandar o prompt</h4>
 <ul class="space-y-3 text-neutral-300 text-sm">
 <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Perguntei "se sair errado, o que eu perco?" antes de escolher o nível de profundidade.</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Disse explicitamente o que o agente <strong>não</strong> pode tocar, não só o que ele deve fazer.</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Separei diagnóstico de execução em qualquer tarefa que mexe em produção ou dados reais.</span></li>
-<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Pedi evidência real no diagnóstico — não uma opinião genérica.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Disse explicitamente o que o agente <strong>nêo</strong> pode tocar, nêo só o que ele deve fazer.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Separei diagnóstico de execuçêo em qualquer tarefa que mexe em produçêo ou dados reais.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Pedi evidência real no diagnóstico — nêo uma opiniêo genérica.</span></li>
 </ul>
 </div>
 <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
@@ -436,13 +436,13 @@ cada uma antes de você agir.</pre>
 <ul class="space-y-3 text-neutral-300 text-sm">
 <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Deixar tudo em profundidade máxima "pra garantir", sem medir se compensa o tempo/custo.</span></li>
 <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pedir "resolve isso" sem dizer o que fica de fora — e se surpreender com o que o agente tocou.</span></li>
-<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Misturar diagnóstico e execução no mesmo pedido em tarefa sensível.</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Misturar diagnóstico e execuçêo no mesmo pedido em tarefa sensível.</span></li>
 <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Aceitar "pronto" sem evidência — isso é assunto do próximo módulo, mas já vale prevenir aqui.</span></li>
 </ul>
 </div>
 </div>
 <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-<p class="text-neutral-200"><strong class="text-primary">💡 Dica prática:</strong> guarde os dois prompts deste módulo (profundidade calibrada + análise segura) num arquivo de templates. Você vai reusá-los toda vez que pedir algo estratégico ou algo que mexe em sistema — e vai perceber rápido que boa parte das "surpresas" com agentes fortes some quando esses dois hábitos viram padrão.</p>
+<p class="text-neutral-200"><strong class="text-primary">💡 Dica prática:</strong> guarde os dois prompts deste módulo (profundidade calibrada + análise segura) num arquivo de templates. Você vai reusá-los toda vez que pedir algo estratégico ou algo que mexe em sistema — e vai perceber rápido que boa parte das "surpresas" com agentes fortes some quando esses dois hábitos viram padrêo.</p>
 </div>
 <div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">Em 1 frase:</strong> calibre o esforço, declare o limite — os dois hábitos que evitam a maioria dos sustos com um agente capaz.</p></div>
 <div class="flex justify-start mt-6"><button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-ARCKHÉ-read-toggle="" type="button"><span aria-hidden="true" class="ARCKHÉ-read-icon">○</span><span class="ARCKHÉ-read-label">Marcar como lido</span></button></div>
@@ -453,18 +453,18 @@ cada uma antes de você agir.</pre>
 <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
 <div class="space-y-4 mb-8">
 <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">4 níveis de profundidade</strong><span class="text-neutral-400"> — baixa, média, alta e máxima, calibrados pela pergunta "se sair errado, o que eu perco?".</span></div></div>
-<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Limites antes de agir</strong><span class="text-neutral-400"> — declare o que o agente não pode tocar antes de pedir análise técnica ou execução.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Limites antes de agir</strong><span class="text-neutral-400"> — declare o que o agente nêo pode tocar antes de pedir análise técnica ou execuçêo.</span></div></div>
 <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Avalie primeiro, execute depois</strong><span class="text-neutral-400"> — o prompt de análise segura trava o agente em modo diagnóstico até você aprovar.</span></div></div>
 <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">As duas se combinam</strong><span class="text-neutral-400"> — profundidade alta + modo só-diagnóstico é a receita de uma auditoria segura.</span></div></div>
 </div>
-<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.3 — Verificação real + subagentes especializados.</p></div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.3 — Verificaçêo real + subagentes especializados.</p></div>
 <div class="flex flex-col sm:flex-row gap-4">
 <a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-1.html">← Módulo Anterior</a>
 <a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-3.html">Próximo Módulo →</a>
 </div>
 </div>
 </section>
-<p class="text-xs text-neutral-500 mb-4">Fonte deste módulo: guia prático do usuário sobre uso do Fable 5 como agente de trabalho (dicas 3 e 4) — prompts testados na prática, não citações oficiais da Anthropic. Cruzamentos com a Trilha 1 apontam para conteúdo com respaldo oficial: platform.claude.com/docs/en/build-with-claude/effort · platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5</p>
+<p class="text-xs text-neutral-500 mb-4">Fonte deste módulo: guia prático do usuário sobre uso do Fable 5 como agente de trabalho (dicas 3 e 4) — prompts testados na prática, nêo citações oficiais da Anthropic. Cruzamentos com a Trilha 1 apontam para conteúdo com respaldo oficial: platform.claude.com/docs/en/build-with-claude/effort · platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5</p>
 </main>
 </div>
 </div>
